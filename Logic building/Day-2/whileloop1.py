@@ -46,3 +46,33 @@
 #     i += 1
 
 
+# Break is key word in while loop
+# what is the use of break statement in while loop
+# The break statement is used to exit the loop prematurely, regardless of the loop's condition.
+# When a break statement is encountered, the loop is terminated, and control is transferred to the next statement following the loop.
+
+# example
+# i = 0
+# while i <= 5:
+#     if (i == 3):
+#         break
+#     i += 1
+# print(i)
+
+# Here in the above example, the loop is terminated when i equals 3, so the final value of i printed is 3.
+
+# Continue is keyword in while loop
+# what is the use of continue statement in while loop
+# The continue statement is used to skip the current iteration of the loop and proceed to the next iteration.
+# When a continue statement is encountered, the remaining code inside the loop for the current iteration is skipped.
+
+# example
+i = 0
+while i <= 5:
+    if (i == 3):
+        i += 1
+        continue
+    print(i)
+    i += 1
+# here the above code will print all numbers from 0 to 5 except 3
+# The continue statement is used to skip the current iteration when i equals 3, so 3 is not printed.
