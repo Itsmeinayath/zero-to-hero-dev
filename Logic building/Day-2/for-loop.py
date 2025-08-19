@@ -57,5 +57,13 @@
 
 
 # This will print odd numbers from 1 to 10 . how here the range function is used range(1,11,2)  first is the start, second is the stop and third is the step by means it will increment by 2
-for i in range(1,11,2):
+# for i in range(1,11,2):
+#     print(i)
+
+
+# And there is also "pass"
+# The pass statement is a null operation; it is syntactically required but you do not want any command or code to execute.
+for i in range(5):
+    if i == 3:
+        pass
     print(i)
