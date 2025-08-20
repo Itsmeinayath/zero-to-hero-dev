@@ -1,4 +1,4 @@
-## Day 2 — Loops (Python)
+## Day 2 - Loops (Python)
 
 Master for/while loops, iteration patterns, and off‑by‑one pitfalls. Timebox: 1 hour theory + 2 hours practice
 
