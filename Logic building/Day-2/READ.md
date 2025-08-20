@@ -1,18 +1,6 @@
-- **Day 2 : Loops**
-- **Theory (1 hr)**:
-- Learn for/while loops, loop structure (start, condition, update).
-- **Video**: Abdul Bari’s “Loops in Programming” (15 min) ([YouTube](https://www.youtube.com/watch?v=6iF8Xb7Z3wQ)).
-- **Article**: GFG’s “Python Loops” (20 min) ([Link](https://www.geeksforgeeks.org/loops-in-python/)).
-- Note: for loop (for i in range(n)), while loop (while condition).
-- **Practice (2 hr)**:
-- **Problem 1**: HackerRank: Loops ([Link](https://www.hackerrank.com/challenges/python-loops)).
-- **Brute Force**: Print numbers manually (impractical).
-- **Better**: Use for loop (O(n)).
-- **Optimal**: Same, with clean output format (O(n)).
-- **Pseudocode**:
 ## Day 2 — Loops (Python)
 
-Master for/while loops, iteration patterns, and off‑by‑one pitfalls. Timebox: 1 hour theory + 2 hours practice.
+Master for/while loops, iteration patterns, and off‑by‑one pitfalls. Timebox: 1 hour theory + 2 hours practice
 
 ### Learning outcomes
 - Trace loop execution (init → condition → body → update)
