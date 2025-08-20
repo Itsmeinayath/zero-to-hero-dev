@@ -1,81 +1,62 @@
-Day 1: JavaScript Basi
-Goal: Learn JavaScript variables, functions, loops, and arrays, and apply them to add interactivity to a webpage.
-Tasks:
 
-Learn JavaScript Basics (1 hour):
+## Day 1 — JavaScript Basics (MERN Foundation)
 
-Concepts: Variables (let, const, var), data types (strings, numbers, booleans), functions (declaration, expression), loops (for, while), and conditionals (if, switch).
-Resources:
+Goal: grasp variables, data types, functions, and control flow to add interactivity to a webpage.
 
-What is a variable? variable means the data gonna be changed.
+### Learning outcomes
+- Use let/const correctly; avoid var in modern code
+- Know primitive types (string, number, boolean, undefined, null)
+- Write simple functions and use if/switch, for/while
 
-Variables are containers for data. 
-In JavaScript, you can declare a variable using let, const, or var. Here var variable is not generally used in modern JavaScript due to its function-scoping behavior, which can lead to unexpected results. 
-For example:
-```javascript
-var name = "YourName";
-var age = 25;
-```
-output
-```
-YourName
-25
-```
-Here in the above example you can see that the var keyword allows you to declare variables that can be re-assigned later.Because of this var is not commonly used in modern JavaScript.
+### Theory (60–90 min)
+- Variables: prefer const, use let when reassignment is needed; block scope vs function scope
+  - Example:
+    ```javascript
+    let name = "Ada";
+    const pi = 3.14159;
+    // pi = 3.14; // TypeError
+    ```
+- Scope:
+  ```javascript
+  if (true) {
+    let x = 1;
+  }
+  // x is not defined here
+  ```
+- Data types and basics:
+  ```javascript
+  const greeting = "Hello"; // string
+  const age = 30;            // number
+  const isStudent = false;   // boolean
+  let notSet;                // undefined
+  ```
+- Functions and control flow:
+  ```javascript
+  function add(a, b) { return a + b; }
+  const square = (n) => n * n;
+  if (age > 18) { /* ... */ } else { /* ... */ }
+  for (let i = 0; i < 3; i++) { /* ... */ }
+  ```
+- Reference: JavaScript.info — Variables
+  https://javascript.info/variables
 
-Here some examples of using let and const:
+### Practice (60–90 min)
+1) Variables & Types
+   - Create let/const variables for name, age, isMember; log types with typeof
+2) Functions
+   - Implement add, subtract, multiply, divide; test with a few values
+3) Loops & Arrays
+   - Given [1,2,3,4,5], print squares with for and for...of; then map
+4) Conditionals
+   - Given score 0–100, print a letter grade using if/else or switch
 
-```javascript
-let name = "YourName";
-const age = 25;
-```
+### Mini-exercises (optional)
+- Prompt user for two numbers and alert their sum (in browser)
+- Format a number to 2 decimals with toFixed(2)
 
-What is let? Let is a block-scoped variable declaration. It means that the variable is only accessible within the block it is defined in. For example:
-```javascript
-if (true) {
-  let blockScoped = "I'm only accessible within this block";
-}
-console.log(blockScoped); // ReferenceError: blockScoped is not defined
-```
-
-what is const? Const is a variable declaration that creates a read-only reference to a value. This means that once a variable is assigned with const, it cannot be reassigned. For example:
-```javascript
-const pi = 3.14;
-pi = 3.14159; // TypeError: Assignment to constant variable.
-```
-
--  Web Docs: [JavaScript Basics](https://javascript.info/variables)
-You can use these variables in functions, loops, and conditionals to create dynamic and interactive web pages.
-
-We have only two types of variables:
-Let and Const. with help of these we can create different types of variables.
-
-The data types in JavaScript:
-
-What is Data type?
-A data type is a classification that specifies which type of value a variable can hold. In JavaScript, there are several built-in data types, including:
-
-1. String: A sequence of characters enclosed in quotes. For example:
-```javascript
-let greeting = "Hello, world!";
-```
-2. Number: A numeric value, which can be an integer or a floating-point number. For example:
-```javascript
-let age = 30;
-```
-3. Boolean: A logical value that can be either true or false. For example:
-```javascript
-let isStudent = true;
-```
-4. Undefined: A variable that has been declared but not assigned a value. For example:
-```javascript
-let uninitialized;
-console.log(uninitialized); // Output: undefined
-```
-```javascript
-let ch = "Hello";
-console.log(ch); // Output: Hello
-```
+### Tips
+- Default to const; switch to let only when you must reassign
+- Keep functions small and pure when possible
 
 
 

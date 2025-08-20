@@ -1,38 +1,25 @@
-<div align="center">
+# Zero to Hero: A Developer's Journey (90 Days)
 
-Zero to Hero: A Developer's Journey 🚀
-A 90-day challenge to master DSA and the MERN stack.
+Build strong fundamentals in DSA (logic building) and full‑stack web development (MERN). This repo tracks a focused, daily learning routine with practical exercises and clear outcomes.
 
-</div>
+## Tracks
+- Logic Building (Python, DSA): daily problem‑solving with pseudocode → code → small tests
+- MERN Foundation: HTML/CSS/JS basics → Node/Express → React → MongoDB
 
-This repository chronicles my disciplined, 90-day challenge to master Data Structures & Algorithms and the MERN stack, transforming from a beginner to a proficient developer. Welcome to my journey!
 
-💻 Tech Stack & Tools
-This journey will focus on the following technologies and tools to build a comprehensive skill set.
+## Daily flow
+- Theory (30–60 min): 1–2 resources, note key syntax and gotchas
+- Practice (60–120 min): pseudocode → implementation → quick checks
+- Reflection (5–10 min): what worked, what to improve
 
+## Tech stack & tools
 <div align="center">
 <a href="https://skillicons.dev">
 <img src="https://skillicons.dev/icons?i=python,mongodb,express,react,nodejs,git,github,vscode&theme=dark" />
 </a>
 </div>
 
-🎯 The Goal
-My objective is to build a rock-solid foundation in both competitive programming fundamentals and full-stack web development. This repository is my commitment to consistent, daily effort.
-
-Logic Building: Master DSA by solving problems with a focus on moving from brute-force to optimal solutions.
-
-Full-Stack Development: Build practical, real-world applications using the MERN stack.
-
-📂 Repository Structure
-The repository is divided into two main learning tracks:
-
-📁 Logic Building (DSA): Contains daily DSA problem-solving code, following a structured 90-day roadmap.
-
-📁 MERN Foundation: Will contain projects and notes related to my MERN stack learning path.
-
-🤝 Let's Connect
-I'm open to feedback, collaboration, and connecting with fellow learners and developers. Feel free to reach out!
-
+## Connect
 <div align="center">
 <p>
 <a href="https://github.com/Itsmeinayath">

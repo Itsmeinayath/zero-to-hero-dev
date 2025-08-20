@@ -1,72 +1,54 @@
-- **Day 3 : Conditionals**
-    - **Theory (1 hr)**:
-        - Learn if-else, nested conditionals, logical operators (and, or, not).
-        - **Video**: NeetCode’s “Python Conditionals” (15 min) ([YouTube](https://www.youtube.com/watch?v=kqtD5dpn9C8&t=300s)).
-        - **Article**: GFG’s “Python If-Else” (20 min) ([Link](https://www.geeksforgeeks.org/python-if-else/)).
-        - Note: if condition, elif, else syntax.
-    - **Practice (2 hr)**:
-        - **Problem 1**: HackerRank: If-Else ([Link](https://www.hackerrank.com/challenges/py-if-else)).
-            - **Brute Force**: Multiple nested ifs (O(1)).
-            - **Better**: Single if-elif chain (O(1)).
-            - **Optimal**: Same, with clear logic (O(1)).
-            - **Pseudocode**:
-                
-                ```
-                Input: number n
-                If n odd: Print "Weird"
-                Else if n even and 2<=n<=5: Print "Not Weird"
-                Else if n even and 6<=n<=20: Print "Weird"
-                Else: Print "Not Weird"
-                ```
-                
-            - **Logic Exercise**: Write all conditions in plain English.
-        - **Problem 2**: LeetCode: Sign of the Product of an Array ([Link](https://leetcode.com/problems/sign-of-the-product-of-an-array/)).
-            - **Brute Force**: Multiply all numbers (O(n)).
-            - **Better**: Count negatives (O(n)).
-            - **Optimal**: Same, with early exit on zero (O(n)).
-            - **Pseudocode**:
-                
-                ```
-                Input: array of numbers
-                Initialize sign = 1
-                For each number:
-                    If number = 0: Return 0
-                    If number < 0: Flip sign
-                Return sign
-                ```
-                
-            - **Logic Exercise**: Draw decision tree for conditions.
-    - **Support**: Share code; I’ll check conditional logic errors.
+## Day 3 - Conditionals (Python)
 
+Make decisions with if/elif/else, comparisons, and logical operators. Timebox: 1 hour theory + 2 hours practice.
 
+### Learning outcomes
+- Write clear if/elif/else chains and avoid deep nesting
+- Combine conditions with and, or, not
+- Use comparisons: ==, !=, <, >, <=, >=
 
-Conditional Statements and logical operators
+### Theory (60 min)
+- Video (15 min): NeetCode — Python Conditionals
+  https://www.youtube.com/watch?v=kqtD5dpn9C8&t=300s
+- Article (20 min): GeeksforGeeks — Python If-Else
+  https://www.geeksforgeeks.org/python-if-else/
+- Notes to capture:
+  - Truthy/Falsey values; guard clauses; ternary: x if cond else y
+  - Avoid nested ifs; prefer elif chains and early returns
 
-Explanation:
+### Practice (120 min)
 
-What are Conditionals?: Conditionals let you execute code based on whether a condition is true or false (e.g., “if it’s raining, take an umbrella”). They’re the decision-making backbone of programming.
-Types:
+1) Problem: HackerRank — If-Else
+   Link: https://www.hackerrank.com/challenges/py-if-else
+   - Pseudocode:
+     ```
+     input n
+     if n is odd: print("Weird")
+     elif n is even and 2 <= n <= 5: print("Not Weird")
+     elif n is even and 6 <= n <= 20: print("Weird")
+     else: print("Not Weird")
+     ```
+   - Do this: test with n in {1,2,4,6,20,22}
 
-if condition: – Runs if true (e.g., if x > 0:).
-elif condition: – Else if, checks next condition if previous is false (e.g., elif x == 0:).
-else: – Runs if all above are false (e.g., else:).
+2) Problem: LeetCode — Sign of the Product of an Array
+   Link: https://leetcode.com/problems/sign-of-the-product-of-an-array/
+   - Pseudocode:
+     ```
+     input nums
+     sign = 1
+     for x in nums:
+         if x == 0: return 0
+         if x < 0: sign = -sign
+     return sign
+     ```
+   - Do this: add early return on zero and verify with positive/negative mixes
 
+### Mini-exercises (optional, 15–20 min)
+- Grading: read score 0–100 and print A/B/C/D/F
+- Leap year check using divisible-by-4/100/400 rules
+- Read two numbers and print the larger (or "equal")
 
-Logical Operators:
-
-and: True if both conditions are true (e.g., x > 0 and x < 10).
-or: True if at least one condition is true (e.g., x > 0 or x < -5).
-not: Negates a condition (e.g., not x == 0).
-
-
-Comparison Operators:
-
-== (equal), != (not equal), < (less than), > (greater than), <=, >=.
-
-
-Nesting: if inside if (e.g., if x > 0: if x < 5:).
-Best Practices:
-
-Avoid complex nesting—use elif to flatten.
-Test edge cases (e.g., 0, negative numbers).
-Use comments to explain logic.
+### Tips
+- Keep conditions mutually exclusive; order matters
+- Extract condition checks into well-named helpers for readability
+- Test edge cases: 0, negatives, boundaries
