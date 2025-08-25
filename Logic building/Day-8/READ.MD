@@ -162,4 +162,96 @@ Two Sum (hash)            O(n) time / O(n) space
 - Use descriptive names: write index k, complement need
 - For in‑place modifications, test with smallest inputs first ([], [x])
 
+---
+## Appendix A — Python Lists vs array vs NumPy
+### 1. Python Lists
+- Heterogeneous: can mix ints, strings, floats, even other lists
+- Dynamic size, contiguous array of references (CPython)
+- Most common general‑purpose sequence
+
+Example:
+```python
+my_list = [1, "hello", 3.14, [5, 6]]
+print(my_list)  # [1, 'hello', 3.14, [5, 6]]
+```
+
+### 2. array module
+- Homogeneous: all elements same type code (e.g. 'i' for signed int)
+- Slightly more compact than list for large numeric collections
+- Less feature‑rich; rarely needed unless memory micro‑optimization
+
+Example:
+```python
+from array import array
+ints = array('i', [1, 2, 3, 4])
+print(ints)  # array('i', [1, 2, 3, 4])
+```
+
+### 3. NumPy ndarray
+- Multidimensional, vectorized operations, broadcasting
+- Highly efficient for numerical / scientific computing
+
+Example:
+```python
+import numpy as np
+np_array = np.array([1, 2, 3, 4])
+print(np_array)  # [1 2 3 4]
+```
+
+### 4. Comparison
+| Feature                | list (built‑in)            | array.array           | NumPy ndarray              |
+|------------------------|----------------------------|-----------------------|----------------------------|
+| Mixed types            | Yes                        | No                    | No (dtype per array)       |
+| Dynamic resize         | Yes                        | Yes (costly sometimes)| Fixed size (can copy)      |
+| Numeric performance    | Moderate (Python loop)     | Slightly better       | High (C vectorized)        |
+| Methods richness       | High                       | Low                   | High (math ops)            |
+| External dependency    | No                         | No                    | Yes (install numpy)        |
+| Best use               | General purpose            | Niche memory saving   | Numeric / scientific       |
+
+Selection guide:
+- Everyday scripting → list
+- Large homogeneous numeric data + heavy compute → NumPy
+- Tiny memory tweak w/out extra dependency → array.array
+
+---
+## Appendix B — List Methods Reference
+Selected list methods (with typical complexities):
+
+| Method | Purpose | Typical Time* |
+|--------|---------|---------------|
+| append(x) | Add to end | O(1) amortized |
+| extend(iter) | Add many | O(k) (k = len(iter)) |
+| insert(i, x) | Insert at index | O(n) (shift) |
+| remove(x) | Remove first occurrence | O(n) (search + shift) |
+| pop() | Remove last | O(1) |
+| pop(i) | Remove at i | O(n) (shift) |
+| clear() | Remove all | O(n) |
+| index(x, [start],[end]) | Find position | O(n) |
+| count(x) | Count occurrences | O(n) |
+| sort() | In‑place sort (Timsort) | O(n log n) |
+| reverse() | Reverse in place | O(n) |
+| copy() | Shallow copy | O(n) |
+
+`join()` note: It's a string method used as separator: `' '.join(words)` (efficient vs manual concatenation).
+
+Examples:
+```python
+nums = [1, 2, 3]
+nums.append(4)        # [1,2,3,4]
+nums.extend([5, 6])   # [1,2,3,4,5,6]
+nums.insert(1, 9)     # [1,9,2,3,4,5,6]
+nums.pop()            # removes 6
+nums.remove(9)        # first occurrence of 9
+nums.reverse()        # in place reverse
+copy_nums = nums.copy()
+```
+
+Pitfalls:
+- `list.sort()` returns None (in place); use `sorted(list)` for a new list
+- Using `+=` with list mutates in place; for copying prefer slice or list()
+- Frequent `insert(0, x)` causes O(n) shifts; consider collections.deque
+
+*Complexities refer to CPython typical behavior.
+
+---
 End of Day 8 guide.
