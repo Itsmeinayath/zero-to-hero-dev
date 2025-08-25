@@ -15,7 +15,10 @@
 
 # Funtion to print square
 
-def square(num):
-    return num * num
+# def square(num):
+#     return num * num
 
-print(square(10))
+# print(square(10))
+
+# Functions are reusable blocks of code that perform a specific task.
+# Example 
