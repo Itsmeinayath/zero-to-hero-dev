@@ -8,6 +8,18 @@
 // - const: block-scoped constant (cannot be reassigned)
 // - Data types: string, number, boolean
 
+let name = "John";
+let age = 30;   
+let isStudent = true;
+
+// console.log means "print to the console" its print just like python
+console.log("Name:", name);
+console.log("Age:", age);
+console.log("Is Student:", isStudent);
+
+const country = "India";
+console.log("Country:", country);
+
 // 2. Functions
 // - Function declaration: function name(params) { ... }
 // - Arrow function: const funcName = (params) => { ... }
