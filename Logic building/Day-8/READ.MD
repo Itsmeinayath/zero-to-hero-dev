@@ -46,88 +46,76 @@ Resources (optional):
 
 ---
 ## 2. Practice (~2 hours)
-Workflow per problem: Understand → Pseudocode → Code → Tests → Complexity → (Optional) variants.
+Workflow per problem: Understand → Pseudocode → Code → Tests → Complexity → Edge cases.
 
-### Problem 1: Two Sum (LeetCode)
-Link: https://leetcode.com/problems/two-sum/
-Goal: Return indices of two numbers whose sum == target. Assume exactly one solution (per LeetCode spec) and no reuse of the same element.
+### Problem 1: Find Maximum Element in an Array
+Goal: Return the maximum value in a non‑empty list of integers.
 
-Brute force (why we avoid): nested loops O(n^2).
-Hash map approach: single pass O(n) time, O(n) space.
+Brute force idea: Keep track of current best while scanning once (already optimal) → O(n) time, O(1) space.
 
 Pseudocode:
 ```
-map = {}
-for i from 0..n-1:
-    need = target - nums[i]
-    if need in map: return [map[need], i]
-    map[nums[i]] = i
-return []  # if no solution (defensive)
+if array empty: (decide) raise error or return None
+max_val = first element
+for each remaining element x:
+    if x > max_val: max_val = x
+return max_val
 ```
 
 Python:
 ```python
-def two_sum(nums: list[int], target: int) -> list[int]:
-    seen: dict[int, int] = {}
-    for i, val in enumerate(nums):
-        need = target - val
-        if need in seen:
-            return [seen[need], i]
-        seen[val] = i
-    return []  # not expected per problem statement
+from typing import Iterable, Optional
 
-assert two_sum([2,7,11,15], 9) == [0,1]
-assert two_sum([3,2,4], 6) == [1,2]
-assert two_sum([3,3], 6) == [0,1]
-```
-Complexity: Time O(n), Space O(n).  
-Why: One pass + constant average hash lookup.
-
-Variant thoughts:
-- If sorted input allowed two‑pointer approach (after sort) → O(n log n) with indices tracking or O(n) if already sorted.
-
-### Problem 2: Remove Duplicates from Sorted Array (LeetCode)
-Link: https://leetcode.com/problems/remove-duplicates-from-sorted-array/
-Goal: In place, compress sorted list so each unique appears once; return new length k; first k positions contain uniques.
-
-Pattern: write index k follows last unique; scan with i.
-
-Pseudocode:
-```
-if nums empty: return 0
-k = 1
-for i from 1 .. n-1:
-    if nums[i] != nums[i-1]:
-        nums[k] = nums[i]
-        k += 1
-return k
-```
-
-Python:
-```python
-def remove_duplicates(nums: list[int]) -> int:
+def find_max(nums: list[int]) -> int:
     if not nums:
-        return 0
-    k = 1
-    for i in range(1, len(nums)):
-        if nums[i] != nums[i-1]:
-            nums[k] = nums[i]
-            k += 1
-    return k
+        raise ValueError("find_max() arg is an empty list")
+    m = nums[0]
+    for x in nums[1:]:
+        if x > m:
+            m = x
+    return m
 
-arr = [1,1,2]
-length = remove_duplicates(arr)
-assert length == 2 and arr[:length] == [1,2]
-arr2 = [1,1,1]
-length2 = remove_duplicates(arr2)
-assert length2 == 1 and arr2[:length2] == [1]
-arr3: list[int] = []
-assert remove_duplicates(arr3) == 0
+assert find_max([1]) == 1
+assert find_max([1, 5, 3, 2]) == 5
+assert find_max([-4, -2, -9]) == -2
 ```
-Complexity: Time O(n) single pass; Space O(1) extra.  
-Why: Modifies in place; only a few counters.
+Complexity: Time O(n) (single pass), Space O(1) extra.  
+Edge cases: single element, all negatives, already sorted ascending/descending, very large list (streaming still fine).  
+Variants: Track both max and second max in same pass; streaming scenario where data arrives chunked (update current max per batch).
 
-Edge cases: empty list, all duplicates, all unique, size 1.
+### Problem 2: Sum of All Elements (GFG)
+Reference: Classic practice (e.g., GFG "Program to find sum of elements in an array").
+
+Goal: Compute total sum of a list of integers.
+
+Approach: Accumulate running total while scanning once.
+
+Pseudocode:
+```
+total = 0
+for x in nums:
+    total += x
+return total
+```
+
+Python:
+```python
+def sum_array(nums: list[int]) -> int:
+    total = 0
+    for x in nums:
+        total += x
+    return total
+
+assert sum_array([]) == 0
+assert sum_array([5]) == 5
+assert sum_array([1,2,3,4]) == 10
+assert sum_array([-2, 3, -1]) == 0
+```
+Complexity: Time O(n), Space O(1).  
+Why not use built‑in sum immediately? For learning the loop pattern & manual accumulation; in production prefer built‑in `sum(nums)` (CPython optimized in C).  
+Edge cases: empty list (return 0), large magnitude values (watch for overflow in other languages—Python ints auto‑expand).
+
+Mini variant: Average = sum / n (handle n = 0 separately).
 
 ### Optional mini exercises
 - Merge two sorted arrays (without using sort) → O(m+n)
