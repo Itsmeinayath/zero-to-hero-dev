@@ -3,6 +3,37 @@ Timebox: ~3 hours (Theory 1h • Core problems 90m • Optional JS 30m)
 Commit: `Day 10: Two-Pointer Technique`  
 Goal: Recognize when two indices can remove a nested loop and implement classic patterns confidently.
 
+> Feeling lost? Read QUICK START first, then jump to a problem. Come back for deeper parts later.
+
+### QUICK START (90‑second mental load)
+Use two pointers when BOTH are true:
+1. Order helps decisions (sorted numbers, left/right symmetry, contiguous window).
+2. Pointers only move forward / inward (never jump back).
+
+Core shapes you need today:
+1. Opposite ends (converging) – pair sum in sorted, reverse, palindrome.
+2. Slow/Fast (same direction) – dedupe, cycle detection.
+3. Write + Read (compaction) – move zeroes, filter array.
+4. Partition (bidirectional swap) – group evens / odds.
+5. Sliding window (range with constraint) – longest substring unique, etc. (preview).
+
+Bare templates:
+```python
+# Opposite ends
+l, r = 0, len(a)-1
+while l < r:
+    # work
+    # move l or r
+
+# Write + read
+write = 0
+for read in range(len(a)):
+    if keep(a[read]):
+        a[write] = a[read]
+        write += 1
+```
+Question to test suitability: “Can I decide pointer movement from just current elements / window state?” If no → maybe hash map or another strategy.
+
 ### Learning outcomes
 - Identify problems that can shift from O(n^2) brute force to O(n) with two pointers
 - Distinguish major pointer pattern families (opposite ends, same direction / slow-fast, partitioning, in-place write)
@@ -25,19 +56,169 @@ Heuristic: Ask “Can I maintain a relationship between two positions and move t
 Anti-example: Unsorted Two Sum requiring original indices → hash map usually simpler; two-pointer only works if array sorted (or you are allowed to sort with O(n log n) overhead and adjust if indices not needed pre-sort).
 
 ---
-## 2. Core Concepts (Concise)
-- Movement must be monotonic to guarantee O(n) (each pointer advances at most n steps)
-- Termination condition: when pointers cross or fast reaches end
-- State carried: often partial result (running sum, last non-zero index, write position)
-- In-place transforms require careful order of reads vs writes
+## 2. Core Concepts (Clear + Correct Visuals)
 
-Common pitfalls & fixes:
-Pitfall | Fix
---------|----
-Pointer stuck (infinite loop) | Ensure movement in every branch
-Overwriting needed data | Swap only after reading all necessary values
-Using two-pointer on unsorted pair-sum | Sort first (loses original indices) or switch to hash map
-Off-by-one end conditions | Rehearse with 0/1 length arrays
+Each pattern below: Definition • Visual (aligned) • Mini walk‑through • When / Avoid • Micro template.
+
+### 2.1 Opposite Ends (Converging)
+Use two pointers at both ends; move the one that brings you closer to goal.
+```
+Index:   0   1   2   3   4   5
+Array:  [ 1 | 2 | 4 | 6 | 10| 15 ]   target = 8
+         ^                       ^
+         l                       r    sum=1+15=16 > 8 → move r left
+
+Index:   0   1   2   3   4   5
+Array:  [ 1 | 2 | 4 | 6 | 10| 15 ]
+         ^                   ^
+         l                   r    sum=1+10=11 > 8 → r--
+
+Index:   0   1   2   3   4   5
+Array:  [ 1 | 2 | 4 | 6 | 10| 15 ]
+         ^               ^
+         l               r    sum=1+6=7 < 8 → l++
+
+Now l=1 (2), r=3 (6) → sum=8 found.
+```
+When: Sorted pair sum, reversal, palindrome check.  
+Avoid: Unsorted pair sum needing original indices (use hash map).  
+Template:
+```python
+l, r = 0, len(a)-1
+while l < r:
+    s = a[l] + a[r]
+    if s == target: return l, r
+    if s < target: l += 1
+    else: r -= 1
+```
+
+### 2.2 Slow / Fast (Same Direction)
+Fast scans ahead; slow marks position for building result or comparison.
+Example: Remove duplicates in sorted list.
+```
+nums: [0, 0, 1, 1, 2, 2]
+        s
+        f   (start both at index 0)
+
+Step f=1: nums[f]=0 == nums[s]=0 → only fast++
+         s
+           f
+Step f=2: nums[f]=1 != nums[s]=0 → s++ then copy nums[f] to nums[s]
+             s
+             f
+Array after copy: [0, 1, 1, 1, 2, 2]
+Continue until end → front segment holds uniques.
+```
+When: Dedupe sorted, cycle detection (fast moves 2 nodes, slow 1).  
+Avoid: Unsorted dedupe without extra structure (need set/dict).  
+Template:
+```python
+slow = 0
+for fast in range(1, n):
+    if a[fast] != a[slow]:
+        slow += 1
+        a[slow] = a[fast]
+```
+
+### 2.3 Write + Read (Compaction / Stable Filter)
+Keep non‑removed items at the start; order preserved.
+Example: Move zeroes.
+```
+Initial: [0, 1, 0, 3, 12]
+          w  r
+read=1 (value 1 != 0): swap w,r → [1, 0, 0, 3, 12]; w=1
+             w     r
+read=2 (0) skip
+read=3 (3 !=0): swap → [1, 3, 0, 0, 12]; w=2
+read=4 (12!=0): swap → [1, 3, 12, 0, 0]; w=3 end.
+```
+When: Filter, move zeroes, remove element.  
+Avoid: If building a new list is clearer and space not a concern.  
+Template:
+```python
+write = 0
+for read in range(n):
+    if keep(a[read]):
+        a[write], a[read] = a[read], a[write]
+        write += 1
+```
+
+### 2.4 Partition (Bidirectional Swap)
+Rearrange so predicate true items left, false right (order NOT preserved).
+Example: Evens left, odds right.
+```
+[3, 8, 5, 2, 4, 7]
+ ^              ^
+ l              r   (3 odd, 7 odd) → r--
+[3, 8, 5, 2, 4, 7]
+ ^           ^
+ l           r   (3 odd, 4 even) → swap → [4, 8, 5, 2, 3, 7]
+             ^   ^
+             l   r (advance both while sides okay)
+```
+When: Grouping by boolean condition, quicksort partition.  
+Avoid: Need stable ordering.  
+Template:
+```python
+l, r = 0, n-1
+while l < r:
+    if is_left(a[l]): l += 1
+    elif not is_left(a[r]): r -= 1
+    else:
+        a[l], a[r] = a[r], a[l]
+        l += 1; r -= 1
+```
+
+### 2.5 Sliding Window (Preview)
+Maintain an interval satisfying a constraint (e.g., unique chars).
+```
+string:  a  b  c  a  b  c
+         ^-----^
+        start  end   (abc)
+extend end → 'a' repeats → shrink start until unique again
+```
+When: Longest/shortest subarray with sum/length/uniqueness condition.  
+Avoid: Constraint expensive to update per move (no O(1) incremental state).
+
+### 2.6 Quick Decision Table
+Goal | Data Sorted? | Indices Needed? | Pattern
+-----|--------------|-----------------|--------
+Find pair sum | Yes | Maybe | Opposite ends
+Remove duplicates | Yes | In place | Slow/Fast
+Filter / move zeros | Any | In place | Write/Read
+Group by parity | Any | No order needed | Partition
+Substring uniqueness | Sequence | Yes | Sliding window
+
+### 2.7 Pitfalls (Fast Scan)
+Issue | Cause | Fix
+-----|-------|----
+Infinite loop | No pointer moves | Always advance at least one
+Wrong pointer moved | Wrong comparison logic | Re-evaluate rule set
+Self-swap overhead | write == read | Guard before swap
+Lost original order (partition) | Using partition when stability needed | Use compaction instead
+
+### 2.8 Proof Idea (One Line Each)
+Opposite ends: Each side shrinks at most n/2 steps → O(n).  
+Slow/Fast: Fast crosses list once; slow ≤ fast → O(n).  
+Write/Read: Read n steps; write ≤ read → O(n).  
+Partition: Each element examined ≤ once → O(n).  
+Sliding window: start + end each move ≤ n → O(n).
+
+### 2.9 Minimal Resource List (Pick 1 Video + 1 Article)
+Video: Search “NeetCode two pointers” (pattern overview)  
+Article: Search “GeeksForGeeks two pointer technique” (taxonomy + practice)  
+Optional: “Codeforces two pointers tutorial” (competitive nuances)
+
+### 2.10 Pre-Code Checklist (Yes / No)
+- Ordered / ordering helpful?
+- Movement monotonic?
+- Local info enough to choose movement?
+- Need original indices (if sorting)?
+- Edge cases (0 / 1 / all same) considered?
+
+≥4 yes → implement; else reconsider.
+
+---
 
 ---
 ## 3. Problem 1: Two Sum (Sorted Array Variant)
