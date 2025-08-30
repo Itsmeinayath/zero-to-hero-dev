@@ -1,363 +1,270 @@
-## Day 12 - Binary Search
-Timebox: ~3 hours (Theory 45–60m • Core variants 75–90m • Optional JS 20m • Reflection 5–10m)  
-Commit: `Day 12: Binary Search`  
-Objective: Turn any ordered search / threshold / boundary finding task from O(n) into O(log n) by halving search space.
+## Day 12 – Array Manipulation & In-Place Techniques
+Timebox: ~3 hours (Concept 45m • Core problems 60–75m • Extensions 30m • JS/Refactor 15–20m • Reflection 5–10m)  
+Commit: `Day 12: Array Manipulation`  
+Objective: Master in-place array updates (write/read pointers, backfill merges, stable vs unstable operations) to reduce extra space and clarify mutation patterns.
 
-### Session Overview (Read This First)
-What we learn today (Pattern Focus): Binary Search family (exact search, insertion point, boundary (first/last), predicate (answer space), rotated array, numeric sqrt).
+### Session Overview
+Pattern Focus: In-place modification using minimal extra memory (O(1)) via pointer strategies.  
+Outputs Today:
+- Reusable templates: (a) two-pointer read/write, (b) reverse fill merge, (c) partition filter, (d) stable compaction.
+- Implementations: remove duplicates (sorted), merge sorted in-place, remove element, move zeros, rotate, two-sum contrast (why not always manipulate).
+- Complexity table (cost of shifting vs backfill).
+- Pitfall checklist for index corruption and overwrites.
 
-End-of-day outputs (you should have):
-- Reusable iterative template (closed interval) memorized
-- Boundary helpers: `lower_bound`, `upper_bound`, first/last occurrence
-- Predicate search helper (`binary_search_predicate`)
-- Implementations for: classic search (LC 704), search insert (LC 35), first/last position (LC 34), search rotated (LC 33), sqrt (LC 69), peak element (LC 162) – at least drafted
-- Personal note: difference between closed [l,r] vs half-open [l,r)
-
-Key competencies gained:
-- Recognize monotonic structure (sorted data OR monotonic predicate)
-- Choose correct interval style & loop condition
-- Bias midpoint updates for boundary queries
-- Avoid infinite loops & off-by-one
-
-Primary learning resources (skim then code):
-- LeetCode 704 (Binary Search) – baseline
-- LeetCode 35 (Search Insert Position) – insertion pattern
-- LeetCode 34 (Find First and Last Position) – boundary biasing
-- LeetCode 33 (Search in Rotated Sorted Array) – choosing sorted half
-- LeetCode 69 (Sqrt(x)) – predicate/answer space
-- LeetCode 162 (Find Peak Element) – directional binary search
-- GFG: Binary Search basics
-- GFG: First and last occurrences of X
-- GFG: Square root of a number
-- LeetCode Discuss: Binary Search Template III (predicate style)
-
-Stretch (if time remains):
-- Capacity to Ship Packages Within D Days (LC 1011) – predicate
-- Koko Eating Bananas (LC 875) – predicate on speed
-
-Tracking Suggestion: In your notes add a small table: Problem | Interval Style | Condition to Move Left | Condition to Move Right | Return Value.
+Primary Problems (LeetCode IDs): 26, 88, 27, 283, 189 (optional), 905 (parity partition), 1089 (duplicate zeros – stretching variant).
 
 ### Learning Outcomes
-- Recognize when data or answer space is monotonic / sorted
-- Implement base iterative binary search + recursive form
-- Derive boundary (first/last occurrence) pattern using biasing
-- Apply predicate (answer space) search (min x satisfying condition)
-- Handle rotated sorted array and square root approximation
-- Avoid common pitfalls (infinite loop, off-by-one, wrong mid update)
+- Differentiate traversal vs compaction vs partition patterns
+- Use forward write index safely without data loss
+- Merge sorted arrays from end to avoid O(m+n) extra memory
+- Identify when stable order matters and adjust algorithm
+- Produce complexity reasoning for each mutation
 
 ---
-## 1. Quick Start (Read First – 60s)
-Use Binary Search when:
-1. Data is sorted (array/string) OR
-2. Answer space can be linearly ordered & predicate is monotonic (false → true) OR
-3. Rotated but each half still partially ordered enabling direction choice.
-
-Core Loop Template (Iterative):
+## 1. Quick Start Templates
+Two-pointer Compaction (keep elements matching predicate keep(x)):
 ```python
-def binary_search(nums, target):
-    l, r = 0, len(nums)-1
-    while l <= r:
-        m = (l + r) // 2  # Python safe
-        if nums[m] == target: return m
-        if nums[m] < target:
-            l = m + 1
+write = 0
+for read, val in enumerate(arr):
+    if keep(val):
+        arr[write] = val
+        write += 1
+return write
+```
+
+Backwards Merge (two sorted arrays A (m) + B (n) into A sized m+n):
+```python
+i, j, k = m-1, n-1, m+n-1
+while j >= 0:
+    if i >= 0 and A[i] > B[j]:
+        A[k] = A[i]; i -= 1
+    else:
+        A[k] = B[j]; j -= 1
+    k -= 1
+```
+
+Stable Partition (move all zeros to end keeping order): use compaction + fill.
+
+Rotate Right by k (cyclic reversal method): reverse whole, reverse first k, reverse remainder.
+
+---
+## 2. Core Concepts
+Concept | Summary | Why It Matters
+--------|---------|---------------
+Compaction | Overwrite unwanted entries with wanted ones | O(1) space filter
+Backfill Merge | Fill from back to prevent overwriting unprocessed items | Avoid extra array
+Partition (unstable) | Swap unwanted front with wanted end | Faster when order unimportant
+Stability | Preserving original relative order | Some problems require it (move zeros)
+Index Safety | Reads must not rely on overwritten data | Choose direction accordingly
+
+Complexity Reminder: Insert/remove at arbitrary index in array => shift O(n). Rewriting in one pass keeps O(n) time; repeated deletions naive → O(n^2).
+
+---
+## 3. Problem 1 – Remove Duplicates from Sorted Array (LC 26)
+Keep first instance of each sorted run.
+```python
+def remove_duplicates(nums):
+    if not nums: return 0
+    write = 1
+    for read in range(1, len(nums)):
+        if nums[read] != nums[write-1]:
+            nums[write] = nums[read]
+            write += 1
+    return write
+
+arr = [1,1,2,2,3]
+k = remove_duplicates(arr)
+assert k == 3 and arr[:k] == [1,2,3]
+```
+Time O(n), Space O(1).  
+Invariant: nums[:write] has unique elements processed so far.
+
+---
+## 4. Problem 2 – Merge Sorted Array (LC 88)
+Reason for backward fill: forward would overwrite future needed values.
+```python
+def merge(nums1, m, nums2, n):
+    i, j, k = m-1, n-1, m+n-1
+    while j >= 0:
+        if i >= 0 and nums1[i] > nums2[j]:
+            nums1[k] = nums1[i]; i -= 1
         else:
-            r = m - 1
-    return -1
-```
+            nums1[k] = nums2[j]; j -= 1
+        k -= 1
 
-Boundary (First True / Lower Bound) Template:
+a = [1,2,3,0,0,0]
+merge(a,3,[2,5,6],3)
+assert a == [1,2,2,3,5,6]
+```
+Time O(m+n), Space O(1).
+
+---
+## 5. Problem 3 – Remove Element (LC 27)
+Remove all instances of val; order may change? (Spec: order can change, but stable also fine.)
+Stable compaction version:
 ```python
-def lower_bound(nums, target):
-    l, r = 0, len(nums)
+def remove_element(nums, val):
+    write = 0
+    for x in nums:
+        if x != val:
+            nums[write] = x
+            write += 1
+    return write
+
+arr = [3,2,2,3]
+k = remove_element(arr,3)
+assert k == 2 and sorted(arr[:k]) == [2,2]
+```
+Time O(n) / Space O(1).
+
+---
+## 6. Problem 4 – Move Zeroes (LC 283)
+Stable: compress non-zero then fill remainder with zeros.
+```python
+def move_zeroes(nums):
+    write = 0
+    for x in nums:
+        if x != 0:
+            nums[write] = x
+            write += 1
+    for i in range(write, len(nums)):
+        nums[i] = 0
+
+arr = [0,1,0,3,12]
+move_zeroes(arr)
+assert arr == [1,3,12,0,0]
+```
+Time O(n). Non-zero writes ≤ non-zero count (optimal minimal overwrites).
+
+---
+## 7. Problem 5 – Rotate Array Right by k (LC 189)
+Use triple reverse (stable within rotation definition). k %= n.
+```python
+def rotate(nums, k):
+    n = len(nums)
+    if n == 0: return
+    k %= n
+    def rev(l,r):
+        while l < r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1; r -= 1
+    rev(0,n-1); rev(0,k-1); rev(k,n-1)
+
+arr = [1,2,3,4,5,6,7]
+rotate(arr,3)
+assert arr == [5,6,7,1,2,3,4]
+```
+Time O(n) / Space O(1).
+
+---
+## 8. Bonus – Parity Partition (LC 905 style)
+Unstable swap to group even front, odd back.
+```python
+def parity_partition(nums):
+    l, r = 0, len(nums)-1
     while l < r:
-        m = (l + r) // 2
-        if nums[m] < target:  # still too small
-            l = m + 1
-        else:                 # nums[m] >= target -> candidate
-            r = m
-    return l  # first index where nums[i] >= target
+        if nums[l] % 2 == 0:
+            l += 1
+        elif nums[r] % 2 == 1:
+            r -= 1
+        else:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1; r -= 1
+    return nums
+
+arr = [3,1,2,4]
+res = parity_partition(arr)
+assert set(res[:2]) == {2,4}
 ```
-
-Predicate Search (Min x s.t. f(x) == True): keep narrowing left-most True.
-
----
-## 2. Visual Intuition
-Example: Find 7 in [1,3,5,7,9]
-```
-Indices: 0 1 2 3 4
-Values : 1 3 5 7 9
-Step1: l=0 r=4 m=2 val=5 <7 -> l=3
-Step2: l=3 r=4 m=3 val=7 == target -> return 3
-```
-Halving each iteration → after k steps array size ≈ n / 2^k; stop when size 1 ⇒ k ≈ log2 n.
+Time O(n) / Space O(1). Order not preserved.
 
 ---
-## 3. Complexity Justification
-Each iteration discards ~half remaining elements → O(log n) time.
-Space: O(1) iterative; O(log n) recursive (call stack).
+## 9. Decision Guide
+Goal | Pattern | Template
+-----|---------|---------
+Filter keep subset stable | Compaction | forward read/write
+Filter, order irrelevant | Partition swap | two ends swap
+Merge sorted into buffer end | Backfill | backwards pointers
+Shift zeros/end markers | Compaction + fill | two passes
+Rotate | Reverse segments | triple reverse
+Duplicate stretch (LC 1089) | Reverse/backward expansion | backward second pass
 
 ---
-## 4. Variant Patterns Overview
-Goal | Adjustments | Return
------|-------------|-------
-Exact index | Classic | index / -1
-Insertion point | Return left after loop | position
-First occurrence | Bias right toward mid-1 when match but continue | index
-Last occurrence | Bias left toward mid+1 when match but continue | index
-Lower bound (>=) | Half-open [l,r) + nums[m] < target | l
-Upper bound (>) | Half-open [l,r) + nums[m] <= target | l
-Predicate / answer space | Evaluate condition(mid) | boundary
-Rotated sorted array | Decide sorted half then discard | index
-Search on function | Evaluate monotonic function f(mid) | minimal solution
+## 10. Complexity Cheat Sheet
+Operation | Worst Time | Space | Notes
+----------|-----------|-------|------
+Single pass compaction | O(n) | O(1) | Minimal writes
+Backwards merge | O(m+n) | O(1) | Prevents overwrite
+Naive repeated pop(0) | O(n^2) | O(1) | Avoid; shift cost each time
+Rotate by reversing | O(n) | O(1) | 3 reversals
+Parity partition | O(n) | O(1) | Unstable
 
 ---
-## 5. Pitfalls & Fixes
+## 11. Pitfalls & Fixes
 Pitfall | Cause | Fix
 --------|-------|----
-Infinite loop | Not shrinking interval | Ensure l or r moves each iteration
-Miss first occurrence | Return immediately on match | Instead move r = m - 1 (store ans)
-Overflow (other langs) | (l + r) overflow | Use l + (r-l)//2 (Python unaffected)
-Wrong loop condition | Using while l < r for exact search | Use while l <= r for closed interval
-Off-by-one insertion | Returning r | For insert position return l
+Overwriting unread values | Forward fill when future needed | Switch to backward or temp
+Extra allocations | Using new list for simple compaction | Use write index
+Too many writes | Swapping zeros repeatedly | Two-phase compaction
+Wrong k rotation | Not k%=n | Normalize k first
+Forgot stability | Used swap partition for move zeroes | Use compaction
 
 ---
-## 6. Core Implementations (Python)
-```python
-from typing import List, Callable
-
-def binary_search(nums: List[int], target: int) -> int:
-    l, r = 0, len(nums)-1
-    while l <= r:
-        m = (l + r) // 2
-        if nums[m] == target:
-            return m
-        if nums[m] < target:
-            l = m + 1
-        else:
-            r = m - 1
-    return -1
-
-def search_insert(nums: List[int], target: int) -> int:
-    l, r = 0, len(nums)-1
-    while l <= r:
-        m = (l + r)//2
-        if nums[m] == target:
-            return m
-        if nums[m] < target:
-            l = m + 1
-        else:
-            r = m - 1
-    return l  # insertion position
-
-def first_occurrence(nums: List[int], target: int) -> int:
-    ans = -1
-    l, r = 0, len(nums)-1
-    while l <= r:
-        m = (l+r)//2
-        if nums[m] >= target:
-            if nums[m] == target:
-                ans = m
-            r = m - 1
-        else:
-            l = m + 1
-    return ans
-
-def last_occurrence(nums: List[int], target: int) -> int:
-    ans = -1
-    l, r = 0, len(nums)-1
-    while l <= r:
-        m = (l+r)//2
-        if nums[m] <= target:
-            if nums[m] == target:
-                ans = m
-            l = m + 1
-        else:
-            r = m - 1
-    return ans
-
-def lower_bound(nums: List[int], target: int) -> int:
-    l, r = 0, len(nums)
-    while l < r:
-        m = (l + r)//2
-        if nums[m] < target:
-            l = m + 1
-        else:
-            r = m
-    return l
-
-def upper_bound(nums: List[int], target: int) -> int:
-    l, r = 0, len(nums)
-    while l < r:
-        m = (l + r)//2
-        if nums[m] <= target:
-            l = m + 1
-        else:
-            r = m
-    return l
-
-def binary_search_predicate(lo: int, hi: int, ok: Callable[[int], bool]) -> int:
-    # Return smallest x in [lo, hi] with ok(x) True; assume monotonic
-    while lo < hi:
-        mid = (lo + hi)//2
-        if ok(mid):
-            hi = mid
-        else:
-            lo = mid + 1
-    return lo
-
-def search_rotated(nums: List[int], target: int) -> int:
-    l, r = 0, len(nums)-1
-    while l <= r:
-        m = (l + r)//2
-        if nums[m] == target:
-            return m
-        # Left half sorted
-        if nums[l] <= nums[m]:
-            if nums[l] <= target < nums[m]:
-                r = m - 1
-            else:
-                l = m + 1
-        else:  # Right half sorted
-            if nums[m] < target <= nums[r]:
-                l = m + 1
-            else:
-                r = m - 1
-    return -1
-
-def int_sqrt(n: int) -> int:
-    # floor(sqrt(n)) using predicate search
-    if n < 0: raise ValueError("n must be non-negative")
-    l, r = 0, n
-    ans = 0
-    while l <= r:
-        m = (l + r)//2
-        if m*m <= n:
-            ans = m
-            l = m + 1
-        else:
-            r = m - 1
-    return ans
-
-# Basic assertions
-assert binary_search([1,3,5,7,9],7) == 3
-assert binary_search([1,3,5],2) == -1
-assert search_insert([1,3,5,7],4) == 2
-arr = [1,2,2,2,3,4]
-assert first_occurrence(arr,2) == 1
-assert last_occurrence(arr,2) == 3
-assert lower_bound(arr,2) == 1
-assert upper_bound(arr,2) == 4
-assert search_rotated([4,5,6,7,0,1,2],0) == 4
-assert int_sqrt(16) == 4 and int_sqrt(17) == 4
-```
+## 12. Mini Exercises (Pick 3)
+1. LC 1089 Duplicate Zeros (simulate extra slot backwards)  
+2. Remove all occurrences of value but return modified slice (Python)  
+3. Implement left rotation by k using same reverse trick  
+4. Compact only first occurrence of each element in unsorted array (use set)  
+5. Write parity partition stable version (two-pass)  
 
 ---
-## 7. Representative Problems
-Problem | Pattern | Key Twist
---------|---------|----------
-Binary Search (LC 704) | Exact | Classic
-Search Insert Position | Insertion | Return l
-First/Last Position (LC 34) | Bounds | Two biased searches
-Search Rotated Array (LC 33) | Rotated | Identify sorted half
-Sqrt(x) (LC 69) | Predicate | value^2 <= n
-Peak Element (LC 162) | Directional | Move toward greater neighbor
-
----
-## 8. Decision Guide
-Question | If Yes | Action
----------|--------|-------
-Is array fully sorted? | Yes | Classic binary search
-Need first/last position? | Yes | Biased bound search
-Array rotated? | Yes | Use sorted-half logic
-Searching for threshold (min time/ capacity)? | Yes | Predicate search over answer space
-Values huge range but monotonic condition? | Yes | Exponential expand then binary search
-
-When NOT to use: data unsorted and cannot be sorted / no monotonic predicate / heavy per-iteration cost > benefit.
-
----
-## 9. Cheat Sheet
-Pattern | Loop Condition | Update on Match
---------|----------------|----------------
-Exact closed | while l <= r | return immediately
-Lower bound | while l < r | r = m
-Upper bound | while l < r | l = m + 1
-First occurrence | while l <= r | record ans; r = m-1
-Last occurrence | while l <= r | record ans; l = m+1
-Predicate min True | while lo < hi | hi = mid or lo = mid+1
-
-Formula safety: mid = l + (r-l)//2 (avoid overflow in 32-bit languages).
-
----
-## 10. Common Debug Checklist
-- Does interval shrink every iteration? (print l,r if stuck)
-- Are you mixing half-open [l,r) with closed [l,r]? (Choose one.)
-- Are termination & return consistent with interval style?
-- For boundaries: did you remove early return on match?
-- For rotated: verify which half is sorted using <= not < (duplicate edge cases) 
-
----
-## 11. Mini Exercises
-1. Implement `upper_bound` from memory.
-2. Modify `int_sqrt` to return ceiling sqrt.
-3. Write predicate search to find minimum capacity to ship packages within D days (classic capacity planning).
-4. Solve Peak Element using binary search reasoning.
-5. Convert all core functions to recursive variants.
-
----
-## 12. JavaScript Snippets (Optional)
+## 13. JavaScript Snippets
 ```js
-function binarySearch(nums, target){
-  let l=0, r=nums.length-1;
-  while(l<=r){
-    const m = (l + r) >> 1; // bit shift floor
-    if(nums[m] === target) return m;
-    if(nums[m] < target) l = m + 1; else r = m - 1;
+// Remove duplicates (sorted)
+function removeDuplicates(nums){
+  if(!nums.length) return 0;
+  let write=1;
+  for(let i=1;i<nums.length;i++){
+    if(nums[i] !== nums[write-1]) nums[write++] = nums[i];
   }
-  return -1;
+  return write;
 }
 
-function searchInsert(nums, target){
-  let l=0, r=nums.length-1;
-  while(l<=r){
-    const m = (l+r)>>1;
-    if(nums[m]===target) return m;
-    if(nums[m] < target) l = m+1; else r = m-1;
+// Merge sorted arrays (in-place)
+function merge(nums1, m, nums2, n){
+  let i=m-1, j=n-1, k=m+n-1;
+  while(j>=0){
+    if(i>=0 && nums1[i] > nums2[j]) nums1[k--] = nums1[i--];
+    else nums1[k--] = nums2[j--];
   }
-  return l;
 }
 
-function firstOccurrence(nums, target){
-  let l=0, r=nums.length-1, ans=-1;
-  while(l<=r){
-    const m = (l+r)>>1;
-    if(nums[m] >= target){
-      if(nums[m]===target) ans=m;
-      r = m-1;
-    } else l = m+1;
-  }
-  return ans;
+// Move zeroes
+function moveZeroes(nums){
+  let write=0;
+  for(const x of nums) if(x!==0) nums[write++] = x;
+  while(write < nums.length) nums[write++] = 0;
 }
 ```
 
 ---
-## 13. Resources
-- NeetCode Binary Search (video + patterns)
-- GeeksforGeeks Binary Search & boundary variants
-- LeetCode Discuss: Binary search template III (predicate style)
-- CP Handbook (monotonic predicate searching section)
+## 14. Resources
+- LeetCode: 26, 88, 27, 283, 189, 905, 1089
+- GFG: Array Data Structure overview
+- NeetCode: In-place array problems playlist
+- Visualizing pointer movement: PythonTutor / JS Tutor
 
 ---
-## 14. Reflection
+## 15. Reflection
 Prompts:
-1. Which variant (exact / boundary / predicate) felt hardest and why?
-2. Did you mix interval conventions anywhere?
-3. One trigger tomorrow to recognize predicate search earlier?
+1. Which pattern (compaction, backfill, partition) felt most natural? Why?
+2. Did you accidentally overwrite any needed values? How did you catch it?
+3. One sentence rule to detect backfill need tomorrow?
 
-Sample log: “Implemented exact + bounds + predicate; clarified half-open vs closed intervals; practiced rotated logic.”
+Sample Log: “Practiced compaction & backfill; merged without extra space; clarified stable vs unstable partitions; normalized k in rotations.”
 
 ---
-## 15. Preview (Day 13)
-Upcoming: Two-dimensional binary search & applying predicate to optimization (min capacity / time allocation) OR start on prefix sums.
+## 16. Preview (Day 14)
+Next: Prefix Sums & Difference Arrays (range queries, range updates) building on contiguous array reasoning.
 
 End of Day 12 guide.
