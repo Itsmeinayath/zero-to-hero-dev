@@ -264,7 +264,5 @@ Prompts:
 Sample Log: “Practiced compaction & backfill; merged without extra space; clarified stable vs unstable partitions; normalized k in rotations.”
 
 ---
-## 16. Preview (Day 14)
-Next: Prefix Sums & Difference Arrays (range queries, range updates) building on contiguous array reasoning.
 
 End of Day 12 guide.
