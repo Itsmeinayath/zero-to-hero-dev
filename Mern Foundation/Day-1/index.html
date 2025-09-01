@@ -1,38 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Day 1: Bio Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background-color: #f0f0f0;
-    }
-    h1 {
-      color: #333;
-    }
-    p {
-      font-size: 18px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Day 1: Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* This makes the color change smooth */
+        body {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- THE FIX IS HERE --- */
+        /* By using 'body.dark', we make this rule more specific
+           so it can override the default Tailwind classes. */
+        body.dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+    </style>
 </head>
-<body>
-  <h1>Welcome to My Bio</h1>
-  <p>Hi, I'm Inayath! Click the button to say hello.</p>
-  <button onclick="sayHello()">Click Me</button>
-  <script src="script.js"></script>
+<!-- The body starts without the 'dark' class -->
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center h-screen">
+    <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">MERN Stack Day 1</h1>
+        <p class="mb-6">Click the button to see JavaScript in action!</p>
+        <!-- We give this button an ID so our script can find it -->
+        <button id="toggle-btn" class="bg-gray-800 text-white font-bold py-2 px-6 rounded-lg">
+            Toggle Dark Mode
+        </button>
+    </div>
+    <!-- Always put your script at the end of the body -->
+    <script src="script.js"></script>
 </body>
 </html>
+
