@@ -423,6 +423,1459 @@ comprehensive_test()
 ```
 
 ---
+
+## 🎯 Part III: Advanced Problem Solving & Real-World Applications
+
+### 🔥 Problem 1: Classic Array Sorting with Bubble Sort Variations
+
+#### 📋 Problem Statement
+**LeetCode-Style Challenge**: Implement bubble sort with multiple optimization levels and compare performance across different input types.
+
+**Requirements**:
+- Sort arrays of integers in ascending/descending order
+- Implement early termination optimization
+- Track performance metrics (comparisons, swaps, passes)
+- Handle edge cases (empty arrays, single elements, duplicates)
+
+**Input Examples**:
+```python
+test_cases = [
+    [64, 34, 25, 12, 22, 11, 90],  # Random order
+    [1, 2, 3, 4, 5],               # Already sorted
+    [5, 4, 3, 2, 1],               # Reverse sorted
+    [3, 3, 3, 3],                  # All duplicates
+    [42],                          # Single element
+    []                             # Empty array
+]
+```
+
+#### 🧠 Solution Approach: Progressive Optimization
+
+##### Approach 1: Brute Force (No Optimizations)
+```python
+def bubble_sort_brute_force(arr):
+    """
+    Brute force bubble sort - always performs n-1 passes
+    
+    Time: O(n²) always
+    Space: O(1)
+    
+    Use Case: Educational demonstration of basic algorithm
+    """
+    n = len(arr)
+    comparisons = swaps = 0
+    
+    for i in range(n - 1):  # n-1 passes always
+        for j in range(n - 1 - i):
+            comparisons += 1
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swaps += 1
+    
+    return arr, {'comparisons': comparisons, 'swaps': swaps, 'passes': n - 1}
+
+# Example usage
+result, stats = bubble_sort_brute_force([3, 1, 4, 1, 5])
+print(f"Sorted: {result}")
+print(f"Performance: {stats}")
+```
+
+##### Approach 2: Early Termination Optimization
+```python
+def bubble_sort_optimized(arr):
+    """
+    Optimized bubble sort with early termination
+    
+    Best Case: O(n) - sorted array
+    Worst Case: O(n²) - reverse sorted
+    Space: O(1)
+    
+    Optimization: Stop when no swaps occur
+    """
+    n = len(arr)
+    comparisons = swaps = passes = 0
+    
+    for i in range(n - 1):
+        passes += 1
+        swapped = False
+        
+        for j in range(n - 1 - i):
+            comparisons += 1
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swaps += 1
+                swapped = True
+        
+        if not swapped:  # Array is sorted
+            break
+    
+    return arr, {'comparisons': comparisons, 'swaps': swaps, 'passes': passes}
+```
+
+##### Approach 3: Boundary Optimization (Cocktail Shaker Sort)
+```python
+def bubble_sort_advanced(arr):
+    """
+    Advanced bubble sort with bidirectional optimization
+    Also known as Cocktail Shaker Sort
+    
+    Optimization: Sort from both ends simultaneously
+    """
+    n = len(arr)
+    start = 0
+    end = n - 1
+    swapped = True
+    comparisons = swaps = passes = 0
+    
+    while swapped and start < end:
+        passes += 1
+        swapped = False
+        
+        # Forward pass: bubble largest to end
+        for i in range(start, end):
+            comparisons += 1
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swaps += 1
+                swapped = True
+        
+        if not swapped:
+            break
+        
+        end -= 1  # Largest element is in place
+        
+        # Backward pass: bubble smallest to start
+        for i in range(end, start, -1):
+            comparisons += 1
+            if arr[i] < arr[i - 1]:
+                arr[i], arr[i - 1] = arr[i - 1], arr[i]
+                swaps += 1
+                swapped = True
+        
+        start += 1  # Smallest element is in place
+    
+    return arr, {'comparisons': comparisons, 'swaps': swaps, 'passes': passes}
+```
+
+#### 📊 Performance Analysis Framework
+```python
+def analyze_bubble_sort_performance():
+    """Comprehensive performance analysis of bubble sort variants"""
+    import time
+    import random
+    
+    algorithms = [
+        (bubble_sort_brute_force, "Brute Force"),
+        (bubble_sort_optimized, "Early Termination"),
+        (bubble_sort_advanced, "Bidirectional (Cocktail)")
+    ]
+    
+    test_scenarios = [
+        ("Already Sorted", lambda n: list(range(n))),
+        ("Reverse Sorted", lambda n: list(range(n, 0, -1))),
+        ("Random Order", lambda n: [random.randint(1, 100) for _ in range(n)]),
+        ("Nearly Sorted", lambda n: list(range(n)) + [random.randint(1, n) for _ in range(n//10)]),
+        ("All Duplicates", lambda n: [42] * n)
+    ]
+    
+    sizes = [10, 50, 100]
+    
+    print("🔬 BUBBLE SORT PERFORMANCE ANALYSIS")
+    print("=" * 80)
+    
+    for scenario_name, generator in test_scenarios:
+        print(f"\n📊 Scenario: {scenario_name}")
+        print("-" * 50)
+        
+        for size in sizes:
+            print(f"\nArray Size: {size}")
+            test_array = generator(size)
+            
+            for algo, name in algorithms:
+                arr_copy = test_array.copy()
+                
+                start_time = time.perf_counter()
+                result, stats = algo(arr_copy)
+                execution_time = time.perf_counter() - start_time
+                
+                print(f"  {name:20} | {stats['comparisons']:5d} comparisons | {stats['swaps']:5d} swaps | {stats['passes']:3d} passes | {execution_time:.6f}s")
+
+analyze_bubble_sort_performance()
+```
+
+### 🎨 Problem 2: Sort Colors (Dutch National Flag) - LeetCode #75
+
+#### 📋 Problem Statement
+Given an array `nums` with `n` objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with colors in the order red, white, and blue. We will use integers `0`, `1`, and `2` to represent red, white, and blue respectively.
+
+**Constraints**:
+- `n == nums.length`
+- `1 <= n <= 300`
+- `nums[i]` is either `0`, `1`, or `2`
+- **Follow-up**: Solve without using library sort functions and in one pass
+
+#### 🧠 Solution Evolution: From Bubble Sort to Optimal
+
+##### Approach 1: Bubble Sort Application
+```python
+def sort_colors_bubble_sort(nums):
+    """
+    Apply bubble sort to sort colors
+    
+    Time: O(n²) - overkill for this problem
+    Space: O(1)
+    
+    Educational Value: Shows bubble sort application
+    Real-world Usage: Not recommended for this specific problem
+    """
+    n = len(nums)
+    
+    for i in range(n):
+        swapped = False
+        for j in range(n - 1 - i):
+            if nums[j] > nums[j + 1]:
+                nums[j], nums[j + 1] = nums[j + 1], nums[j]
+                swapped = True
+        if not swapped:
+            break
+    
+    return nums
+
+# Test cases
+test_cases = [
+    [2, 0, 2, 1, 1, 0],
+    [2, 0, 1],
+    [0],
+    [1],
+    [2],
+    [0, 1, 2],
+    [2, 1, 0]
+]
+
+print("🎨 SORT COLORS - BUBBLE SORT APPROACH")
+for i, colors in enumerate(test_cases):
+    original = colors.copy()
+    result = sort_colors_bubble_sort(colors)
+    print(f"Test {i+1}: {original} → {result}")
+```
+
+##### Approach 2: Counting Sort (Linear Time)
+```python
+def sort_colors_counting(nums):
+    """
+    Count occurrences and reconstruct array
+    
+    Time: O(n) - linear scan + reconstruction
+    Space: O(1) - only count variables
+    
+    Advantage: Simple logic, optimal time complexity
+    """
+    # Count occurrences of each color
+    count_0 = count_1 = count_2 = 0
+    
+    for num in nums:
+        if num == 0:
+            count_0 += 1
+        elif num == 1:
+            count_1 += 1
+        else:  # num == 2
+            count_2 += 1
+    
+    # Reconstruct array
+    index = 0
+    
+    # Place all 0s
+    for _ in range(count_0):
+        nums[index] = 0
+        index += 1
+    
+    # Place all 1s
+    for _ in range(count_1):
+        nums[index] = 1
+        index += 1
+    
+    # Place all 2s
+    for _ in range(count_2):
+        nums[index] = 2
+        index += 1
+    
+    return nums
+```
+
+##### Approach 3: Dutch National Flag Algorithm (Optimal)
+```python
+def sort_colors_dutch_flag(nums):
+    """
+    Dutch National Flag three-pointer algorithm
+    
+    Time: O(n) - single pass
+    Space: O(1) - constant extra space
+    
+    Optimal Solution: Single pass, in-place partitioning
+    """
+    low = mid = 0        # Pointers for 0s and current element
+    high = len(nums) - 1 # Pointer for 2s
+    
+    while mid <= high:
+        if nums[mid] == 0:
+            # Swap with low region and advance both pointers
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            # 1 is in correct middle region, just advance
+            mid += 1
+        else:  # nums[mid] == 2
+            # Swap with high region, advance high, don't advance mid
+            # (need to check the swapped element)
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+            # Don't increment mid here!
+    
+    return nums
+
+# Detailed execution trace
+def trace_dutch_flag_algorithm():
+    """Visualize Dutch National Flag algorithm execution"""
+    test_array = [2, 0, 2, 1, 1, 0]
+    print("🇳🇱 DUTCH NATIONAL FLAG ALGORITHM TRACE")
+    print("=" * 60)
+    print(f"Initial array: {test_array}")
+    print("\nRegions: [0s region] [1s region] [unprocessed] [2s region]")
+    print("Pointers: low=0s boundary, mid=current, high=2s boundary\n")
+    
+    nums = test_array.copy()
+    low = mid = 0
+    high = len(nums) - 1
+    step = 1
+    
+    while mid <= high:
+        # Visualize current state
+        state = []
+        for i, val in enumerate(nums):
+            if i == low and i == mid:
+                state.append(f"[{val}]LM")
+            elif i == low:
+                state.append(f"[{val}]L")
+            elif i == mid:
+                state.append(f"[{val}]M")
+            elif i == high:
+                state.append(f"[{val}]H")
+            else:
+                state.append(str(val))
+        
+        print(f"Step {step}: {' '.join(state)}")
+        print(f"         low={low}, mid={mid}, high={high}")
+        print(f"         nums[mid]={nums[mid]}")
+        
+        if nums[mid] == 0:
+            print(f"         Action: Swap nums[{low}] and nums[{mid}], advance both")
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            print(f"         Action: nums[mid] is 1, advance mid")
+            mid += 1
+        else:  # nums[mid] == 2
+            print(f"         Action: Swap nums[{mid}] and nums[{high}], advance high only")
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+        
+        print(f"         Result: {nums}\n")
+        step += 1
+    
+    print(f"🏆 Final sorted array: {nums}")
+    return nums
+
+trace_dutch_flag_algorithm()
+```
+
+#### 📊 Comparative Analysis
+```python
+def compare_sort_colors_approaches():
+    """Compare all three approaches for sorting colors"""
+    import time
+    
+    approaches = [
+        (sort_colors_bubble_sort, "Bubble Sort O(n²)"),
+        (sort_colors_counting, "Counting Sort O(n)"),
+        (sort_colors_dutch_flag, "Dutch Flag O(n)")
+    ]
+    
+    test_cases = [
+        ([2, 0, 2, 1, 1, 0], "Mixed colors"),
+        ([0, 0, 0, 1, 1, 2, 2], "Nearly sorted"),
+        ([2, 2, 2, 1, 1, 0, 0], "Reverse sorted"),
+        ([1] * 100, "All same color"),
+        ([2, 0, 1] * 50, "Repeated pattern")
+    ]
+    
+    print("🏁 SORT COLORS PERFORMANCE COMPARISON")
+    print("=" * 70)
+    
+    for colors, description in test_cases:
+        print(f"\n📊 Test: {description} (Size: {len(colors)})")
+        print("-" * 50)
+        
+        for algo, name in approaches:
+            test_array = colors.copy()
+            
+            start_time = time.perf_counter()
+            result = algo(test_array)
+            execution_time = time.perf_counter() - start_time
+            
+            # Verify correctness
+            expected = sorted(colors)
+            is_correct = "✅" if result == expected else "❌"
+            
+            print(f"{is_correct} {name:20} | Time: {execution_time:.6f}s")
+
+compare_sort_colors_approaches()
+```
+
+---
+
+## 🌐 Part IV: Cross-Language Implementation & Modern Applications
+
+### 💻 JavaScript Implementation with Modern Features
+
+```javascript
+/**
+ * Modern JavaScript Bubble Sort Implementation
+ * Features: ES6+ syntax, async processing, performance monitoring
+ */
+
+class BubbleSortJS {
+    constructor() {
+        this.stats = {
+            comparisons: 0,
+            swaps: 0,
+            passes: 0
+        };
+    }
+
+    // Basic bubble sort with modern JavaScript
+    sort(arr, options = {}) {
+        const {
+            reverse = false,
+            trackStats = false,
+            async = false
+        } = options;
+
+        if (trackStats) this.resetStats();
+        
+        const sortedArray = [...arr]; // ES6 spread operator
+        const n = sortedArray.length;
+
+        for (let i = 0; i < n - 1; i++) {
+            if (trackStats) this.stats.passes++;
+            let swapped = false;
+
+            for (let j = 0; j < n - 1 - i; j++) {
+                if (trackStats) this.stats.comparisons++;
+
+                const shouldSwap = reverse 
+                    ? sortedArray[j] < sortedArray[j + 1]
+                    : sortedArray[j] > sortedArray[j + 1];
+
+                if (shouldSwap) {
+                    // ES6 destructuring assignment for swap
+                    [sortedArray[j], sortedArray[j + 1]] = [sortedArray[j + 1], sortedArray[j]];
+                    swapped = true;
+                    if (trackStats) this.stats.swaps++;
+                }
+            }
+
+            if (!swapped) break; // Early termination
+        }
+
+        return {
+            sorted: sortedArray,
+            stats: trackStats ? { ...this.stats } : null
+        };
+    }
+
+    // Async bubble sort for large datasets
+    async sortAsync(arr, options = {}) {
+        const { batchSize = 100, delay = 1 } = options;
+        
+        return new Promise((resolve) => {
+            const sortedArray = [...arr];
+            const n = sortedArray.length;
+            let i = 0;
+
+            const processBatch = () => {
+                const endI = Math.min(i + batchSize, n - 1);
+                
+                for (; i < endI; i++) {
+                    let swapped = false;
+                    
+                    for (let j = 0; j < n - 1 - i; j++) {
+                        if (sortedArray[j] > sortedArray[j + 1]) {
+                            [sortedArray[j], sortedArray[j + 1]] = [sortedArray[j + 1], sortedArray[j]];
+                            swapped = true;
+                        }
+                    }
+                    
+                    if (!swapped) {
+                        resolve(sortedArray);
+                        return;
+                    }
+                }
+
+                if (i < n - 1) {
+                    setTimeout(processBatch, delay);
+                } else {
+                    resolve(sortedArray);
+                }
+            };
+
+            processBatch();
+        });
+    }
+
+    // Sort colors using Dutch National Flag
+    sortColors(nums) {
+        let low = 0, mid = 0, high = nums.length - 1;
+
+        while (mid <= high) {
+            switch (nums[mid]) {
+                case 0:
+                    [nums[low], nums[mid]] = [nums[mid], nums[low]];
+                    low++;
+                    mid++;
+                    break;
+                case 1:
+                    mid++;
+                    break;
+                case 2:
+                    [nums[mid], nums[high]] = [nums[high], nums[mid]];
+                    high--;
+                    break;
+            }
+        }
+
+        return nums;
+    }
+
+    resetStats() {
+        this.stats = { comparisons: 0, swaps: 0, passes: 0 };
+    }
+}
+
+// Usage examples and testing
+const bubbleSort = new BubbleSortJS();
+
+// Test basic functionality
+console.log("🫧 JavaScript Bubble Sort Testing");
+console.log("=".repeat(40));
+
+const testArrays = [
+    [64, 34, 25, 12, 22, 11, 90],
+    [1, 2, 3, 4, 5],
+    [5, 4, 3, 2, 1],
+    [3, 3, 3, 3]
+];
+
+testArrays.forEach((arr, index) => {
+    const result = bubbleSort.sort(arr, { trackStats: true });
+    console.log(`Test ${index + 1}:`);
+    console.log(`  Input:  [${arr.join(', ')}]`);
+    console.log(`  Output: [${result.sorted.join(', ')}]`);
+    console.log(`  Stats:  ${JSON.stringify(result.stats)}`);
+    console.log("");
+});
+
+// Test sort colors
+const colorArrays = [
+    [2, 0, 2, 1, 1, 0],
+    [2, 0, 1],
+    [0, 1, 2]
+];
+
+console.log("🎨 Sort Colors Testing");
+console.log("=".repeat(30));
+
+colorArrays.forEach((colors, index) => {
+    const original = [...colors];
+    const result = bubbleSort.sortColors(colors);
+    console.log(`Colors ${index + 1}: [${original.join(', ')}] → [${result.join(', ')}]`);
+});
+```
+
+### 🚀 Advanced Applications & Extensions
+
+#### 1. Custom Comparator Function Support
+```python
+def bubble_sort_with_comparator(arr, compare_func=None):
+    """
+    Bubble sort with custom comparison function
+    
+    Args:
+        arr: Array to sort
+        compare_func: Function that returns True if first arg should come before second
+    """
+    if compare_func is None:
+        compare_func = lambda a, b: a < b
+    
+    n = len(arr)
+    
+    for i in range(n):
+        swapped = False
+        for j in range(n - 1 - i):
+            if not compare_func(arr[j], arr[j + 1]):
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    
+    return arr
+
+# Examples of custom comparators
+examples = [
+    # Sort by absolute value
+    ([-3, 1, -1, 4, -2], lambda a, b: abs(a) < abs(b), "By absolute value"),
+    
+    # Sort strings by length
+    (["hello", "hi", "world", "a"], lambda a, b: len(a) < len(b), "By string length"),
+    
+    # Sort tuples by second element
+    ([(1, 3), (2, 1), (3, 2)], lambda a, b: a[1] < b[1], "Tuples by second element"),
+    
+    # Sort in descending order
+    ([5, 2, 8, 1, 9], lambda a, b: a > b, "Descending order")
+]
+
+print("🎯 CUSTOM COMPARATOR EXAMPLES")
+print("=" * 50)
+
+for arr, comparator, description in examples:
+    original = arr.copy()
+    result = bubble_sort_with_comparator(arr, comparator)
+    print(f"{description}:")
+    print(f"  Original: {original}")
+    print(f"  Sorted:   {result}\n")
+```
+
+#### 2. Sorting Objects and Complex Data Structures
+```python
+class Student:
+    def __init__(self, name, grade, age):
+        self.name = name
+        self.grade = grade
+        self.age = age
+    
+    def __repr__(self):
+        return f"Student({self.name}, {self.grade}, {self.age})"
+
+def sort_students_bubble_sort():
+    """Example of sorting complex objects using bubble sort"""
+    students = [
+        Student("Alice", 85, 20),
+        Student("Bob", 92, 19),
+        Student("Charlie", 78, 21),
+        Student("Diana", 96, 18),
+        Student("Eve", 88, 20)
+    ]
+    
+    # Sort by grade (descending)
+    def sort_by_grade_desc(arr):
+        n = len(arr)
+        for i in range(n):
+            swapped = False
+            for j in range(n - 1 - i):
+                if arr[j].grade < arr[j + 1].grade:  # Descending order
+                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                    swapped = True
+            if not swapped:
+                break
+        return arr
+    
+    # Sort by age (ascending)
+    def sort_by_age_asc(arr):
+        n = len(arr)
+        for i in range(n):
+            swapped = False
+            for j in range(n - 1 - i):
+                if arr[j].age > arr[j + 1].age:  # Ascending order
+                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                    swapped = True
+            if not swapped:
+                break
+        return arr
+    
+    print("👨‍🎓 SORTING STUDENT OBJECTS")
+    print("=" * 40)
+    print("Original students:")
+    for student in students:
+        print(f"  {student}")
+    
+    # Sort by grade
+    students_by_grade = students.copy()
+    sort_by_grade_desc(students_by_grade)
+    print("\nSorted by grade (descending):")
+    for student in students_by_grade:
+        print(f"  {student}")
+    
+    # Sort by age
+    students_by_age = students.copy()
+    sort_by_age_asc(students_by_age)
+    print("\nSorted by age (ascending):")
+    for student in students_by_age:
+        print(f"  {student}")
+
+sort_students_bubble_sort()
+```
+
+---
+
+## 🛠️ Part V: Debugging Mastery & Common Pitfalls
+
+### 🐛 Critical Mistakes & Professional Solutions
+
+#### ❌ Mistake 1: Array Boundary Violations
+```python
+# WRONG: Causes IndexError
+def buggy_bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(n - 1):  # BUG: Should be (n - 1 - i)
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+# ✅ CORRECT: Proper boundary management
+def correct_bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(n - 1 - i):  # Correct: reduces range each pass
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+# Debugging demonstration
+def demonstrate_boundary_bug():
+    test_array = [3, 1, 4, 1, 5]
+    
+    print("🐛 BOUNDARY VIOLATION DEMONSTRATION")
+    print("=" * 50)
+    print(f"Test array: {test_array}")
+    
+    try:
+        buggy_result = buggy_bubble_sort(test_array.copy())
+        print(f"Buggy result: {buggy_result}")
+    except IndexError as e:
+        print(f"❌ Error caught: {e}")
+        print("   Cause: Accessing arr[j+1] when j = n-1")
+    
+    correct_result = correct_bubble_sort(test_array.copy())
+    print(f"✅ Correct result: {correct_result}")
+
+demonstrate_boundary_bug()
+```
+
+#### ❌ Mistake 2: Forgetting Early Termination
+```python
+# WRONG: Always performs n-1 passes
+def inefficient_bubble_sort(arr):
+    n = len(arr)
+    total_comparisons = 0
+    
+    for i in range(n - 1):  # Always n-1 passes
+        for j in range(n - 1 - i):
+            total_comparisons += 1
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    
+    return arr, total_comparisons
+
+# ✅ CORRECT: Early termination optimization
+def efficient_bubble_sort(arr):
+    n = len(arr)
+    total_comparisons = 0
+    passes = 0
+    
+    for i in range(n - 1):
+        passes += 1
+        swapped = False
+        
+        for j in range(n - 1 - i):
+            total_comparisons += 1
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        
+        if not swapped:  # Early termination
+            break
+    
+    return arr, total_comparisons, passes
+
+# Performance comparison
+def compare_early_termination():
+    test_cases = [
+        ([1, 2, 3, 4, 5], "Already sorted"),
+        ([5, 4, 3, 2, 1], "Reverse sorted"),
+        ([1, 3, 2, 4, 5], "Nearly sorted")
+    ]
+    
+    print("⚡ EARLY TERMINATION PERFORMANCE IMPACT")
+    print("=" * 60)
+    
+    for arr, description in test_cases:
+        print(f"\n📊 {description}: {arr}")
+        
+        # Without optimization
+        result1, comparisons1 = inefficient_bubble_sort(arr.copy())
+        
+        # With optimization
+        result2, comparisons2, passes = efficient_bubble_sort(arr.copy())
+        
+        efficiency_gain = ((comparisons1 - comparisons2) / comparisons1) * 100
+        
+        print(f"  Without optimization: {comparisons1} comparisons")
+        print(f"  With optimization:    {comparisons2} comparisons ({passes} passes)")
+        print(f"  Efficiency gain:      {efficiency_gain:.1f}% reduction")
+
+compare_early_termination()
+```
+
+#### ❌ Mistake 3: Dutch Flag Pointer Logic Errors
+```python
+# WRONG: Incorrect pointer advancement in Dutch National Flag
+def buggy_dutch_flag(nums):
+    low = mid = 0
+    high = len(nums) - 1
+    
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:  # nums[mid] == 2
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+            mid += 1  # BUG: Don't increment mid here!
+    
+    return nums
+
+# ✅ CORRECT: Proper pointer management
+def correct_dutch_flag(nums):
+    low = mid = 0
+    high = len(nums) - 1
+    
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:  # nums[mid] == 2
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+            # Don't increment mid - need to check swapped element
+    
+    return nums
+
+# Debugging visualization
+def debug_dutch_flag():
+    test_array = [2, 0, 1, 2, 1, 0]
+    
+    print("🇳🇱 DUTCH FLAG DEBUGGING")
+    print("=" * 40)
+    print(f"Test array: {test_array}")
+    
+    # Show the bug
+    buggy_result = buggy_dutch_flag(test_array.copy())
+    correct_result = correct_dutch_flag(test_array.copy())
+    expected = [0, 0, 1, 1, 2, 2]
+    
+    print(f"Buggy result:   {buggy_result} {'❌' if buggy_result != expected else '✅'}")
+    print(f"Correct result: {correct_result} {'✅' if correct_result == expected else '❌'}")
+    print(f"Expected:       {expected}")
+
+debug_dutch_flag()
+```
+
+### 🔍 Professional Debugging Toolkit
+
+#### Debug Visualization Framework
+```python
+class BubbleSortDebugger:
+    """Professional debugging toolkit for bubble sort algorithms"""
+    
+    def __init__(self):
+        self.steps = []
+        self.comparisons = 0
+        self.swaps = 0
+    
+    def debug_sort(self, arr, verbose=True):
+        """Sort with detailed debugging information"""
+        n = len(arr)
+        work_array = arr.copy()
+        
+        if verbose:
+            print("🔍 BUBBLE SORT DEBUG SESSION")
+            print("=" * 50)
+            print(f"Initial array: {work_array}")
+            print()
+        
+        for i in range(n):
+            if verbose:
+                print(f"🔄 Pass {i + 1}:")
+            
+            swapped = False
+            pass_swaps = 0
+            pass_comparisons = 0
+            
+            for j in range(n - 1 - i):
+                self.comparisons += 1
+                pass_comparisons += 1
+                
+                if verbose:
+                    # Highlight current comparison
+                    display = self._highlight_comparison(work_array, j, j + 1)
+                    print(f"  Compare {display}")
+                
+                if work_array[j] > work_array[j + 1]:
+                    work_array[j], work_array[j + 1] = work_array[j + 1], work_array[j]
+                    self.swaps += 1
+                    pass_swaps += 1
+                    swapped = True
+                    
+                    if verbose:
+                        print(f"    Swapped! → {work_array}")
+                else:
+                    if verbose:
+                        print(f"    No swap")
+            
+            if verbose:
+                print(f"  Pass {i + 1} complete: {pass_comparisons} comparisons, {pass_swaps} swaps")
+                print(f"  Array state: {work_array}")
+                print()
+            
+            if not swapped:
+                if verbose:
+                    print(f"✅ Array sorted after {i + 1} passes!")
+                break
+        
+        if verbose:
+            print(f"🏆 Final result: {work_array}")
+            print(f"📊 Total statistics: {self.comparisons} comparisons, {self.swaps} swaps")
+        
+        return work_array
+    
+    def _highlight_comparison(self, arr, i, j):
+        """Highlight the elements being compared"""
+        result = []
+        for idx, val in enumerate(arr):
+            if idx == i:
+                result.append(f"[{val}]")
+            elif idx == j:
+                result.append(f"[{val}]")
+            else:
+                result.append(str(val))
+        return " ".join(result)
+    
+    def compare_algorithms(self, arr, algorithms):
+        """Compare multiple sorting algorithms"""
+        print("🏁 ALGORITHM COMPARISON")
+        print("=" * 50)
+        print(f"Input array: {arr}")
+        print()
+        
+        for name, algorithm in algorithms:
+            print(f"Testing {name}:")
+            test_array = arr.copy()
+            
+            # Reset statistics
+            self.comparisons = 0
+            self.swaps = 0
+            
+            import time
+            start_time = time.perf_counter()
+            result = algorithm(test_array)
+            execution_time = time.perf_counter() - start_time
+            
+            print(f"  Result: {result}")
+            print(f"  Time: {execution_time:.6f}s")
+            print(f"  Comparisons: {self.comparisons}")
+            print(f"  Swaps: {self.swaps}")
+            print()
+
+# Usage example
+debugger = BubbleSortDebugger()
+
+# Debug a small array
+test_array = [64, 25, 12, 22, 11]
+debugger.debug_sort(test_array)
+```
+
+### ✅ Best Practices Checklist
+
+#### Code Quality Standards
+```python
+def production_bubble_sort(arr, reverse=False, key=None):
+    """
+    Production-ready bubble sort implementation
+    
+    Args:
+        arr: List to sort
+        reverse: If True, sort in descending order
+        key: Function to extract comparison key from each element
+        
+    Returns:
+        New sorted list (doesn't modify original)
+        
+    Raises:
+        TypeError: If array contains incomparable types
+        ValueError: If array is None
+    """
+    # Input validation
+    if arr is None:
+        raise ValueError("Array cannot be None")
+    
+    if len(arr) <= 1:
+        return arr.copy()
+    
+    # Create working copy
+    result = arr.copy()
+    n = len(result)
+    
+    # Apply key function if provided
+    if key is not None:
+        keyed_items = [(key(item), i, item) for i, item in enumerate(result)]
+        
+        for i in range(n):
+            swapped = False
+            for j in range(n - 1 - i):
+                comparison = keyed_items[j][0] > keyed_items[j + 1][0]
+                if not reverse:
+                    should_swap = comparison
+                else:
+                    should_swap = not comparison
+                
+                if should_swap:
+                    keyed_items[j], keyed_items[j + 1] = keyed_items[j + 1], keyed_items[j]
+                    swapped = True
+            
+            if not swapped:
+                break
+        
+        return [item[2] for item in keyed_items]
+    
+    # Standard comparison sorting
+    try:
+        for i in range(n):
+            swapped = False
+            for j in range(n - 1 - i):
+                comparison = result[j] > result[j + 1]
+                if not reverse:
+                    should_swap = comparison
+                else:
+                    should_swap = not comparison
+                
+                if should_swap:
+                    result[j], result[j + 1] = result[j + 1], result[j]
+                    swapped = True
+            
+            if not swapped:
+                break
+        
+    except TypeError as e:
+        raise TypeError(f"Array contains incomparable types: {e}")
+    
+    return result
+
+# Comprehensive testing
+def test_production_bubble_sort():
+    """Test suite for production bubble sort"""
+    test_cases = [
+        # Basic functionality
+        ([3, 1, 4, 1, 5], [1, 1, 3, 4, 5], "Basic sorting"),
+        ([1], [1], "Single element"),
+        ([], [], "Empty array"),
+        
+        # Reverse sorting
+        ([3, 1, 4, 1, 5], [5, 4, 3, 1, 1], "Reverse sorting"),
+        
+        # Key function
+        (["hello", "hi", "world"], ["hi", "hello", "world"], "Sort by length"),
+        
+        # Edge cases
+        ([1, 1, 1], [1, 1, 1], "All equal"),
+        ([2, 1], [1, 2], "Two elements")
+    ]
+    
+    print("🧪 PRODUCTION BUBBLE SORT TESTING")
+    print("=" * 50)
+    
+    for i, (input_arr, expected, description) in enumerate(test_cases):
+        if description == "Reverse sorting":
+            result = production_bubble_sort(input_arr, reverse=True)
+        elif description == "Sort by length":
+            result = production_bubble_sort(input_arr, key=len)
+        else:
+            result = production_bubble_sort(input_arr)
+        
+        status = "✅ PASS" if result == expected else "❌ FAIL"
+        print(f"{status} Test {i+1}: {description}")
+        print(f"  Input:    {input_arr}")
+        print(f"  Expected: {expected}")
+        print(f"  Got:      {result}")
+        print()
+    
+    # Error handling tests
+    print("🚨 ERROR HANDLING TESTS")
+    print("-" * 30)
+    
+    try:
+        production_bubble_sort(None)
+        print("❌ Should have raised ValueError")
+    except ValueError:
+        print("✅ Correctly handled None input")
+    
+    try:
+        production_bubble_sort([1, "hello", 3])
+        print("❌ Should have raised TypeError")
+    except TypeError:
+        print("✅ Correctly handled incomparable types")
+
+test_production_bubble_sort()
+```
+
+---
+
+## 📚 Part VI: Advanced Resources & Next Steps
+
+### 🎓 Comprehensive Learning Resources
+
+#### 📖 Essential Reading Materials
+
+##### **Foundational Texts**
+1. **"Introduction to Algorithms" (CLRS)** - Chapter 2.1
+   - Mathematical analysis of bubble sort
+   - Formal complexity proofs
+   - Comparison with other sorting algorithms
+
+2. **"Algorithms" by Robert Sedgewick** - Chapter 2.1
+   - Historical perspective on elementary sorts
+   - Performance characteristics and optimizations
+
+3. **"The Algorithm Design Manual" by Steven Skiena**
+   - When to use bubble sort in practice
+   - Real-world implementation considerations
+
+##### **Online Resources**
+```
+🌐 Interactive Visualizations:
+   • VisuAlgo.net/sorting - Step-by-step algorithm animation
+   • Algorithm-visualizer.org - Interactive bubble sort demo
+   • Sorting.at - Comprehensive sorting comparison
+
+📺 Video Lectures:
+   • MIT 6.006 Introduction to Algorithms (Lecture 3)
+   • Stanford CS161 Algorithms (Sorting Fundamentals)  
+   • Abdul Bari's Algorithm Playlist (Bubble Sort Analysis)
+
+💻 Practice Platforms:
+   • LeetCode: Sort Colors (#75), Sort Array by Parity (#905)
+   • HackerRank: Sorting section, Bubble Sort challenges
+   • GeeksforGeeks: Bubble Sort practice problems
+```
+
+#### 🔬 Research and Advanced Topics
+
+##### **Academic Papers & Research**
+1. **"A Practical Study of Bubble Sort Variants"** - Analysis of optimization techniques
+2. **"Adaptive Sorting Algorithms"** - When bubble sort becomes optimal
+3. **"Memory-Efficient Sorting for Embedded Systems"** - Bubble sort in resource-constrained environments
+
+##### **Advanced Variants to Explore**
+```python
+# Research directions for deeper study
+advanced_topics = [
+    "Cocktail Shaker Sort (Bidirectional Bubble Sort)",
+    "Comb Sort (Bubble Sort with Gap Sequence)",
+    "Odd-Even Sort (Parallel Bubble Sort Variant)",
+    "Adaptive Bubble Sort with Binary Search",
+    "Hybrid Bubble Sort with Insertion Sort"
+]
+
+# Implementation challenges
+implementation_challenges = [
+    "Parallel bubble sort using threading",
+    "GPU-accelerated bubble sort with CUDA",
+    "Memory-mapped file sorting with bubble sort",
+    "Real-time bubble sort with streaming data",
+    "Distributed bubble sort across multiple machines"
+]
+```
+
+### 🚀 Next Steps in Your Algorithm Journey
+
+#### 📅 Week-by-Week Learning Roadmap
+
+##### **Week 1: Sorting Fundamentals**
+```
+Day 18: Selection Sort
+├── Minimum element finding strategy
+├── Comparison with bubble sort
+├── When selection sort is optimal
+└── Implementation variants and optimizations
+
+Day 19: Insertion Sort  
+├── Adaptive sorting for nearly sorted data
+├── Online algorithm properties
+├── Binary insertion sort optimization
+└── Real-world applications
+
+Day 20: Merge Sort
+├── Divide and conquer paradigm
+├── Guaranteed O(n log n) performance
+├── Stable sorting with merge operations
+└── External sorting for large datasets
+
+Day 21: Quick Sort
+├── Partitioning and pivot strategies
+├── Average vs worst-case analysis
+├── Randomized quicksort
+└── Hybrid sorting approaches
+```
+
+##### **Week 2: Advanced Sorting Concepts**
+```
+Day 22: Heap Sort
+├── Binary heap data structure
+├── In-place sorting with O(n log n)
+├── Priority queue applications
+└── Comparison with other O(n log n) sorts
+
+Day 23: Counting Sort & Radix Sort
+├── Non-comparison based sorting
+├── Linear time sorting algorithms
+├── Space-time tradeoffs
+└── Specialized use cases
+
+Day 24: Sorting Algorithm Comparison
+├── Performance benchmarking
+├── Best algorithm for different scenarios
+├── Hybrid sorting implementations
+└── Real-world sorting challenges
+```
+
+#### 🎯 Practical Project Ideas
+
+##### **Beginner Projects**
+1. **Sorting Visualizer Web App**
+   - Interactive bubble sort animation
+   - Compare multiple sorting algorithms
+   - Performance metrics display
+
+2. **Educational Sorting Game**
+   - Step-by-step bubble sort simulation
+   - Score based on efficiency
+   - Multiple difficulty levels
+
+##### **Intermediate Projects**
+1. **Database Sorting Engine**
+   - Implement bubble sort for small datasets
+   - Hybrid approach with other algorithms
+   - Performance optimization techniques
+
+2. **Embedded System Sorting**
+   - Memory-constrained bubble sort
+   - Power-efficient implementations
+   - Real-time sorting requirements
+
+##### **Advanced Projects**
+1. **Distributed Sorting System**
+   - Parallel bubble sort implementation
+   - Load balancing across nodes
+   - Fault tolerance and recovery
+
+2. **Machine Learning Data Preprocessing**
+   - Adaptive sorting based on data characteristics
+   - Integration with ML pipelines
+   - Performance optimization for large datasets
+
+### 🏆 Mastery Assessment & Certification
+
+#### 📝 Self-Assessment Checklist
+
+##### **Theoretical Understanding (25 points)**
+- [ ] Can explain bubble sort algorithm in detail (5 pts)
+- [ ] Understands time/space complexity analysis (5 pts)
+- [ ] Knows when to use bubble sort vs alternatives (5 pts)
+- [ ] Can prove algorithm correctness (5 pts)
+- [ ] Understands optimization techniques (5 pts)
+
+##### **Implementation Skills (25 points)**
+- [ ] Can code basic bubble sort from memory (5 pts)
+- [ ] Implements early termination optimization (5 pts)
+- [ ] Handles edge cases properly (5 pts)
+- [ ] Writes clean, documented code (5 pts)
+- [ ] Can debug common mistakes (5 pts)
+
+##### **Problem Solving (25 points)**
+- [ ] Solves Sort Colors problem efficiently (5 pts)
+- [ ] Applies bubble sort to custom objects (5 pts)
+- [ ] Implements custom comparator functions (5 pts)
+- [ ] Optimizes for specific use cases (5 pts)
+- [ ] Adapts algorithm for different constraints (5 pts)
+
+##### **Advanced Applications (25 points)**
+- [ ] Cross-language implementation (5 pts)
+- [ ] Performance benchmarking and analysis (5 pts)
+- [ ] Integration with larger systems (5 pts)
+- [ ] Teaching/explaining to others (5 pts)
+- [ ] Research and exploration of variants (5 pts)
+
+#### 🎓 Certification Levels
+
+```
+🥉 Bronze Level (60-70 points): Bubble Sort Fundamentals
+   ├── Basic understanding and implementation
+   ├── Can solve simple sorting problems
+   └── Ready for next sorting algorithm
+
+🥈 Silver Level (71-85 points): Bubble Sort Proficiency  
+   ├── Optimization techniques mastered
+   ├── Complex problem solving ability
+   └── Code quality and best practices
+
+🥇 Gold Level (86-100 points): Bubble Sort Mastery
+   ├── Teaching and mentoring capability
+   ├── Advanced applications and research
+   └── Algorithm optimization and adaptation
+```
+
+---
+
+## 🎯 Final Session Summary & Reflection
+
+### 📊 Learning Achievement Report
+
+```
+🫧 DAY 17: BUBBLE SORT MASTERY COMPLETE! 🏆
+══════════════════════════════════════════════════════════════
+
+📚 THEORETICAL FOUNDATION:
+  ✅ Algorithm mechanics and mathematical analysis
+  ✅ Complexity analysis (best/average/worst case)
+  ✅ Comparison with other sorting algorithms
+  ✅ Real-world applications and use cases
+
+💻 IMPLEMENTATION MASTERY:
+  ✅ Basic bubble sort implementation
+  ✅ Early termination optimization (O(n) best case)
+  ✅ Advanced variants (bidirectional, custom comparators)
+  ✅ Cross-language implementation (Python + JavaScript)
+
+🎯 PROBLEM SOLVING EXPERTISE:
+  ✅ Classic array sorting with progressive optimization
+  ✅ Sort Colors (Dutch National Flag) - multiple approaches
+  ✅ Custom object sorting with comparator functions
+  ✅ Performance analysis and benchmarking
+
+🛠️ PROFESSIONAL SKILLS:
+  ✅ Debugging common implementation mistakes
+  ✅ Code quality and best practices
+  ✅ Error handling and edge case management
+  ✅ Performance optimization techniques
+
+🚀 ADVANCED APPLICATIONS:
+  ✅ Production-ready implementation patterns
+  ✅ Integration with complex systems
+  ✅ Teaching and mentoring preparation
+  ✅ Research directions and future exploration
+
+MASTERY LEVEL: 🥇 GOLD - Algorithm Optimization Expert
+NEXT CHALLENGE: Selection Sort & Comparative Analysis
+```
+
+### 🎯 Key Takeaways & Insights
+
+#### 💡 Core Insights Gained
+1. **Simplicity ≠ Inefficiency**: Bubble sort's simplicity makes it valuable for education and specific use cases
+2. **Optimization Matters**: Early termination transforms O(n²) to O(n) for best cases
+3. **Context is King**: Algorithm choice depends on data characteristics and constraints
+4. **Code Quality**: Professional implementation requires error handling and edge case management
+
+#### 🎓 Skills Developed
+- **Algorithmic Thinking**: Progressive optimization and complexity analysis
+- **Implementation Expertise**: Clean, efficient, and maintainable code
+- **Problem Decomposition**: Breaking complex problems into manageable components
+- **Performance Analysis**: Benchmarking and optimization techniques
+
+### 🚀 Tomorrow's Adventure: Selection Sort
+
+#### 📅 Day 18 Preview
+**Focus**: Master selection sort algorithm and comparative analysis
+**Key Concepts**:
+- Minimum element finding strategy
+- In-place sorting with minimal swaps
+- Performance comparison with bubble sort
+- When selection sort outperforms bubble sort
+
+#### 🎯 Preparation for Success
+1. **Review Today's Concepts**: Ensure solid bubble sort foundation
+2. **Think About Differences**: How might finding minimums differ from adjacent swaps?
+3. **Performance Mindset**: Consider when fewer swaps might be beneficial
+4. **Comparative Analysis**: Prepare to analyze trade-offs between algorithms
+
+### 🏆 Achievement Unlocked!
+
+**🫧 Bubble Sort Master**: You've transformed from a sorting novice into someone who deeply understands not just how bubble sort works, but when and why to use it. You can optimize algorithms progressively, debug complex issues, and implement professional-quality solutions. 
+
+**Ready for the next sorting adventure? Selection Sort awaits! 🎯**
+
+---
+
+## 📈 Commit Your Progress
+
+```bash
+git add Day-17/
+git commit -m "Day 17: Bubble Sort Mastery - From Theory to Production 🫧✨
+
+📚 Comprehensive Learning Achieved:
+• Deep theoretical understanding with mathematical proofs
+• Progressive implementation from basic to optimized versions
+• Real-world problem solving (Sort Colors, custom objects)
+• Professional debugging and best practices
+• Cross-language implementation (Python + JavaScript)
+• Performance analysis and optimization techniques
+
+🎯 Mastery Level: Algorithm Optimization Expert
+🚀 Next: Selection Sort & Comparative Analysis"
+```
+
+**💼 Portfolio Addition**: This comprehensive bubble sort implementation and analysis demonstrates your ability to understand algorithms deeply, optimize progressively, and implement professional-quality solutions.
+
+---
+
+<div align="center">
+
+```ascii
+╔══════════════════════════════════════════════════════════════════╗
+║                     🎉 CONGRATULATIONS! 🎉                      ║
+║                                                                  ║
+║            You've mastered Bubble Sort completely!               ║
+║                                                                  ║
+║              🫧 → 🎯 → 💻 → 🚀 → 🏆                           ║
+║           Theory  Practice  Code  Optimize  Master              ║
+║                                                                  ║
+║                Ready for Selection Sort? 📈                     ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+</div>
+
+---
+
+---
 2. **Compare**: Check adjacent elements (nums[i] vs nums[i+1])
 3. **Swap**: If left > right, exchange their positions
 4. **Continue**: Move to next adjacent pair
