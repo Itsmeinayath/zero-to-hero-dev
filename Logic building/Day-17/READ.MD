@@ -1,7 +1,5 @@
  # 🫧 Day 17: Bubble Sort Mastery
 
-> **Goal**: Master c---
-
 ## 🎯 Today's Goal: Master Comparison-Based Sorting
 
 **Logic Focus**: Understanding the core mechanics of comparing adjacent elements and swapping them to place them in order.
