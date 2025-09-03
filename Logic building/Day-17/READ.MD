@@ -13,10 +13,6 @@
 - **First Problem**: GFG - Bubble Sort Implementation
 - **Second Problem**: LeetCode - Sort Colors (Dutch National Flag)
 
----sed sorting fundamentals  
-> **Duration**: 3 Hours  
-> **Focus**: Understanding core mechanics of comparing and swapping elements
-
 ---
 
 ## 🎯 Today's Mission
