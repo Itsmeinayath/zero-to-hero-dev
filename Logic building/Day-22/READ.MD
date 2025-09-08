@@ -1,3 +1,238 @@
+# 📚 Week 4: Checkpoint & Mixed Practice
+
+### **Objective**: Apply Weeks 1-3 concepts. Assess progress.
+
+**Logic Focus**: Combine patterns (e.g., two-pointer, sorting).
+
+**Goal**: Solve 12 problems (8 easy, 4 medium). Pass checkpoint.
+
+**Platforms**: LeetCode, GFG, HackerRank.
+
+- **Day 22 (Mon): Arrays & Two-Pointer**
+    - **Theory (0.5 hr)**:
+        - Review arrays, two-pointer.
+        - **Video**: NeetCode's "Two-Pointer Recap" (15 min) ([YouTube](https://www.youtube.com/watch?v=0C6rM3Gk7Mc&t=600s)).
+        - **Article**: GFG's "Array Recap" (15 min) ([Link](https://www.geeksforgeeks.org/array-data-structure/)).
+    - **Practice (2.5 hr)**:
+        - **Problem 1**: LeetCode: Rotate Array ([Link](https://leetcode.com/problems/rotate-array/)).
+            - **Brute Force**: Shift one-by-one (O(n*k)).
+            - **Better**: Extra array (O(n) space).
+            - **Optimal**: Reverse parts (O(n), O(1) space).
+            - **Pseudocode**:
+                
+                ```
+                Input: array nums, k
+                k = k % len(nums)
+                Reverse nums[0..len-1]
+                Reverse nums[0..k-1]
+                Reverse nums[k..len-1]
+                ```
+                
+            - **Logic Exercise**: Draw reverse process.
+        - **Problem 2**: LeetCode: Container With Most Water ([Link](https://leetcode.com/problems/container-with-most-water/)).
+            - **Brute Force**: Check all pairs (O(n²)).
+            - **Better**: Two pointers (O(n)).
+            - **Optimal**: Same, optimized movement (O(n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: array height
+                Initialize left = 0, right = len(height)-1, max_area = 0
+                While left < right:
+                    Area = min(height[left], height[right]) * (right-left)
+                    Update max_area if area > max_area
+                    If height[left] < height[right]: Increment left
+                    Else: Decrement right
+                Return max_area
+                ```
+                
+            - **Logic Exercise**: Visualize pointer movement.
+    - **Support**: Share code; I'll fix two-pointer logic.
+- **Day 23 (Tue): Strings & Sliding Window**
+    - **Theory (0.5 hr)**:
+        - Review strings, sliding window.
+        - **Video**: NeetCode's "Sliding Window Recap" (15 min) ([YouTube](https://www.youtube.com/watch?v=MK-NZ4hN7rs&t=300s)).
+        - **Article**: GFG's "String Recap" (15 min) ([Link](https://www.geeksforgeeks.org/python-string/)).
+    - **Practice (2.5 hr)**:
+        - **Problem 1**: LeetCode: Longest Palindromic Substring ([Link](https://leetcode.com/problems/longest-palindromic-substring/)).
+            - **Brute Force**: Check all substrings (O(n³)).
+            - **Better**: Expand around center (O(n²)).
+            - **Optimal**: Same, optimized checks (O(n²)).
+            - **Pseudocode**:
+                
+                ```
+                Input: string s
+                Initialize max_len = 0, start = 0
+                For i from 0 to len(s)-1:
+                    Expand around (i, i) for odd length
+                    Expand around (i, i+1) for even length
+                    Update max_len, start if longer palindrome found
+                Return s[start:start+max_len]
+                ```
+                
+            - **Logic Exercise**: Draw expansion process.
+        - **Problem 2**: GFG: First Non-Repeating Character ([Link](https://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/)).
+            - **Brute Force**: Check each char against others (O(n²)).
+            - **Better**: Hashmap for counts (O(n)).
+            - **Optimal**: Same, single pass (O(n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: string s
+                Initialize count hashmap
+                For char in s: Increment count[char]
+                For char in s: If count[char] == 1: Return char
+                Return None
+                ```
+                
+            - **Logic Exercise**: Explain hashmap logic.
+    - **Support**: Share code; I'll clarify sliding window.
+- **Day 24 (Wed): Searching**
+    - **Theory (0.5 hr)**:
+        - Review linear/binary search.
+        - **Video**: Tushar Roy's "Binary Search Recap" (15 min) ([YouTube](https://www.youtube.com/watch?v=pYT9F8_LFTM&t=600s)).
+        - **Article**: GFG's "Binary Search Recap" (15 min) ([Link](https://www.geeksforgeeks.org/binary-search/)).
+    - **Practice (2.5 hr)**:
+        - **Problem 1**: LeetCode: Search in Rotated Sorted Array ([Link](https://leetcode.com/problems/search-in-rotated-sorted-array/)).
+            - **Brute Force**: Linear search (O(n)).
+            - **Better**: Modified binary search (O(log n)).
+            - **Optimal**: Same, handle rotations (O(log n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: array nums, target
+                Initialize left = 0, right = len(nums)-1
+                While left <= right:
+                    Mid = (left + right) // 2
+                    If nums[mid] == target: Return mid
+                    If nums[left] <= nums[mid]:
+                        If nums[left] <= target < nums[mid]: right = mid - 1
+                        Else: left = mid + 1
+                    Else:
+                        If nums[mid] < target <= nums[right]: left = mid + 1
+                        Else: right = mid - 1
+                Return -1
+                ```
+                
+            - **Logic Exercise**: Draw rotation scenarios.
+        - **Problem 2**: LeetCode: Find Minimum in Rotated Sorted Array ([Link](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)).
+            - **Brute Force**: Linear scan (O(n)).
+            - **Better**: Binary search (O(log n)).
+            - **Optimal**: Same, clean logic (O(log n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: array nums
+                Initialize left = 0, right = len(nums)-1
+                While left < right:
+                    Mid = (left + right) // 2
+                    If nums[mid] > nums[right]: left = mid + 1
+                    Else: right = mid
+                Return nums[left]
+                ```
+                
+            - **Logic Exercise**: Explain minimum logic.
+    - **Support**: Share code; I'll fix binary search errors.
+- **Day 25 (Thu): Sorting**
+    - **Theory (0.5 hr)**:
+        - Review bubble, selection, insertion sort.
+        - **Video**: NeetCode's "Sorting Recap" (15 min) ([YouTube](https://www.youtube.com/watch?v=JU767SDMDvA&t=300s)).
+        - **Article**: GFG's "Sorting Algorithms" (15 min) ([Link](https://www.geeksforgeeks.org/sorting-algorithms/)).
+    - **Practice (2.5 hr)**:
+        - **Problem 1**: LeetCode: Merge Intervals ([Link](https://leetcode.com/problems/merge-intervals/)).
+            - **Brute Force**: Check all pairs (O(n²)).
+            - **Better**: Sort and merge (O(n log n)).
+            - **Optimal**: Same, clean merging (O(n log n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: intervals
+                Sort intervals by start time
+                Initialize result with first interval
+                For each interval:
+                    If overlaps with last result: Merge
+                    Else: Add to result
+                Return result
+                ```
+                
+            - **Logic Exercise**: Draw interval merging.
+        - **Problem 2**: GFG: Sort Array by Parity ([Link](https://www.geeksforgeeks.org/segregate-even-and-odd-numbers/)).
+            - **Brute Force**: New arrays for even/odd (O(n) space).
+            - **Better**: Two pointers in-place (O(1) space).
+            - **Optimal**: Same, clean swaps (O(n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: array nums
+                Initialize left = 0, right = len(nums)-1
+                While left < right:
+                    If nums[left] odd and nums[right] even: Swap
+                    If nums[left] even: Increment left
+                    If nums[right] odd: Decrement right
+                Return nums
+                ```
+                
+            - **Logic Exercise**: Visualize swaps.
+    - **Support**: Share code; I'll check sorting logic.
+- **Day 26 (Fri): Mixed Practice**
+    - **Theory (0.5 hr)**:
+        - Review arrays, strings, searching, sorting.
+        - **Video**: NeetCode's "Mixed Recap" (15 min) ([YouTube](https://www.youtube.com/watch?v=gD7A1VvSSB8&t=600s)).
+        - **Article**: GFG's "DSA Basics" (15 min) ([Link](https://www.geeksforgeeks.org/learn-data-structures-and-algorithms-dsa-tutorial/)).
+    - **Practice (2.5 hr)**:
+        - **Problem 1**: LeetCode: Maximum Subarray ([Link](https://leetcode.com/problems/maximum-subarray/)).
+            - **Brute Force**: Check all subarrays (O(n²)).
+            - **Better**: Kadane's algorithm (O(n)).
+            - **Optimal**: Same, handle negatives (O(n)).
+            - **Pseudocode**:
+                
+                ```
+                Input: array nums
+                Initialize max_sum = nums[0], curr_sum = nums[0]
+                For i from 1 to len(nums)-1:
+                    curr_sum = max(nums[i], curr_sum + nums[i])
+                    max_sum = max(max_sum, curr_sum)
+                Return max_sum
+                ```
+                
+            - **Logic Exercise**: Explain Kadane's logic.
+        - **Problem 2**: LeetCode: Kth Largest Element in an Array ([Link](https://leetcode.com/problems/kth-largest-element-in-an-array/)).
+            - **Brute Force**: Sort array (O(n log n)).
+            - **Better**: Min-heap (O(n log k)).
+            - **Optimal**: Quickselect (O(n) average).
+            - **Pseudocode**:
+                
+                ```
+                Input: array nums, k
+                Sort nums in descending order
+                Return nums[k-1]
+                ```
+                
+            - **Logic Exercise**: Compare sorting vs heap.
+    - **Support**: Share code; I'll prepare you for checkpoint.
+- **Day 27 (Sat): Checkpoint**
+    - **Theory (0.5 hr)**:
+        - Review Weeks 1-3 for checkpoint prep.
+        - **Video**: NeetCode's "Checkpoint Prep" (15 min) ([YouTube](https://www.youtube.com/watch?v=0C6rM3Gk7Mc&t=900s)).
+        - **Article**: GFG's "Checkpoint Tips" (15 min) ([Link](https://www.geeksforgeeks.org/top-50-array-coding-problems-for-interviews/)).
+    - **Practice (2.5 hr)**:
+        - **Checkpoint**: Solve 5 problems in 2 hr on LeetCode:
+            1. Two Sum ([Link](https://leetcode.com/problems/two-sum/)).
+            2. Valid Palindrome ([Link](https://leetcode.com/problems/valid-palindrome/)).
+            3. Search in Rotated Sorted Array ([Link](https://leetcode.com/problems/search-in-rotated-sorted-array/)).
+            4. Merge Intervals ([Link](https://leetcode.com/problems/merge-intervals/)).
+            5. Maximum Subarray ([Link](https://leetcode.com/problems/maximum-subarray/)).
+            - **Goal**: 4/5 correct with optimal solutions. Write brute force, better, optimal for each.
+            - **Logic Exercise**: Explain one solution aloud.
+        - **Extra Problem**: GFG: Array Rotation ([Link](https://www.geeksforgeeks.org/array-rotation/)).
+            - **Brute Force**: Shift one-by-one (O(n*k)).
+            - **Better/Optimal**: Reverse parts (O(n)).
+            - **Pseudocode**: Same as Rotate Array above.
+    - **Support**: Share checkpoint solutions; I'll analyze and suggest focus areas.
+- **Day 28 (Sun)**: Rest. Reflect on checkpoint results
+
+---
+
 # 📚 Day 22: Arrays & Two-Pointer Technique - Complete Guide
 
 ## 🎯 Learning Objectives
@@ -719,7 +954,7 @@ def max_area_with_vertical_lines(heights, positions):
 
 ---
 
-## 🎯 Week 4: Checkpoint & Mixed Practice
+# 🎯 Week 4: Checkpoint & Mixed Practice
 
 ### 📋 **Objective**: Apply Weeks 1-3 concepts and assess comprehensive progress
 
