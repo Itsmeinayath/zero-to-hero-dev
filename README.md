@@ -31,11 +31,11 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 ---
 
 ## 📚 Learning Tracks
-
+<div align="center">
 <table>
 <tr>
 <td width="50%">
-
+  
 ### 🧠 Logic Building Track
 **Technologies:** Python, DSA  
 **Focus:** Problem-solving mastery
@@ -58,6 +58,7 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 </td>
 </tr>
 </table>
+</div>
 
 ---
 
@@ -149,10 +150,6 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 
 <div align="center">
 
-![Progress](https://progress-bar.dev/25/?title=Overall%20Progress&width=400&color=00D4FF)
-
-### 🏆 **Current Milestones**
-
 | Status | Milestone | Description |
 |:------:|:----------|:------------|
 | ✅ | **Python Fundamentals** | Variables, functions, control structures mastered |
@@ -194,3 +191,4 @@ cd zero-to-hero-dev
 
 # Explore the learning structure
 tree -L 2
+
