@@ -1,36 +1,46 @@
 <div align="center">
 
-# 🚀 Zero to Hero: A Developer's Journey
-### *90 Days of Focused Learning & Growth*
+# 🚀 Zero to Hero: A Developer's Journey  
+### *90 Days of Focused Learning & Growth*  
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00D4FF&center=true&vCenter=true&width=435&lines=Building+Strong+Fundamentals;DSA+%2B+Full+Stack+Development;Python+%7C+MERN+Stack;90+Days+Challenge" alt="Typing SVG" />
-</div>
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00D4FF&center=true&vCenter=true&width=600&lines=Building+Strong+Fundamentals;Mastering+DSA+%26+Full+Stack+Development;Python+%7C+MERN+Stack;90+Days+Challenge+%7C+Daily+Commitment" alt="Typing SVG" />  
+
+![GitHub last commit](https://img.shields.io/github/last-commit/Itsmeinayath/zero-to-hero-dev?style=for-the-badge&color=brightgreen)  
+![GitHub repo size](https://img.shields.io/github/repo-size/Itsmeinayath/zero-to-hero-dev?style=for-the-badge&color=blue)  
+![GitHub stars](https://img.shields.io/github/stars/Itsmeinayath/zero-to-hero-dev?style=for-the-badge&color=yellow)
+
+</div>  
 
 ---
 
-## 🎯 Mission Statement
+## 🎯 Mission Statement  
 
-Building **rock-solid fundamentals** in Data Structures & Algorithms (logic building) and modern full-stack web development (MERN). This repository chronicles a focused, daily learning routine with practical exercises, clear outcomes, and measurable progress.
+This is a **90-day journey** to becoming a stronger developer:  
+- 🔹 Master **Data Structures & Algorithms (DSA)** for problem-solving  
+- 🔹 Build expertise in **Full-Stack Development (MERN)**  
+- 🔹 Document every step to measure progress and stay accountable  
+
+> 💡 *"Consistency beats intensity. This repo is proof of consistent effort."*
 
 ---
 
-## 📋 Complete Learning Roadmap
+## 📋 Complete Learning Roadmap  
 
 <div align="center">
 
-### 🗓️ **[📖 Detailed 90-Day Plan on Notion](https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74)**
+### 🗓️ [📖 View Detailed 90-Day Plan on Notion](https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74)
 
 <a href="https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74">
-<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white&color=000000" alt="Notion Plan" />
-</a>
+<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white" />
+</a>  
 
-*Click above for detailed daily breakdowns, resources, and progress tracking*
+*📌 Detailed daily breakdowns, curated resources, and progress tracking*  
 
 </div>
 
 ---
 
-## 📚 Learning Tracks
+## 📚 Learning Tracks  
 
 <div align="center">
 
@@ -38,24 +48,24 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
   <tr>
     <td width="50%" valign="top">
 
-### 🧠 Logic Building Track
+### 🧠 Logic Building Track  
 **Technologies:** Python, DSA  
-**Focus:** Problem-Solving Mastery  
-- Daily algorithmic challenges  
-- Pseudocode → Implementation  
-- Complexity analysis  
-- Pattern recognition  
+**Goal:** Build strong problem-solving foundation  
+✅ Daily algorithmic challenges  
+✅ Pseudocode → Implementation  
+✅ Time & space complexity analysis  
+✅ Pattern recognition  
 
 </td>
 <td width="50%" valign="top">
 
-### 🌐 MERN Foundation Track
+### 🌐 MERN Foundation Track  
 **Technologies:** MongoDB, Express, React, Node.js  
-**Focus:** Full-Stack Development  
-- Frontend fundamentals (HTML/CSS/JS)  
-- Backend APIs (Node/Express)  
-- Modern React development  
-- Database integration (MongoDB)  
+**Goal:** Full-stack web development mastery  
+✅ Frontend fundamentals (HTML/CSS/JS)  
+✅ REST APIs with Node/Express  
+✅ React component-based architecture  
+✅ Database design with MongoDB  
 
 </td>
   </tr>
@@ -65,49 +75,45 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 
 ---
 
-## ⚡ Daily Learning Flow
+## ⚡ Daily Learning Flow  
 
 <div align="center">
 
-### 📖 Theory → 💻 Practice → 🤔 Reflection → 📝 Documentation
+### 📖 Theory → 💻 Practice → 🤔 Reflection → 📝 Documentation  
 
 <table>
   <tr>
     <td align="center" width="25%" valign="top">
       <img src="https://img.shields.io/badge/Theory-30--60%20min-ff6b6b?style=for-the-badge&logo=book&logoColor=white" />
       <br><br>
-      <strong>📚 Learn Concepts</strong>
-      <br>
+      <strong>📚 Learn Concepts</strong><br>
       • 1-2 curated resources<br>
-      • Note key syntax & gotchas<br>
-      • Understand fundamentals
+      • Key syntax & fundamentals<br>
+      • Quick mental models
     </td>
     <td align="center" width="25%" valign="top">
       <img src="https://img.shields.io/badge/Practice-60--120%20min-4ecdc4?style=for-the-badge&logo=code&logoColor=white" />
       <br><br>
-      <strong>💻 Code Solutions</strong>
-      <br>
-      • Write pseudocode first<br>
-      • Implement clean solutions<br>
-      • Test edge cases
+      <strong>💻 Code Solutions</strong><br>
+      • Pseudocode first<br>
+      • Clean implementation<br>
+      • Edge-case testing
     </td>
     <td align="center" width="25%" valign="top">
       <img src="https://img.shields.io/badge/Reflection-5--10%20min-45b7d1?style=for-the-badge&logo=lightbulb&logoColor=white" />
       <br><br>
-      <strong>🤔 Analyze Progress</strong>
-      <br>
-      • What worked well?<br>
-      • Areas for improvement<br>
-      • Tomorrow's focus
+      <strong>🤔 Analyze Progress</strong><br>
+      • What worked?<br>
+      • What to improve?<br>
+      • Next focus
     </td>
     <td align="center" width="25%" valign="top">
       <img src="https://img.shields.io/badge/Documentation-Daily-96ceb4?style=for-the-badge&logo=markdown&logoColor=white" />
       <br><br>
-      <strong>📝 Record Learning</strong>
-      <br>
-      • Code solutions<br>
-      • Key insights<br>
-      • Progress tracking
+      <strong>📝 Record Learning</strong><br>
+      • Code snippets<br>
+      • Key notes<br>
+      • Daily logs
     </td>
   </tr>
 </table>
@@ -116,84 +122,74 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 
 ---
 
-
-## 📅 Learning Schedule Overview
+## 📅 Learning Schedule Overview  
 
 <div align="center">
 
-| Week | Logic Building Focus | MERN Focus | Key Deliverables |
-|:----:|:---------------------|:-----------|:-----------------|
-| **1-2** | Python Fundamentals | HTML/CSS Mastery | Basic Programs + Responsive Pages |
-| **3-4** | Arrays & Searching | JavaScript ES6+ | Algorithm Solutions + Interactive UIs |
-| **5-8** | Sorting & Data Structures | React Fundamentals | Complex Algorithms + React Apps |
-| **9-12** | Advanced Algorithms | Full-Stack Integration | Portfolio Projects + APIs |
+| Week | Logic Building Focus | MERN Focus | 🎯 Key Deliverables |
+|------|----------------------|------------|---------------------|
+| **1-2** | Python Basics, Loops, Functions | HTML/CSS, Layouts | Simple scripts + Responsive UIs |
+| **3-4** | Arrays & Searching | JavaScript ES6+ | Algorithms + DOM Projects |
+| **5-8** | Sorting, Linked Lists, Stacks | React Fundamentals | Complex DSA + React Apps |
+| **9-12** | Advanced Trees, Graphs | Full-Stack Apps | APIs + Deployed Projects |
 
 </div>
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 🛠️ Tech Stack & Tools  
 
 <div align="center">
 
-### **Core Technologies**
-<a href="https://skillicons.dev">
-<img src="https://skillicons.dev/icons?i=python,javascript,html,css,react,nodejs,express,mongodb&theme=dark" />
-</a>
-
-### **Development Environment**
-<a href="https://skillicons.dev">
-<img src="https://skillicons.dev/icons?i=vscode,git,github,postman,figma,vercel&theme=dark" />
-</a>
+![Tech](https://skillicons.dev/icons?i=python,javascript,html,css,react,nodejs,express,mongodb&theme=dark)  
+![Tools](https://skillicons.dev/icons?i=vscode,git,github,postman,figma,vercel&theme=dark)
 
 </div>
 
 ---
 
-## 📊 Progress Tracking
+## 📊 Progress Tracker  
 
 <div align="center">
 
 | Status | Milestone | Description |
-|:------:|:----------|:------------|
-| ✅ | **Python Fundamentals** | Variables, functions, control structures mastered |
-| ✅ | **Basic Algorithms** | Sorting and searching implemented |
-| ✅ | **HTML/CSS Layouts** | Responsive design principles applied |
-| 🔄 | **JavaScript ES6+** | Modern JS features and DOM manipulation |
-| ⏳ | **React Development** | Component-based architecture learning |
-| ⏳ | **Backend APIs** | Node.js and Express server creation |
+|--------|-----------|-------------|
+| ✅ | **Python Fundamentals** | Loops, functions, syntax mastered |
+| ✅ | **Basic Algorithms** | Searching & sorting implemented |
+| ✅ | **HTML/CSS Layouts** | Responsive designs built |
+| 🔄 | **JavaScript ES6+** | DOM manipulation, ES6 features |
+| ⏳ | **React Development** | Components, props, state |
+| ⏳ | **Backend APIs** | REST APIs with Node & Express |
 
 </div>
 
 ---
 
-## 🌟 Repository Features
+## 🌟 Repo Highlights  
 
 <div align="center">
 
 | Feature | Description | Status |
-|:--------|:------------|:------:|
-| **📝 Daily Documentation** | Every session logged with code and insights | ✅ |
-| **🧪 Practical Projects** | Real-world applications of concepts | ✅ |
-| **📈 Progress Tracking** | Visual milestones and achievements | ✅ |
-| **🔄 Iterative Learning** | Concepts revisited and reinforced | ✅ |
-| **🎯 Goal-Oriented** | Clear objectives and outcomes | ✅ |
-| **📚 Resource Collection** | Curated learning materials | ✅ |
+|---------|-------------|--------|
+| **📝 Daily Logs** | All notes & code documented | ✅ |
+| **🧪 Projects** | Practical apps from concepts | ✅ |
+| **📈 Visual Progress** | Milestone tracking | ✅ |
+| **🔄 Iterative Learning** | Concepts reinforced | ✅ |
+| **🎯 Goal-Driven** | Clear daily targets | ✅ |
+| **📚 Resource Library** | Curated DSA + Dev links | ✅ |
 
 </div>
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start  
 
 ```bash
 # Clone the repository
 git clone https://github.com/Itsmeinayath/zero-to-hero-dev.git
 
-# Navigate to project directory
+# Navigate to project folder
 cd zero-to-hero-dev
 
-# Explore the learning structure
+# Explore directory structure
 tree -L 2
-
-
