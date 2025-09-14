@@ -5,10 +5,6 @@
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00D4FF&center=true&vCenter=true&width=600&lines=Building+Strong+Fundamentals;Mastering+DSA+%26+Full+Stack+Development;Python+%7C+MERN+Stack;90+Days+Challenge+%7C+Daily+Commitment" alt="Typing SVG" />  
 
-![GitHub last commit](https://img.shields.io/github/last-commit/Itsmeinayath/zero-to-hero-dev?style=for-the-badge&color=brightgreen)  
-![GitHub repo size](https://img.shields.io/github/repo-size/Itsmeinayath/zero-to-hero-dev?style=for-the-badge&color=blue)  
-![GitHub stars](https://img.shields.io/github/stars/Itsmeinayath/zero-to-hero-dev?style=for-the-badge&color=yellow)
-
 </div>  
 
 ---
@@ -193,3 +189,4 @@ cd zero-to-hero-dev
 
 # Explore directory structure
 tree -L 2
+
