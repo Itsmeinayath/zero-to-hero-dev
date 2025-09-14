@@ -31,33 +31,36 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 ---
 
 ## 📚 Learning Tracks
+
 <div align="center">
+
 <table>
-<tr>
-<td width="50%">
-  
+  <tr>
+    <td width="50%" valign="top">
+
 ### 🧠 Logic Building Track
 **Technologies:** Python, DSA  
-**Focus:** Problem-solving mastery
-- Daily algorithmic challenges
-- Pseudocode → Implementation
-- Complexity analysis
-- Pattern recognition
+**Focus:** Problem-Solving Mastery  
+- Daily algorithmic challenges  
+- Pseudocode → Implementation  
+- Complexity analysis  
+- Pattern recognition  
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
 ### 🌐 MERN Foundation Track
 **Technologies:** MongoDB, Express, React, Node.js  
-**Focus:** Full-stack development
-- Frontend fundamentals (HTML/CSS/JS)
-- Backend APIs (Node/Express)
-- Modern React development
-- Database integration (MongoDB)
+**Focus:** Full-Stack Development  
+- Frontend fundamentals (HTML/CSS/JS)  
+- Backend APIs (Node/Express)  
+- Modern React development  
+- Database integration (MongoDB)  
 
 </td>
-</tr>
+  </tr>
 </table>
+
 </div>
 
 ---
@@ -69,49 +72,50 @@ Building **rock-solid fundamentals** in Data Structures & Algorithms (logic buil
 ### 📖 Theory → 💻 Practice → 🤔 Reflection → 📝 Documentation
 
 <table>
-<tr>
-<td align="center" width="25%">
-<img src="https://img.shields.io/badge/Theory-30--60%20min-ff6b6b?style=for-the-badge&logo=book&logoColor=white" />
-<br><br>
-<strong>📚 Learn Concepts</strong>
-<br>
-• 1-2 curated resources<br>
-• Note key syntax & gotchas<br>
-• Understand fundamentals
-</td>
-<td align="center" width="25%">
-<img src="https://img.shields.io/badge/Practice-60--120%20min-4ecdc4?style=for-the-badge&logo=code&logoColor=white" />
-<br><br>
-<strong>💻 Code Solutions</strong>
-<br>
-• Write pseudocode first<br>
-• Implement clean solutions<br>
-• Test edge cases
-</td>
-<td align="center" width="25%">
-<img src="https://img.shields.io/badge/Reflection-5--10%20min-45b7d1?style=for-the-badge&logo=lightbulb&logoColor=white" />
-<br><br>
-<strong>🤔 Analyze Progress</strong>
-<br>
-• What worked well?<br>
-• Areas for improvement<br>
-• Tomorrow's focus
-</td>
-<td align="center" width="25%">
-<img src="https://img.shields.io/badge/Documentation-Daily-96ceb4?style=for-the-badge&logo=markdown&logoColor=white" />
-<br><br>
-<strong>📝 Record Learning</strong>
-<br>
-• Code solutions<br>
-• Key insights<br>
-• Progress tracking
-</td>
-</tr>
+  <tr>
+    <td align="center" width="25%" valign="top">
+      <img src="https://img.shields.io/badge/Theory-30--60%20min-ff6b6b?style=for-the-badge&logo=book&logoColor=white" />
+      <br><br>
+      <strong>📚 Learn Concepts</strong>
+      <br>
+      • 1-2 curated resources<br>
+      • Note key syntax & gotchas<br>
+      • Understand fundamentals
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="https://img.shields.io/badge/Practice-60--120%20min-4ecdc4?style=for-the-badge&logo=code&logoColor=white" />
+      <br><br>
+      <strong>💻 Code Solutions</strong>
+      <br>
+      • Write pseudocode first<br>
+      • Implement clean solutions<br>
+      • Test edge cases
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="https://img.shields.io/badge/Reflection-5--10%20min-45b7d1?style=for-the-badge&logo=lightbulb&logoColor=white" />
+      <br><br>
+      <strong>🤔 Analyze Progress</strong>
+      <br>
+      • What worked well?<br>
+      • Areas for improvement<br>
+      • Tomorrow's focus
+    </td>
+    <td align="center" width="25%" valign="top">
+      <img src="https://img.shields.io/badge/Documentation-Daily-96ceb4?style=for-the-badge&logo=markdown&logoColor=white" />
+      <br><br>
+      <strong>📝 Record Learning</strong>
+      <br>
+      • Code solutions<br>
+      • Key insights<br>
+      • Progress tracking
+    </td>
+  </tr>
 </table>
 
 </div>
 
 ---
+
 
 ## 📅 Learning Schedule Overview
 
@@ -191,4 +195,5 @@ cd zero-to-hero-dev
 
 # Explore the learning structure
 tree -L 2
+
 
