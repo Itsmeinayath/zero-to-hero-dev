@@ -1723,6 +1723,9 @@ Stretch:
 1. Which concept felt least intuitive (scope, event loop, functions)?  
 2. One improvement to code organization you can apply tomorrow?  
 3. Summarize JS execution model in 2 sentences.
+---
+## 12 For better understanding do practice on solve javascript problems on all the topics covered in day 1.
+practice at least 10 problems on each topic covered in day 1.
 
 End of extended Day 1 foundational guide.
 
