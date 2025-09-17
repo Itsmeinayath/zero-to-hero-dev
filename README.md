@@ -24,11 +24,15 @@ This is a **90-day journey** to becoming a stronger developer:
 
 <div align="center">
 
-### 🗓️ [📖 View Detailed 90-Day Plan on Notion](https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74)
+### 🗓️ [📖 View Detailed 90-Day Logic building + DSA Plan on Notion](https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74)
 
 <a href="https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74">
-<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white" />
-</a>  
+<!-- <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white" /> -->
+</a>
+
+### 🗓️ [📖 View Detailed 90-Day MERN Foundation Plan on Notion](https://holly-calliandra-fea.notion.site/90-day-logic-dsa-plan-24946bdd79e480859877c3e75a9e0821?pvs=74)
+<a href="https://holly-calliandra-fea.notion.site/90-Day-MERN-Stack-Roadmap-for-Beginners-HTML-CSS-Known-24946bdd79e4801aa4a4e87d698bef21">
+</a>
 
 *📌 Detailed daily breakdowns, curated resources, and progress tracking*  
 
@@ -189,4 +193,5 @@ cd zero-to-hero-dev
 
 # Explore directory structure
 tree -L 2
+
 
