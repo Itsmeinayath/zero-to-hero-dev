@@ -181,7 +181,6 @@ This is a **90-day journey** to becoming a stronger developer:
 </div>
 
 ---
----
 ## 🚀 Quick Start  
 
 ```bash
@@ -195,6 +194,7 @@ cd zero-to-hero-dev
 tree -L 2
 
 -
+
 
 
 
