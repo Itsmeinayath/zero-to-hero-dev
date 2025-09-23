@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Day 2: ES6 Practice Set</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #111827; color: #d1d5db; }
+        .problem-card { background-color: #1f2937; border: 1px solid #374151; }
+        .code-block { background-color: #0d1117; color: #c9d1d9; font-family: monospace; }
+        details summary { cursor: pointer; font-weight: bold; }
+        details pre { margin-top: 1rem; }
+    </style>
+</head>
+<body class="p-8 font-sans">
+
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-cyan-400">Day 2: ES6 Practice Set</h1>
+        <p class="text-lg mt-2 text-slate-400">Template Literals & Destructuring</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-8">
+        <!-- INSTRUCTIONS -->
+        <div class="problem-card p-6 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4">How to Use This File</h2>
+            <ol class="list-decimal list-inside space-y-2">
+                <li>Open this `index.html` file in your browser to see the problems.</li>
+                <li>Open the `practice.js` file in your code editor.</li>
+                <li>Write your solutions in `practice.js` and check the browser console for the output.</li>
+            </ol>
+        </div>
+
+        <!-- PART 1: TEMPLATE LITERALS -->
+        <div class="problem-card p-6 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4">Part 1: Template Literals Practice</h2>
+            <div class="space-y-4">
+                <p><strong>Problem 1.1: Basic Greeting</strong><br>Create a string that says "Hello, my name is Alex and I am 28 years old." using the two variables provided.</p>
+                <p><strong>Problem 1.2: Simple Calculation</strong><br>Create a string that says "The total cost is $125." by calculating `price * quantity` inside the template literal.</p>
+                <p><strong>Problem 1.3: Multi-line String</strong><br>Create a multi-line string that represents an address, with each part on a new line.</p>
+            </div>
+        </div>
+
+        <!-- PART 2: DESTRUCTURING -->
+        <div class="problem-card p-6 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4">Part 2: Destructuring Practice</h2>
+            <div class="space-y-4">
+                <p><strong>Problem 2.1: Basic Object Destructuring</strong><br>Extract the `title` and `author` from the `book` object into their own `const` variables.</p>
+                <p><strong>Problem 2.2: Destructuring with Renaming</strong><br>Extract the `id` from the `user` object, but rename the new variable to `userID`.</p>
+                <p><strong>Problem 2.3: Nested Destructuring</strong><br>Extract the `street` and `city` from the `person` object's nested `address` object.</p>
+            </div>
+        </div>
+
+        <!-- PART 3: COMBINED CHALLENGE -->
+        <div class="problem-card p-6 rounded-lg">
+            <h2 class="text-2xl font-bold text-cyan-400 mb-4">Part 3: Combined Challenge</h2>
+            <p>Your task is to create a function called `createEventAnnouncement`. This function should accept an `event` object as its parameter. Inside the function, use **destructuring** to unpack the object's properties and a **template literal** to create and return a formatted HTML string for an event announcement card. Finally, print the result of this function to the console.</p>
+        </div>
+    </main>
+
+    <!-- The script is now linked externally -->
+    <script src="script.js"></script>
+</body>
+</html>
