@@ -1,5 +1,6 @@
 ## HTML & DOM Essentials Cheat Sheet (Day 1)
 Purpose: Fast, practical reference. Focus on core tags, structure, semantics, accessibility, and DOM scripting anchors.
+---
 
 ### 1. Minimal Page Skeleton
 ```html
