@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Zero to Hero: A Developer's Journey  
+#🚀 Zero to Hero: A Developer's Journey  
 ### *90 Days of Focused Learning & Growth*  
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=00D4FF&center=true&vCenter=true&width=600&lines=Building+Strong+Fundamentals;Mastering+DSA+%26+Full+Stack+Development;Python+%7C+MERN+Stack;90+Days+Challenge+%7C+Daily+Commitment" alt="Typing SVG" />  
@@ -194,6 +194,8 @@ cd zero-to-hero-dev
 tree -L 2
 
 -
+
+
 
 
 
