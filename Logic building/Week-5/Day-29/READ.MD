@@ -813,3 +813,98 @@ def merge_sorted_lists(list1, list2):
 *🔗 **Linked Lists Mastered!** You now understand one of the most fundamental data structures*
 *⭐ **Achievement Unlocked**: Dynamic Data Structure Expert*
 *🚀 **Ready for**: Stacks, Queues, and more advanced data structures*
+
+Notes from "L1. Introduction to LinkedList" (take U forward)
+1. What is a Linked List? (0:59)
+A Linked List is a linear data structure that stores elements, similar to an array, but with a fundamental difference: its elements are not stored in contiguous (sequential) memory locations.
+
+Fixed vs. Dynamic Size:
+
+Arrays: Have a fixed size. Once defined, you cannot easily increase or decrease their size.
+
+Linked Lists: Have a dynamic size. You can easily increase or decrease their size as needed because they don't require contiguous memory.
+
+Memory Allocation:
+
+Arrays: Stored in contiguous blocks in Heap memory. Index 0 is followed by Index 1, etc., in sequential memory addresses.
+
+Linked Lists: Nodes can be stored at random, non-contiguous locations anywhere in Heap memory.
+
+2. How Elements are Stored & Linked (5:15)
+Since Linked List elements are not contiguous, you cannot access them by index 0, index 1, etc.. To maintain sequence, each element (node) stores two things:
+
+Data: The actual value (integer, double, string, list, etc.).
+
+next: A pointer/reference to the memory location of the next element in the list. This next pointer is how the "link" is invisibly created.
+
+Head: The starting point of a Linked List. It's a special pointer that remembers the memory location of the first node.
+
+Tail: The last node of a Linked List. Its next pointer points to null (in Java) or nullptr (in C++).
+
+3. Advantages of Linked Lists over Arrays (5:05)
+Flexible Size: Easily increase or decrease size. This is because you just find any free spot in memory for a new node and update the next pointer of the previous node to point to it.
+
+Efficient Insertion/Deletion: Adding or removing elements is easier as you only adjust pointers, without needing to shift large blocks of memory.
+
+4. Real-life Applications (10:34)
+Data Structures: Used to implement Stacks and Queues because these data structures also have flexible sizes, expanding and decreasing as elements are added/removed.
+
+Browser History: A common example. When you click "back" or "forward," it navigates through pages linked in a list. This often uses a Doubly Linked List (though the video focuses on 1D/Singly Linked Lists) to remember both previous and next pages.
+
+5. Node Structure (Self-Defined Data Type) (16:15)
+Since a node stores both data and a next pointer, it's a self-defined data type. You define its structure using struct (C++) or class (Java/Python).
+
+Python Node Structure (Standard Representation):
+
+Python
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val   # The data value of this node
+        self.next = next # Pointer to the next ListNode object
+In Python, you don't explicitly use "pointers" like in C++. Instead, self.next holds a reference to another ListNode object (or None if it's the last node).
+
+6. Basic Operations: Traversal & Finding Length/Element (37:24)
+Crucial Rule: Never tamper with the head pointer during traversal, otherwise you'll lose the starting point of your list. Always use a temporary pointer.
+
+a. Traversal (Visiting Each Node) (37:24)
+Logic: Start a temporary pointer (temp or current) at the head. In a loop, print/process the data of the current node, then move temp to temp.next. Stop when temp becomes null/None.
+
+Pseudocode:
+
+FUNCTION traverseLinkedList(head):
+  SET current = head
+  WHILE current is NOT null:
+    Print current.data
+    SET current = current.next
+b. Finding Length of Linked List (40:12)
+Logic: Similar to traversal. Initialize a count = 0. Traverse the list. Increment count for each node visited. Return count.
+
+Pseudocode:
+
+FUNCTION getLength(head):
+  SET count = 0
+  SET current = head
+  WHILE current is NOT null:
+    INCREMENT count
+    SET current = current.next
+  RETURN count
+c. Searching for an Element (42:00)
+Logic: Similar to traversal. Initialize a current pointer at head. Loop through the list. If current.data matches the value_to_find, return True (or the index). If the loop finishes without finding the value, return False (or -1).
+
+Pseudocode:
+
+FUNCTION searchElement(head, value_to_find):
+  SET current = head
+  WHILE current is NOT null:
+    IF current.data == value_to_find:
+      RETURN True (or current.index)
+    SET current = current.next
+  RETURN False
+These notes should provide a very strong conceptual foundation for Linked Lists and their basic operations, exactly as explained in the video. Please review them thoroughly.
+
+Once you feel comfortable with these concepts, we can return to our initial question for LeetCode 206 - Reverse Linked List:
+
+Why do you need at least three pointers (prev, curr, next_temp) to effectively reverse a linked list in-place?
+
+https://www.youtube.com/watch?v=Nq7ok-OyEpg
