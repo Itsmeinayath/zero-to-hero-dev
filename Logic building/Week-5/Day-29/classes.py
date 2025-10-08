@@ -3,7 +3,9 @@
 # A class is a blueprint for creating objects. It defines a set of attributes and methods that the created objects will have.
 # An object is an instance of a class. It is created using the class blueprint and can have its own unique attributes and methods.
 # Classes help to organize code, promote reusability, and implement object-oriented programming principles.
+# Methods are functions defined within a class that operate on the attributes of the class and its instances.
 # Syntax to create a class
+
 class ClassName:
     # class attributes and methods
     pass
