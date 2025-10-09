@@ -117,3 +117,10 @@ Account2.check_balance()
 # This ensures that the balance can only be modified through the debit and credit methods, maintaining data integrity.
 # This is a comprehensive guide on Python classes and objects with examples.
 # You can practice more by creating different classes and objects as per your requirement.
+
+# lets foucs on inheritance in next file
+# Inheritance is a mechanism in OOP that allows a new class (derived class) to inherit attributes and methods from an existing class (base class).
+# This promotes code reusability and establishes a hierarchical relationship between classes.
+# Syntax for inheritance
+# class BaseClass:
+
