@@ -7,3 +7,24 @@
 #     # base class code
 # class DerivedClass(BaseClass):
 #     # derived class codef
+# Example of inheritance
+class Animal:
+    def speak(self):
+        return "Animal speaks"  
+class Dog(Animal):
+    def speak(self):
+        return "Dog barks"  
+class Cat(Animal):
+    def speak(self):
+        return "Cat meows"
+# Creating instances of the derived classes
+dog = Dog() 
+cat = Cat()
+print(dog.speak())  # Output: Dog barks
+print(cat.speak())  # Output: Cat meows
+print(isinstance(dog, Animal))  # Output: True
+print(isinstance(cat, Animal))  # Output: True
+print(issubclass(Dog, Animal))  # Output: True
+print(issubclass(Cat, Animal))  # Output: True
+
+# Multi-level inheritance
