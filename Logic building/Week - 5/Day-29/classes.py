@@ -107,8 +107,6 @@ Account2.debit(100)
 Account2.credit(400)
 Account2.check_balance()
 
-
-
 # Note: Here we have made balance attribute private by adding __ before it. This is to prevent direct access from outside the class.
 # We can only access it using the methods provided in the class. This is an example of
 # Abstraction and Encapsulation in OOP.
@@ -118,7 +116,7 @@ Account2.check_balance()
 # This is a comprehensive guide on Python classes and objects with examples.
 # You can practice more by creating different classes and objects as per your requirement.
 
-# lets foucs on inheritance in next file
+# lets foucs on inheritance in next file :
 # Inheritance is a mechanism in OOP that allows a new class (derived class) to inherit attributes and methods from an existing class (base class).
 # This promotes code reusability and establishes a hierarchical relationship between classes.
 # Syntax for inheritance
