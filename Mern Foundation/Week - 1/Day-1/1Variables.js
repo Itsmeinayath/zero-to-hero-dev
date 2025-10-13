@@ -40,7 +40,7 @@ console.log(typeof age) // number
 console.log(typeof data) // boolean
 
 
-// Explation of variable types
+// Explanation of Data types
 // Number: Used to represent both integer and floating-point numbers. Example: 42, 3.14
 // String: Used to represent text. Strings are enclosed in single or double quotes. Example: 'Hello', "World"
 // Boolean: Represents a logical entity and can have two values: true or false. Example: true, false
