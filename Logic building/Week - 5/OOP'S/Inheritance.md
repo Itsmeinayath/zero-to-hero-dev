@@ -5,6 +5,7 @@
 - [Fundamental Concepts](#fundamental-concepts)
 - [Real-World Examples](#real-world-examples)
 - [Types of Inheritance](#types-of-inheritance)
+- [Class Methods in Inheritance](#class-methods-in-inheritance)
 - [Benefits and Drawbacks](#benefits-and-drawbacks)
 - [Best Practices](#best-practices)
 - [Practice Exercises](#practice-exercises)
@@ -517,6 +518,459 @@ print(professor.conduct_research("Neural Networks"))  # Own method
 
 ---
 
+## 🏭 Class Methods in Inheritance
+
+Class methods are methods that belong to the class rather than to any specific instance. They're decorated with `@classmethod` and take `cls` as the first parameter (representing the class). In inheritance, class methods provide powerful patterns for object creation and class-level operations.
+
+### 🔑 Key Concepts:
+
+- **`@classmethod`**: Decorator that makes a method belong to the class
+- **`cls` parameter**: Refers to the class (not instance)
+- **Alternative Constructors**: Create objects in different ways
+- **Factory Methods**: Create specialized instances
+- **Inheritance-aware**: `cls` refers to the actual class being called
+
+### 📝 Example 1: Alternative Constructors
+
+```python
+import datetime
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        return f"{self.name} ({self.age} years old)"
+    
+    @classmethod
+    def from_birth_year(cls, name, birth_year):
+        """Alternative constructor: create Person from birth year"""
+        current_year = datetime.datetime.now().year
+        age = current_year - birth_year
+        return cls(name, age)  # cls refers to the actual class
+    
+    @classmethod
+    def create_baby(cls, name):
+        """Factory method: create a baby (age 0)"""
+        return cls(name, 0)
+    
+    @classmethod
+    def create_adult(cls, name):
+        """Factory method: create an adult (age 18+)"""
+        return cls(name, 18)
+
+class Student(Person):
+    def __init__(self, name, age, student_id, major):
+        super().__init__(name, age)
+        self.student_id = student_id
+        self.major = major
+    
+    def __str__(self):
+        return f"{self.name} ({self.age} years old) - Student ID: {self.student_id}, Major: {self.major}"
+    
+    @classmethod
+    def from_birth_year(cls, name, birth_year, student_id, major):
+        """Override parent class method with additional parameters"""
+        current_year = datetime.datetime.now().year
+        age = current_year - birth_year
+        return cls(name, age, student_id, major)
+    
+    @classmethod
+    def create_freshman(cls, name, student_id, major):
+        """Factory method: create a typical freshman (age 18)"""
+        return cls(name, 18, student_id, major)
+
+# Usage Examples
+print("👤 Person Examples:")
+person1 = Person("John", 25)                          # Regular constructor
+person2 = Person.from_birth_year("Alice", 1995)       # From birth year
+person3 = Person.create_adult("Bob")                  # Factory method
+
+print(f"Regular: {person1}")
+print(f"From birth year: {person2}")
+print(f"Factory method: {person3}")
+
+print("\n🎓 Student Examples:")
+student1 = Student("Emma", 20, "S12345", "Computer Science")
+student2 = Student.from_birth_year("Mike", 2003, "S67890", "Physics")
+student3 = Student.create_freshman("Sarah", "S11111", "Biology")
+
+print(f"Regular: {student1}")
+print(f"From birth year: {student2}")
+print(f"Freshman: {student3}")
+```
+
+**Output:**
+```
+👤 Person Examples:
+Regular: John (25 years old)
+From birth year: Alice (29 years old)
+Factory method: Bob (18 years old)
+
+🎓 Student Examples:
+Regular: Emma (20 years old) - Student ID: S12345, Major: Computer Science
+From birth year: Mike (21 years old) - Student ID: S67890, Major: Physics
+Freshman: Sarah (18 years old) - Student ID: S11111, Major: Biology
+```
+
+### 📝 Example 2: Database-like Operations
+
+```python
+class Vehicle:
+    # Class variable to keep track of all vehicles
+    all_vehicles = []
+    vehicle_count = 0
+    
+    def __init__(self, make, model, year, price):
+        self.make = make
+        self.model = model
+        self.year = year
+        self.price = price
+        self.vehicle_id = Vehicle.vehicle_count + 1
+        
+        # Add to class registry
+        Vehicle.all_vehicles.append(self)
+        Vehicle.vehicle_count += 1
+    
+    def __str__(self):
+        return f"{self.year} {self.make} {self.model} (${self.price:,})"
+    
+    @classmethod
+    def get_total_count(cls):
+        """Get total number of vehicles created"""
+        return cls.vehicle_count
+    
+    @classmethod
+    def get_all_vehicles(cls):
+        """Get all vehicles of this class and its subclasses"""
+        return [v for v in cls.all_vehicles if isinstance(v, cls)]
+    
+    @classmethod
+    def find_by_make(cls, make):
+        """Find all vehicles by make"""
+        return [v for v in cls.get_all_vehicles() if v.make.lower() == make.lower()]
+    
+    @classmethod
+    def get_average_price(cls):
+        """Calculate average price of all vehicles"""
+        vehicles = cls.get_all_vehicles()
+        if not vehicles:
+            return 0
+        return sum(v.price for v in vehicles) / len(vehicles)
+    
+    @classmethod
+    def create_from_string(cls, vehicle_string):
+        """Factory method: create vehicle from string format 'Make Model Year Price'"""
+        parts = vehicle_string.split()
+        if len(parts) >= 4:
+            make, model, year, price = parts[0], parts[1], int(parts[2]), int(parts[3])
+            return cls(make, model, year, price)
+        raise ValueError("Invalid format. Expected: 'Make Model Year Price'")
+
+class Car(Vehicle):
+    def __init__(self, make, model, year, price, doors=4):
+        super().__init__(make, model, year, price)
+        self.doors = doors
+    
+    def __str__(self):
+        return f"{super().__str__()} - {self.doors} doors"
+    
+    @classmethod
+    def create_sedan(cls, make, model, year, price):
+        """Factory method: create a sedan (4 doors)"""
+        return cls(make, model, year, price, doors=4)
+    
+    @classmethod
+    def create_coupe(cls, make, model, year, price):
+        """Factory method: create a coupe (2 doors)"""
+        return cls(make, model, year, price, doors=2)
+
+class Motorcycle(Vehicle):
+    def __init__(self, make, model, year, price, engine_cc):
+        super().__init__(make, model, year, price)
+        self.engine_cc = engine_cc
+    
+    def __str__(self):
+        return f"{super().__str__()} - {self.engine_cc}cc"
+    
+    @classmethod
+    def create_sport_bike(cls, make, model, year, price):
+        """Factory method: create a sport bike (600cc+)"""
+        return cls(make, model, year, price, engine_cc=600)
+
+# Usage Examples
+print("🚗 Vehicle Management System")
+print("=" * 50)
+
+# Create vehicles using different methods
+car1 = Car.create_sedan("Toyota", "Camry", 2023, 28000)
+car2 = Car.create_coupe("Ford", "Mustang", 2023, 35000)
+car3 = Car.create_from_string("Honda Civic 2022 25000")
+bike1 = Motorcycle.create_sport_bike("Yamaha", "R6", 2023, 12000)
+bike2 = Motorcycle("Harley", "Sportster", 2022, 15000, 883)
+
+print(f"Total vehicles created: {Vehicle.get_total_count()}")
+print(f"\nAll vehicles:")
+for vehicle in Vehicle.get_all_vehicles():
+    print(f"  {vehicle}")
+
+print(f"\nCars only:")
+for car in Car.get_all_vehicles():
+    print(f"  {car}")
+
+print(f"\nMotorcycles only:")
+for bike in Motorcycle.get_all_vehicles():
+    print(f"  {bike}")
+
+print(f"\nToyota vehicles:")
+toyota_vehicles = Vehicle.find_by_make("Toyota")
+for vehicle in toyota_vehicles:
+    print(f"  {vehicle}")
+
+print(f"\nAverage vehicle price: ${Vehicle.get_average_price():,.2f}")
+print(f"Average car price: ${Car.get_average_price():,.2f}")
+print(f"Average motorcycle price: ${Motorcycle.get_average_price():,.2f}")
+```
+
+**Output:**
+```
+🚗 Vehicle Management System
+==================================================
+Total vehicles created: 5
+
+All vehicles:
+  2023 Toyota Camry ($28,000) - 4 doors
+  2023 Ford Mustang ($35,000) - 2 doors
+  2022 Honda Civic ($25,000) - 4 doors
+  2023 Yamaha R6 ($12,000) - 600cc
+  2022 Harley Sportster ($15,000) - 883cc
+
+Cars only:
+  2023 Toyota Camry ($28,000) - 4 doors
+  2023 Ford Mustang ($35,000) - 2 doors
+  2022 Honda Civic ($25,000) - 4 doors
+
+Motorcycles only:
+  2023 Yamaha R6 ($12,000) - 600cc
+  2022 Harley Sportster ($15,000) - 883cc
+
+Toyota vehicles:
+  2023 Toyota Camry ($28,000) - 4 doors
+
+Average vehicle price: $23,000.00
+Average car price: $29,333.33
+Average motorcycle price: $13,500.00
+```
+
+### 📝 Example 3: Configuration and Validation
+
+```python
+class DatabaseConnection:
+    # Class variables for configuration
+    default_host = "localhost"
+    default_port = 5432
+    connection_count = 0
+    active_connections = []
+    
+    def __init__(self, host, port, database, username):
+        self.host = host
+        self.port = port
+        self.database = database
+        self.username = username
+        self.connection_id = DatabaseConnection.connection_count + 1
+        self.is_connected = False
+        
+        DatabaseConnection.connection_count += 1
+        DatabaseConnection.active_connections.append(self)
+    
+    def connect(self):
+        self.is_connected = True
+        return f"Connected to {self.database} at {self.host}:{self.port}"
+    
+    def disconnect(self):
+        self.is_connected = False
+        return f"Disconnected from {self.database}"
+    
+    @classmethod
+    def create_default_connection(cls, database, username):
+        """Factory method: create connection with default host/port"""
+        return cls(cls.default_host, cls.default_port, database, username)
+    
+    @classmethod
+    def create_from_url(cls, connection_url, username):
+        """Factory method: create from URL format 'host:port/database'"""
+        try:
+            host_port, database = connection_url.split('/')
+            host, port = host_port.split(':')
+            return cls(host, int(port), database, username)
+        except ValueError:
+            raise ValueError("Invalid URL format. Expected: 'host:port/database'")
+    
+    @classmethod
+    def set_default_config(cls, host, port):
+        """Class method: update default configuration"""
+        cls.default_host = host
+        cls.default_port = port
+        return f"Default config updated: {host}:{port}"
+    
+    @classmethod
+    def get_connection_stats(cls):
+        """Class method: get connection statistics"""
+        connected = sum(1 for conn in cls.active_connections if conn.is_connected)
+        total = len(cls.active_connections)
+        return {
+            'total_created': cls.connection_count,
+            'active_connections': total,
+            'connected': connected,
+            'disconnected': total - connected
+        }
+    
+    @classmethod
+    def cleanup_disconnected(cls):
+        """Class method: remove disconnected connections from active list"""
+        initial_count = len(cls.active_connections)
+        cls.active_connections = [conn for conn in cls.active_connections if conn.is_connected]
+        cleaned = initial_count - len(cls.active_connections)
+        return f"Cleaned up {cleaned} disconnected connections"
+
+class PostgreSQLConnection(DatabaseConnection):
+    default_port = 5432
+    
+    @classmethod
+    def create_local_dev(cls, database, username):
+        """Factory method: create local development connection"""
+        return cls("localhost", 5432, database, username)
+    
+    @classmethod
+    def create_production(cls, database, username):
+        """Factory method: create production connection"""
+        return cls("prod-server.company.com", 5432, database, username)
+
+class MySQLConnection(DatabaseConnection):
+    default_port = 3306
+    
+    @classmethod
+    def create_local_dev(cls, database, username):
+        """Factory method: create local development connection"""
+        return cls("localhost", 3306, database, username)
+
+# Usage Examples
+print("🗄️ Database Connection Management")
+print("=" * 50)
+
+# Update default configuration
+print(DatabaseConnection.set_default_config("new-host", 8080))
+
+# Create connections using different methods
+pg_conn1 = PostgreSQLConnection.create_local_dev("myapp_dev", "developer")
+pg_conn2 = PostgreSQLConnection.create_production("myapp_prod", "app_user")
+pg_conn3 = PostgreSQLConnection.create_from_url("backup-server:5433/myapp_backup", "backup_user")
+
+mysql_conn1 = MySQLConnection.create_local_dev("test_db", "root")
+mysql_conn2 = MySQLConnection.create_default_connection("analytics", "analyst")
+
+# Connect some of them
+print(pg_conn1.connect())
+print(pg_conn2.connect())
+print(mysql_conn1.connect())
+
+# Check statistics
+stats = DatabaseConnection.get_connection_stats()
+print(f"\n📊 Connection Statistics:")
+for key, value in stats.items():
+    print(f"  {key.replace('_', ' ').title()}: {value}")
+
+# Disconnect and cleanup
+print(f"\n{pg_conn1.disconnect()}")
+print(f"{mysql_conn1.disconnect()}")
+print(DatabaseConnection.cleanup_disconnected())
+
+# Final statistics
+final_stats = DatabaseConnection.get_connection_stats()
+print(f"\n📊 Final Statistics:")
+for key, value in final_stats.items():
+    print(f"  {key.replace('_', ' ').title()}: {value}")
+```
+
+### 🔄 Class Methods vs Instance Methods vs Static Methods
+
+```python
+class MathOperations:
+    pi = 3.14159
+    calculations_performed = 0
+    
+    def __init__(self, name):
+        self.name = name
+        self.personal_calculations = 0
+    
+    # Instance method - operates on instance data
+    def calculate_circle_area(self, radius):
+        """Instance method: uses instance and class data"""
+        self.personal_calculations += 1
+        MathOperations.calculations_performed += 1
+        area = self.pi * radius ** 2
+        return f"{self.name} calculated circle area: {area}"
+    
+    # Class method - operates on class data, can create instances
+    @classmethod
+    def get_total_calculations(cls):
+        """Class method: accesses class variables"""
+        return f"Total calculations performed: {cls.calculations_performed}"
+    
+    @classmethod
+    def create_calculator(cls, name):
+        """Class method: alternative constructor"""
+        return cls(name)
+    
+    @classmethod
+    def reset_counter(cls):
+        """Class method: modifies class state"""
+        cls.calculations_performed = 0
+        return "Calculation counter reset"
+    
+    # Static method - independent utility function
+    @staticmethod
+    def add_numbers(a, b):
+        """Static method: pure utility function, no class/instance access"""
+        return a + b
+    
+    @staticmethod
+    def is_prime(number):
+        """Static method: utility function for prime checking"""
+        if number < 2:
+            return False
+        for i in range(2, int(number ** 0.5) + 1):
+            if number % i == 0:
+                return False
+        return True
+
+# Demonstration
+calc1 = MathOperations("Alice")
+calc2 = MathOperations.create_calculator("Bob")  # Using class method
+
+print(calc1.calculate_circle_area(5))  # Instance method
+print(calc2.calculate_circle_area(3))  # Instance method
+
+print(MathOperations.get_total_calculations())  # Class method
+
+print(f"Static method - Add: {MathOperations.add_numbers(10, 20)}")  # Static method
+print(f"Static method - Is 17 prime? {MathOperations.is_prime(17)}")  # Static method
+
+print(MathOperations.reset_counter())  # Class method
+print(MathOperations.get_total_calculations())  # Class method
+```
+
+### 🎯 Key Points About Class Methods in Inheritance:
+
+1. **Inheritance-Aware**: `cls` refers to the actual class being called (not the parent)
+2. **Factory Pattern**: Perfect for creating specialized instances
+3. **Alternative Constructors**: Provide different ways to create objects
+4. **Class-Level Operations**: Manage class-wide state and configuration
+5. **Polymorphic**: Inherited and can be overridden in child classes
+
+---
+
 ## ✅ Benefits and Drawbacks
 
 ### 🎯 Benefits:
@@ -664,4 +1118,4 @@ Build a media library:
 
 ---
 
-*📝 This comprehensive guide covers all aspects of inheritance in OOP. Practice with the examples and exercises to master this fundamental concept!*
+*📝 This comprehensive guide covers all aspects of inheritance in OOP. Practice with the examples and exercises to master this fundamental concept!* 
