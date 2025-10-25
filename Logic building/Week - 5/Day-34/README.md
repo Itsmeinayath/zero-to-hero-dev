@@ -263,18 +263,5 @@ Next steps:
 - Practice more group reversal variations
 - Master connecting reversed segments
 
-Common mistakes fixed:
-- Variable name typos (`valu1` → `value1`)
-- Pointer naming (`current` vs `current_pointer` - be consistent)
 
----
 
-## How to run the demo
-
-Run the standalone script:
-
-```powershell
-python .\linked_list_add_reverse_demo.py
-```
-
-Expected output shows both addition examples and group reversal with different k values.
