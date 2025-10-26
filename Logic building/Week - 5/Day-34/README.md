@@ -227,19 +227,19 @@ Reverse in Groups:
 ## Quick checklist when coding
 
 Add Two Numbers:
-- [ ] Use dummy node to build result
-- [ ] Loop condition: `while l1 or l2 or carry`
-- [ ] Handle None: `val = node.val if node else 0`
-- [ ] Calculate digit and carry correctly: `digit = total % 10`, `carry = total // 10`
-- [ ] Return `dummy.next`, not `dummy`
+- Use dummy node to build result
+- Loop condition: `while l1 or l2 or carry`
+- Handle None: `val = node.val if node else 0`
+- Calculate digit and carry correctly: `digit = total % 10`, `carry = total // 10`
+- Return `dummy.next`, not `dummy`
 
 Reverse in Groups:
-- [ ] Count total nodes first
-- [ ] Use dummy node for easier head handling
-- [ ] Reverse exactly k nodes per group
-- [ ] Connect prev_group → reversed_head → next_part
-- [ ] Update prev_group after each group
-- [ ] Handle remainder nodes based on problem variant
+- Count total nodes first
+- Use dummy node for easier head handling
+- Reverse exactly k nodes per group
+- Connect prev_group → reversed_head → next_part
+- Update prev_group after each group
+- Handle remainder nodes based on problem variant
 
 ---
 
