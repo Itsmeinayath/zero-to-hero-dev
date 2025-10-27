@@ -1,4 +1,4 @@
-# Day 36: Rest and Revise
+# Day 35: Rest and Revise
 
 Purpose
 -------
