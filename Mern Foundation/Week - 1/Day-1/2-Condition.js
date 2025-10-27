@@ -32,3 +32,19 @@ if (playerscore2 >= winningScore) {
 else{
     console.log("Sorry, you lost the game. Better luck next time!")
 }
+
+// the multiple conditions can also be checked using else if statement( called as laddering / nested if else)
+
+let playerscore3 = 70
+if (playerscore3 >= winningScore) {
+    console.log("Congratulations! You win the game!")
+}
+else if (playerscore3 >= 50) {
+    console.log("You scored more than 50 points. You qualify for the next round!")
+}
+else{
+    console.log("Sorry, you lost the game. Better luck next time!")
+}
+
+
+

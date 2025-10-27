@@ -1,155 +1,187 @@
-Topic 2: Conditionals (if / else)
-1. Definition and Meaning
-Definition: A conditional is a programming statement that performs different actions depending on whether a condition is true or false.
 
-Analogy: Think of a conditional as a crossroads on a path with a sign.
+## Topic 2 - Conditionals (if / else)
 
-The sign is the condition (e.g., "Is it raining?").
+## 1 - What is a conditional?
 
-If the answer is true (it is raining), you go down one path (e.g., "Take an umbrella").
+A conditional lets your code choose different actions depending on whether a condition is true or false.
 
-If the answer is false (it's not raining), you go down the other path (e.g., "Wear sunglasses").
+Analogy: a crossroads sign — the condition is the question ("Is it raining?"). If true, take one path ("Take an umbrella"); if false, take the other ("Wear sunglasses").
 
-Conditionals give your program a "brain" and allow it to make decisions.
+## 2 - Why they matter
 
-2. The In-Depth Explanation (The "Why")
-Without conditionals, a program would be a "dumb" list of instructions. It would do the exact same thing every single time.
+Conditionals make programs dynamic: they allow behavior based on user input, game state, validation, and more.
 
-With conditionals, your program can react to different situations.
+Examples:
 
-Is the user logged in?
+- Show profile if logged in; otherwise show login form
+- If health <= 0 → show "Game Over"
+- If form input is empty → show error; otherwise submit
 
-If true, show their profile page.
+## 3 - Comparison operators (quick)
 
-If false, show the login form.
+- ===  equal (strict)
+- !==  not equal (strict)
+- >    greater than
+- <    less than
+- >=   greater than or equal
+- <=   less than or equal
 
-Is the health bar at 0?
+## 4 - if (single branch)
 
-If true, show the "Game Over" screen.
+Run a block only when a condition is true.
 
-If false, let the game continue.
-
-Is the text box empty?
-
-If true, show an error message.
-
-If false, submit the form.
-
-Conditionals are what make a program feel interactive and "smart." The most common conditional in JavaScript is the if...else statement.
-
-3. The "How" — Writing Conditionals (Examples)
-To create a condition, we need Comparison Operators:
-
-=== : Is "equal to"? (e.g., age === 18)
-
-!== : Is "not equal to"? (e.g., username !== "Admin")
-
-> : Is "greater than"? (e.g., score > 100)
-
-< : Is "less than"? (e.g., health < 10)
-
->= : Is "greater than or equal to"?
-
-<= : Is "less than or equal to"?
-
-Now let's use them.
-
-if (The Single Path)
-Use this when you only want to do something if the condition is true.
-
-Example: You only care if the player finds a key.
-
-JavaScript
-
+```javascript
 let hasMagicKey = true;
 
 if (hasMagicKey === true) {
-  console.log("You found the key! A new door has opened.");
+  console.log('You found the key! A new door has opened.');
 }
 
-console.log("You continue on your path...");
-If hasMagicKey was false, the "You found the key..." message would just be skipped.
+console.log('You continue on your path...');
+```
 
-if...else (The "Either/Or" Path)
-This is the most common. The program must choose one of the two paths.
+## 5 - if...else (two branches)
 
-Example: Checking if a user is old enough to vote.
+Choose between two alternatives.
 
-JavaScript
-
+```javascript
 let userAge = 20;
 
 if (userAge >= 18) {
-  console.log("You are old enough to vote.");
+  console.log('You are old enough to vote.');
 } else {
-  console.log("You are not old enough to vote yet.");
+  console.log('You are not old enough to vote yet.');
 }
-One of these two messages will always run.
+```
 
-if...else if...else (The "Multiple Choice" Path)
-Use this when you have more than two options.
+## 6 - if...else if...else (multiple choices)
 
-Example: Deciding a movie ticket price based on age.
+Check conditions in order; the first true branch runs.
 
-JavaScript
-
+```javascript
 let personAge = 10;
 let ticketPrice;
 
 if (personAge < 12) {
-  ticketPrice = 5; // Child price
+  ticketPrice = 5; // child
 } else if (personAge >= 65) {
-  ticketPrice = 7; // Senior price
+  ticketPrice = 7; // senior
 } else {
-  ticketPrice = 10; // Regular price
+  ticketPrice = 10; // regular
 }
 
 console.log(`Your ticket price is: $${ticketPrice}`);
-JavaScript checks each if and else if in order until it finds one that is true. If none are true, it runs the final else block.
+```
 
-4. Hands-on Practice: The Virtual Bouncer
-Let's write a small "program" to practice this.
+## 7 - Ternary operator (short if/else)
 
-Create a new file in your VS Code project called conditionals.js.
+```javascript
+const isAdult = userAge >= 18 ? 'yes' : 'no';
+console.log(isAdult);
+```
 
-Type the following code into it. This program will act as a bouncer for a club.
+## 8 - switch (many discrete cases)
 
-JavaScript
+```javascript
+const day = 'Mon';
+switch (day) {
+  case 'Sat':
+  case 'Sun':
+    console.log('Weekend');
+    break;
+  case 'Mon':
+    console.log('Start of week');
+    break;
+  default:
+    console.log('Weekday');
+}
+```
 
+## 9 - Truthy / falsy (quick)
+
+Falsy values: false, 0, '', null, undefined, NaN. Everything else is truthy.
+
+```javascript
+if ('') console.log('will not run');
+if (0) console.log('will not run');
+if ('hello') console.log('this runs');
+```
+
+## 10 - Hands-on practice: Virtual Bouncer
+
+Create `conditionals.js` and paste the example below.
+
+```javascript
 // --- Practice: The Virtual Bouncer ---
-
-// 1. Create variables for the person at the door.
-const personName = "Ali";
+const personName = 'Ali';
 let personAge = 22;
-let isVip = false; // Are they on the VIP list?
+let isVip = false; // is on VIP list?
 
 console.log(`A person named ${personName} approaches the door...`);
 
-// 2. Start our conditional check.
-// The main rule is you must be 21 or older.
+// Main rule: must be 21 or older, unless VIP
 if (personAge >= 21) {
-    // If they are 21 or older, they are allowed in.
-    console.log(`Welcome in, ${personName}! Have a great night.`);
-
+  console.log(`Welcome in, ${personName}! Have a great night.`);
 } else if (isVip === true) {
-    // If they are NOT 21+, we check *else if* they are a VIP.
-    // VIPs can get in even if they are underage.
-    console.log(`Oh, you're on the VIP list, ${personName}. Go right in.`);
-
+  console.log(`Oh, you're on the VIP list, ${personName}. Go right in.`);
 } else {
-    // If they are not 21+ AND they are not a VIP, they are rejected.
-    console.log(`Sorry, ${personName}, I can't let you in. You must be 21.`);
+  console.log(`Sorry, ${personName}, I can't let you in. You must be 21.`);
 }
-To run your code:
+```
 
-Open your terminal in VS Code.
+7. Ternary operator (short if/else)
 
-Type node conditionals.js and press Enter.
+```javascript
+const isAdult = userAge >= 18 ? 'yes' : 'no';
+console.log(isAdult);
+```
 
-Your Mission (to practice): Try changing the variables at the top of the file and run the program again.
+8. switch (many discrete cases)
 
-What happens if you set personAge = 19 and isVip = false?
+```javascript
+const day = 'Mon';
+switch (day) {
+  case 'Sat':
+  case 'Sun':
+    console.log('Weekend');
+    break;
+  case 'Mon':
+    console.log('Start of week');
+    break;
+  default:
+    console.log('Weekday');
+}
+```
 
-What happens if you set personAge = 19 and isVip = true?
+9. Truthy / falsy quick note
 
-What happens if you set personAge = 50 and isVip = true?
+Falsy values: false, 0, '', null, undefined, NaN — everything else is truthy.
+
+```javascript
+if ('') console.log('will not run');
+if (0) console.log('will not run');
+if ('hello') console.log('this runs');
+```
+
+10. Hands-on practice — Virtual Bouncer
+
+Create `conditionals.js` and paste this example:
+
+```javascript
+// --- Practice: The Virtual Bouncer ---
+const personName = 'Ali';
+let personAge = 22;
+let isVip = false; // is on VIP list?
+
+console.log(`A person named ${personName} approaches the door...`);
+
+// Main rule: must be 21 or older, unless VIP
+if (personAge >= 21) {
+  console.log(`Welcome in, ${personName}! Have a great night.`);
+} else if (isVip === true) {
+  console.log(`Oh, you're on the VIP list, ${personName}. Go right in.`);
+} else {
+  console.log(`Sorry, ${personName}, I can't let you in. You must be 21.`);
+}
+```
+
