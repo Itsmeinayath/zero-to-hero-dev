@@ -48,3 +48,37 @@ else{
 
 
 
+// --- Practice: The Daily Planner ---
+
+// 1. Create variables for the day and time (24-hour clock).
+let isWeekend = true;
+let time = 14; // 2:00 PM
+
+console.log("Checking the planner...");
+
+// 2. This is the OUTER conditional: Is it the weekend?
+if (isWeekend === true) {
+    console.log("It's the weekend!");
+    
+    // 3. This is the NESTED logic for the 'if' (weekend) block.
+    if (time < 12) {
+        console.log("Good morning! Time to relax or sleep in.");
+    } else if (time >= 12 && time < 18) {
+        console.log("Good afternoon! Maybe run some errands or see friends.");
+    } else {
+        console.log("Good evening! Time to watch a movie.");
+    }
+
+} else {
+    // 4. This is the 'else' for the OUTER conditional.
+    console.log("It's a weekday.");
+    
+    // 5. This is the NESTED logic for the 'else' (weekday) block.
+    if (time < 9) {
+        console.log("Good morning! Time to get ready for work.");
+    } else if (time >= 9 && time < 17) {
+        console.log("It's working hours. Time to focus.");
+    } else {
+        console.log("Work is over! Time to head home.");
+    }
+}
