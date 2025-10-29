@@ -120,11 +120,6 @@ class MyQueue:
 		- enqueue/popleft/peek: O(1)
 		- push (stack-via-queue): O(N) (rotation); pop/top: O(1)
 
-		Run the demo
-
-		```powershell
-		python .\Week - 6\Day-37\Queue.py
-		```
 
 		Practice (quick)
 		- Implement a circular buffer (fixed-size queue). Compare behavior & complexity.
