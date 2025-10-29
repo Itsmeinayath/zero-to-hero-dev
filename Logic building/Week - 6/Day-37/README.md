@@ -1,127 +1,140 @@
-# Day 37 — Queue Basics
+# Day 37 — Queue Basics (short)
 
-What you'll learn
-- FIFO concept and queue operations (enqueue, dequeue, peek)
-- Why Python lists are a poor queue implementation
-- Using `collections.deque` for efficient queues
-- A tiny `SimpleQueue` wrapper and a runnable demo
+- Queue = FIFO (first-in, first-out). Use `collections.deque` for efficient queues in Python. Avoid `list.pop(0)` (O(N)).
 
----
+Cheat-sheet
+- Import: `from collections import deque`
+- Enqueue: `dq.append(x)` (right)
+- Dequeue: `dq.popleft()` (left)
+- Peek: `dq[0]` (check empty first)
+- Empty: `not dq`
+- Complexity: append/popleft/peek = O(1)
 
-Concept: What is a Queue?
+Quick visual (why deque > list)
+- list: [A][B][C][D] -> pop(0) shifts all elements -> O(N)
+- deque: head->[A]<->[B]<->[C] tail -> popleft() updates head pointer -> O(1)
 
-A queue is a First-In, First-Out (FIFO) data structure. Imagine a line at a ticket counter: people join at the back (enqueue) and are served at the front (dequeue).
-
-Core operations
-- enqueue(item): add to the back
-- dequeue(): remove and return front
-- peek()/front(): inspect front without removing
-- is_empty(), size()
-
-Why not use a plain list?
-
-- list.append(x) is O(1) on average for adding to the back.
-- But list.pop(0) removes the first element and shifts all others left — O(N). If you frequently dequeue, this is slow and memory-inefficient.
-
-A short visual explanation
-
-- A Python list is an array: all elements live in one continuous block of memory, side-by-side. Removing the first element requires shifting every element down to fill the gap.
-
-	list.pop(0): [A] [B] [C] [D]
-
-	To remove [A], the list shifts every other element left:
-
-	[ ] [B] [C] [D]  ->  [B] [C] [D] [ ]
-
-	This is an O(N) operation — slow when the list is large.
-
-- A `deque` (double-ended queue) is not an array. Internally it's implemented as a linked structure (conceptually like a doubly-linked list):
-
-	(Head) -> [A] <-> [B] <-> [C] -> (Tail)
-
-	To remove the first element ([A]) the deque does not shift anything. It simply updates the head pointer to [B]:
-
-	(Head) -> [B] <-> [C] -> (Tail)
-
-	That pointer update is an O(1) operation — constant time regardless of queue size.
-
-You've completely mastered the concept. The tool for a Queue is `deque`. The operations are `append()` (to the back) and `popleft()` (from the front).
-
-Use deque instead
-- The standard tool is `collections.deque` (double-ended queue). `deque.append()` and `deque.popleft()` are both O(1) amortized.
-
----
-
-Quick mapping
-
-enqueue -> deque.append(item)
-dequeue -> deque.popleft()
-peek    -> deque[0]
-
----
-
-Minimal Queue wrapper (deque-backed)
-
+Minimal MyQueue (copy-paste)
 ```python
 from collections import deque
 
-class SimpleQueue:
-	"""Small deque-backed FIFO queue with safe operations."""
-	def __init__(self):
-		self._dq = deque()
+class MyQueue:
+    def __init__(self):
+        self._dq = deque()
 
-	def enqueue(self, item):
-		self._dq.append(item)
+    def enqueue(self, x):
+        self._dq.append(x)
 
-	def dequeue(self):
-		if not self._dq:
-			raise IndexError("dequeue from empty queue")
-		return self._dq.popleft()
+    def dequeue(self):
+        return self._dq.popleft() if self._dq else None
 
-	def peek(self):
-		if not self._dq:
-			raise IndexError("peek from empty queue")
-		return self._dq[0]
+    def peek(self):
+		# Day 37 — Queue Basics (rich & clean)
 
-	def is_empty(self):
-		return len(self._dq) == 0
+		What this file gives you
+		- Short intuition, a small visual, copy-paste `MyQueue`, an example (BFS), and a compact interview twist (stack via queues). Quick to read, useful to keep in your repo.
 
-	def size(self):
-		return len(self._dq)
+		TL;DR
+		- Queue = FIFO. Use `collections.deque` in Python — O(1) append and popleft. Avoid repeated `list.pop(0)`.
+
+		Quick visual
+		- list: [A][B][C][D] -> pop(0) shifts all elements -> O(N)
+		- deque: head->[A]<->[B]<->[C] tail -> popleft() updates head pointer -> O(1)
+
+		Cheat-sheet
+		- Import: `from collections import deque`
+		- Enqueue: `dq.append(x)`
+		- Dequeue: `dq.popleft()`
+		- Peek: `dq[0]` (check empty first)
+
+		Minimal, production-minded MyQueue
+
+		```python
+		from collections import deque
+
+		class MyQueue:
+			"""Simple deque-backed FIFO queue with a clear API.
+
+			- Returns None on empty dequeue/peek to simplify demos/tests.
+			- Use this as a small building block in exercises and examples.
+			"""
+
+			def __init__(self):
+				self._dq = deque()
+
+			def enqueue(self, item):
+				self._dq.append(item)
+
+			def dequeue(self):
+				return self._dq.popleft() if self._dq else None
+
+			def peek(self):
+				return self._dq[0] if self._dq else None
+
+			def is_empty(self):
+				return not self._dq
+
+			def size(self):
+				return len(self._dq)
+		```
+
+		Example: BFS (level-order)
+
+		```python
+		from collections import deque
+
+		def bfs(root):
+			if not root: return []
+			q = deque([root])
+			out = []
+			while q:
+				node = q.popleft()
+				out.append(node.val)
+				if node.left: q.append(node.left)
+				if node.right: q.append(node.right)
+			return out
+		```
+
+		Interview twist — stack via one queue (push-heavy)
+
+		```python
+		from collections import deque
+
+		class MyStackUsingQueues:
+			def __init__(self):
+				self.q = deque()
+
+			def push(self, x):
+				self.q.append(x)
+				for _ in range(len(self.q)-1):
+					self.q.append(self.q.popleft())
+
+			def pop(self):
+				return self.q.popleft() if self.q else None
+
+			def top(self):
+				return self.q[0] if self.q else None
+		```
+
+		Complexities
+		- enqueue/popleft/peek: O(1)
+		- push (stack-via-queue): O(N) (rotation); pop/top: O(1)
+
+		Run the demo
+
+		```powershell
+		python .\Week - 6\Day-37\Queue.py
+		```
+
+		Practice (quick)
+		- Implement a circular buffer (fixed-size queue). Compare behavior & complexity.
+		- LeetCode: Implement Stack Using Queues — try both push-heavy and pop-heavy.
+
+		If you'd like, I'll now:
+		- run `Queue.py` and paste the output, or
+		- add `unittest` tests for `MyQueue` and `MyStackUsingQueues`, or
+		- trim further to a one-paragraph TL;DR + single copyable MyQueue block.
 ```
 
----
 
-Example use-case: level-order traversal (BFS) or task scheduling — queues mirror real-world lines.
 
-Complexity
-- enqueue: O(1)
-- dequeue: O(1)
-- peek: O(1)
-- Space: O(N)
-
-Edge cases and tips
-- Never use `list.pop(0)` in a loop for large lists.
-- `deque` is safe, fast, and part of the standard library.
-- For thread-safe queues use `queue.Queue` (has locking and blocking methods).
-
-Practice problems
-- Implement a circular buffer (fixed-size queue) — good exercise on capacity handling.
-- Use a queue to implement BFS on a small graph.
-
-Run the demo
-
-I added a small demo file `Queue.py` next to this README; run it to see enqueue/dequeue/peek in action:
-
-```powershell
-python .\Queue.py
-```
-
-If you'd like, I can also:
-- add a `linked-list`-backed Queue implementation for comparison, or
-- add `unittest`/`pytest` tests for `SimpleQueue`.
-
----
-
-Notes
-- This file follows the same rich-doc pattern used in earlier days: short intuition, code, complexity, and run instructions.
