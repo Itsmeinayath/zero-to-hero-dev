@@ -102,19 +102,3 @@ Practice problems
 - LeetCode: Valid Parentheses
 
 ---
-
-Run the demo
-
-I added a simple implementation and demo script at `Stack.py`. Run it to try push/pop/peek behavior:
-
-```powershell
-python .\Stack.py
-```
-
-If you want a separate demo file with unit tests (`stack_demo.py`), I can add it — tell me if you prefer a `list`-backed or `linked-list`-backed implementation.
-
----
-
-Notes
-- This is a focused, copy-friendly doc similar to the other days: explanation, code, complexity, and run instructions.
-
