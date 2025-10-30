@@ -143,13 +143,4 @@ Tips & interview notes
 - In Python, prefer the built-in `deque` for correctness and speed unless the exercise explicitly asks for a manual implementation.
 - Keep your `MyDeque` methods O(1) and handle 0/1 element cases first — it's where many bugs hide.
 
-Run/try
-- For the sliding-window demo run:
-
-```powershell
-python .\Week - 6\Day-39\README.MD
-```
-
- (Note: the code example above is runnable as-is when copied to a .py file.)
-
 ---
