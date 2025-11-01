@@ -1,4 +1,4 @@
-# Day 39 — Stack Applications
+# Day 39 - Stack Applications
 
 **Topic**: Stacks & Queues (Stack Applications)
 
@@ -334,4 +334,4 @@ python -i day-39-min-stack.py
 >>> stack.getMin()
 3
 ```
-
+---
