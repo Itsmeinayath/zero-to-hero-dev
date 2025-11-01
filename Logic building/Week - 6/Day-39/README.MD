@@ -1,329 +1,340 @@
-# Day 39 - Stack Applications
+# Day 39 — Stack Applications
+
+**Date**: November 1, 2025  
+**Topic**: Stacks & Queues (Stack Applications)
 
 ## 📚 Purpose
 
-A concise, interview-ready guide covering:
-- **Deque fundamentals** and quick operations
-- **Monotonic Deque pattern** for sliding-window problems
-- **Custom implementation** using doubly-linked lists
-- **Edge cases** and best practices
+Today is about moving from basic stack theory to solving complex problems using specific stack patterns:
+- **Pattern 1**: Monotonic Stack (Next Greater Element)
+- **Pattern 2**: Two-Stack Design (Min Stack with O(1) operations)
 
 ---
 
 ## 🎯 TL;DR
 
-- **Deque** = Double-ended queue with O(1) operations at both ends
-- Use Python's `collections.deque` in production
-- Implement custom DLL-backed deque only when explicitly required
-- Perfect for sliding-window problems and monotonic queue patterns
+**Monotonic Stack**: A stack kept in (usually) decreasing order — the key pattern for all "Next Greater Element" problems. The "sister" pattern to Monotonic Deque.
+
+**Two-Stack Design**: Classic design problem using `main_stack` for data and `min_stack` to track current minimum, enabling O(1) `getMin()`.
+
+**Key Insight**: Avoid nested loops O(N²) or `min()` function O(N). Correct patterns are always **O(N)** or **O(1)**.
 
 ---
 
-## ⚡ Quick Operations
+## 🎨 Pattern 1: Monotonic Stack — "Next Greater Element I"
+
+### 💡 Core Idea ("The Line of Waiters")
+
+**Goal**: Find the first number to the right of an element that is greater.
+
+**Brute-Force** (O(M × N) Trap): Triple nested loops — too slow.
+
+**Optimal** (O(M + N) Solution): Find "next greater element" for every number in `nums2` in one pass.
+
+### 🛠️ The Two Tools
+
+1. **`stack`** (list): Holds "waiters" — numbers waiting for their next greater element
+2. **`answers_map`** (dict): Stores `{waiter: answer}` pairs
+
+### 🧠 The 3 Rules (For each `num` in `nums2`)
+
+#### Rule 1: Process "Waiters" (from TOP)
+
+**Logic**: If the new `num` is bigger than the "waiter" on top, that waiter found its answer.
 
 ```python
-from collections import deque
-
-dq = deque()
-
-# Add operations
-dq.append(x)       # Add to back - O(1)
-dq.appendleft(x)   # Add to front - O(1)
-
-# Remove operations
-dq.pop()           # Remove from back - O(1)
-dq.popleft()       # Remove from front - O(1)
-
-# Access operations
-dq[0]              # Peek front (check if not empty first)
-dq[-1]             # Peek back
+while stack and num > stack[-1]:
+    waiter = stack.pop()
+    answers_map[waiter] = num
 ```
 
-**Complexity**: All operations are **O(1)**
+#### Rule 2: Add New "Waiter" (to TOP)
 
-### 🔧 Common Use Cases
-
-- Sliding-window maximum/minimum problems
-- Monotonic queue patterns
-- BFS level-order traversal
-- Fixed-size ring buffers
-- Palindrome checking
-
----
-
-## 🎨 Pattern: Monotonic Deque - Sliding Window Maximum
-
-### 💡 Core Idea
-
-Maintain indices in the deque such that their corresponding values are **non-increasing**. The front index always points to the current window's maximum.
-
-### 🧠 Why It Works
-
-- Store **indices** (not values) to efficiently track and remove expired elements
-- When a larger value arrives, remove all smaller values from the back
-- When an index expires (falls outside window), remove it from the front
-
-### 📝 Implementation
+**Logic**: After processing smaller waiters, the new `num` is now also a waiter.
 
 ```python
-from collections import deque
+stack.append(num)
+```
+
+#### Rule 3: Handle Leftovers (After Loop)
+
+**Logic**: Any "waiter" still in the stack never found an answer.
+
+```python
+while stack:
+    answers_map[stack.pop()] = -1
+```
+
+### 📝 Implementation (LeetCode 496)
+
+```python
 from typing import List
 
-def sliding_window_max(nums: List[int], k: int) -> List[int]:
-    """
-    Find the maximum in each sliding window of size k.
-    
-    Args:
-        nums: List of integers
-        k: Window size
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        """
+        Find next greater element for each number in nums1 from nums2.
         
-    Returns:
-        List of maximums for each window position
-    """
-    if not nums or k <= 0:
-        return []
-    
-    q: deque[int] = deque()  # Stores indices (values are non-increasing)
-    result: List[int] = []
+        Args:
+            nums1: Query array (subset of nums2)
+            nums2: Full array to search in
+            
+        Returns:
+            List where result[i] is the next greater element for nums1[i]
+        """
+        # 1. Setup our tools
+        stack = []         # For "waiters"
+        answers_map = {}   # For "waiter: answer" pairs
 
-    for i, val in enumerate(nums):
-        # Remove indices outside the current window
-        while q and q[0] <= i - k:
-            q.popleft()
+        # 2. Loop through nums2 to fill the map
+        for num in nums2:
+            # Rule 1: Process waiters
+            while stack and num > stack[-1]:
+                waiter = stack.pop()
+                answers_map[waiter] = num
+            
+            # Rule 2: Add new waiter
+            stack.append(num)
 
-        # Remove indices with smaller values from the back
-        while q and nums[q[-1]] <= val:
-            q.pop()
-
-        # Add current index
-        q.append(i)
-
-        # Once we've processed at least k elements, record the max
-        if i >= k - 1:
-            result.append(nums[q[0]])
-
-    return result
+        # 3. Handle leftovers
+        while stack:
+            waiter = stack.pop()
+            answers_map[waiter] = -1
+            
+        # 4. Build the final result from nums1
+        result_list = []
+        for num in nums1:
+            result_list.append(answers_map[num])
+            
+        return result_list
 
 
 # Test
 if __name__ == '__main__':
-    print(sliding_window_max([1, 3, -1, -3, 5, 3, 6, 7], 3))
-    # Output: [3, 3, 5, 5, 6, 7]
+    sol = Solution()
+    print(sol.nextGreaterElement([4,1,2], [1,3,4,2]))
+    # Output: [-1, 3, -1]
+    # Explanation: 
+    # - 4: no greater element → -1
+    # - 1: next greater is 3
+    # - 2: no greater element → -1
 ```
 
 ### ⏱️ Complexity
 
-- **Time**: O(n) — each index enters and exits the deque at most once
-- **Space**: O(k) — deque size ≤ window size
+- **Time**: O(M + N)
+  - O(N) to build the map (each element pushed/popped once — amortized)
+  - O(M) to build the result array
+- **Space**: O(N) for `answers_map` and `stack`
 
-### 💡 Pro Tip
+### 🎯 Visual Trace
 
-Use `<=` in the while-removal condition to control tie behavior:
-- `nums[q[-1]] < val` → keeps older duplicates
-- `nums[q[-1]] <= val` → keeps newer duplicates
+```
+nums2 = [1, 3, 4, 2]
+
+Step 1: num=1
+  stack=[] → append(1) → stack=[1]
+
+Step 2: num=3
+  3 > 1 → pop 1, answers_map[1]=3
+  stack=[] → append(3) → stack=[3]
+
+Step 3: num=4
+  4 > 3 → pop 3, answers_map[3]=4
+  stack=[] → append(4) → stack=[4]
+
+Step 4: num=2
+  2 < 4 → just append(2) → stack=[4,2]
+
+Leftovers: stack=[4,2]
+  answers_map[4]=-1, answers_map[2]=-1
+
+Final map: {1:3, 3:4, 4:-1, 2:-1}
+```
 
 ---
 
-## 🛠️ Custom Implementation: `MyDeque` (Doubly-Linked List)
+## 🎨 Pattern 2: Two-Stack Design — "Min Stack"
 
-Use this when you need manual node control or when an interviewer explicitly asks for a from-scratch implementation.
+### 💡 Core Idea (O(1) getMin)
 
-### 📦 Complete Implementation
+**Design Problem**: Build a stack where `push`, `pop`, `top`, AND `getMin` are all **O(1)**.
+
+**Brute-Force** (O(N) Trap): Using `min(self.data)` for `getMin()` — too slow.
+
+**Optimal** (O(1) Solution): Always know the minimum using **two stacks**.
+
+### �️ The Two Stacks
+
+1. **`main_stack`**: Holds all the numbers
+2. **`min_stack`**: Helper stack where `min_stack[-1]` is always the current minimum of `main_stack`
+
+### 🧠 The 3 Rules (Core Logic)
+
+#### Rule 1: `push(val)`
+
+- **Always** `main_stack.append(val)`
+- **Only** `min_stack.append(val)` if:
+  - `min_stack` is empty (`if not self.min_stack...`)
+  - **OR** `val <= min_stack[-1]` (new min or duplicate min)
+
+> ⚠️ **Critical**: Use `<=` not `<` to handle duplicate minimums!
+
+#### Rule 2: `pop()`
+
+- `item = main_stack.pop()`
+- **Only** `min_stack.pop()` if:
+  - The `item` we just popped equals the current minimum (`if item == min_stack[-1]`)
+
+#### Rule 3: `getMin()`
+
+- Easy part: `return min_stack[-1]`
+
+### 📝 Implementation (LeetCode 155)
 
 ```python
-class Node:
-    """Node for doubly-linked list."""
-    def __init__(self, val):
-        self.val = val
-        self.next = None
-        self.prev = None
+class MinStack:
+    """
+    Stack with O(1) push, pop, top, and getMin operations.
+    """
 
-
-class MyDeque:
-    """Deque implementation using doubly-linked list."""
-    
     def __init__(self):
-        self.head = None
-        self.tail = None
-        self.size = 0
+        self.main_stack = []
+        self.min_stack = []
 
-    def is_empty(self) -> bool:
-        """Check if deque is empty."""
-        return self.size == 0
-
-    def add_front(self, val) -> None:
-        """Add element to the front - O(1)."""
-        node = Node(val)
-        if self.is_empty():
-            self.head = self.tail = node
-        else:
-            node.next = self.head
-            self.head.prev = node
-            self.head = node
-        self.size += 1
-
-    def add_back(self, val) -> None:
-        """Add element to the back - O(1)."""
-        node = Node(val)
-        if self.is_empty():
-            self.head = self.tail = node
-        else:
-            node.prev = self.tail
-            self.tail.next = node
-            self.tail = node
-        self.size += 1
-
-    def remove_front(self):
-        """Remove and return element from front - O(1)."""
-        if self.is_empty():
-            return None
+    def push(self, val: int) -> None:
+        """Push element onto stack."""
+        self.main_stack.append(val)
         
-        val = self.head.val
-        if self.size == 1:
-            self.head = self.tail = None
-        else:
-            self.head = self.head.next
-            self.head.prev = None
-        self.size -= 1
-        return val
+        # This is the most important line in the class
+        # Handles empty case AND new-min/duplicate-min case
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
 
-    def remove_back(self):
-        """Remove and return element from back - O(1)."""
-        if self.is_empty():
-            return None
-        
-        val = self.tail.val
-        if self.size == 1:
-            self.head = self.tail = None
-        else:
-            self.tail = self.tail.prev
-            self.tail.next = None
-        self.size -= 1
-        return val
+    def pop(self) -> None:
+        """Remove top element from stack."""
+        # Check if main_stack is empty to prevent crashes
+        if self.main_stack:
+            item = self.main_stack.pop()
+            
+            # Keep the stacks in sync
+            # Check if min_stack is not empty AND item was the min
+            if self.min_stack and item == self.min_stack[-1]:
+                self.min_stack.pop()
 
-    def peek_front(self):
-        """Get front element without removing - O(1)."""
-        return self.head.val if self.head else None
+    def top(self) -> int:
+        """Get the top element without removing."""
+        if self.main_stack:
+            return self.main_stack[-1]
+        return None  # Or raise an error
 
-    def peek_back(self):
-        """Get back element without removing - O(1)."""
-        return self.tail.val if self.tail else None
-
-    def __len__(self):
-        """Return size of deque."""
-        return self.size
-
-    def __repr__(self):
-        """String representation of deque."""
-        if self.is_empty():
-            return "MyDeque([])"
-        
-        values = []
-        current = self.head
-        while current:
-            values.append(str(current.val))
-            current = current.next
-        return f"MyDeque([{', '.join(values)}])"
-```
-
-### ⚠️ Edge Cases to Handle
-
-| Scenario | Expected Behavior |
-|----------|------------------|
-| Remove from empty deque | Return `None` (or raise exception) |
-| Remove from single-element deque | Clear both `head` and `tail` |
-| Add to empty deque | Set both `head` and `tail` to new node |
-| Peek on empty deque | Return `None` (or raise exception) |
-
----
-
-## 🧪 Try It Out
-
-### Quick Demo
-
-```python
-def demo():
-    """Quick demo of collections.deque."""
-    from collections import deque
-    
-    dq = deque()
-    
-    # Add elements
-    dq.append(1)
-    dq.appendleft(0)
-    dq.append(2)
-    
-    print(f"Deque: {list(dq)}")  # [0, 1, 2]
-    
-    # Remove elements
-    print(f"Pop left: {dq.popleft()}")   # 0
-    print(f"Pop right: {dq.pop()}")      # 2
-    print(f"Remaining: {list(dq)}")      # [1]
+    def getMin(self) -> int:
+        """Retrieve the minimum element in O(1)."""
+        if self.min_stack:
+            return self.min_stack[-1]
+        return None  # Or raise an error
 
 
-def test_custom_deque():
-    """Test custom MyDeque implementation."""
-    dq = MyDeque()
-    
-    dq.add_back(1)
-    dq.add_front(0)
-    dq.add_back(2)
-    
-    print(dq)  # MyDeque([0, 1, 2])
-    
-    print(f"Front: {dq.peek_front()}")   # 0
-    print(f"Back: {dq.peek_back()}")     # 2
-    
-    dq.remove_front()
-    dq.remove_back()
-    
-    print(dq)  # MyDeque([1])
-
-
+# Test
 if __name__ == '__main__':
-    print("=== Collections Deque Demo ===")
-    demo()
-    print("\n=== Custom MyDeque Demo ===")
-    test_custom_deque()
+    stack = MinStack()
+    stack.push(-2)
+    stack.push(0)
+    stack.push(-3)
+    print(stack.getMin())  # -3
+    stack.pop()
+    print(stack.top())     # 0
+    print(stack.getMin())  # -2
 ```
 
+### ⏱️ Complexity
+
+- **Time**: O(1) for all operations (`push`, `pop`, `top`, `getMin`)
+- **Space**: O(N)
+  - `main_stack` takes O(N)
+  - `min_stack` in worst case `[5, 4, 3, 2, 1]` also takes O(N)
+
+### 🎯 Visual Trace
+
+```
+Operation Sequence:
+push(-2) → main=[−2], min=[−2]
+push(0)  → main=[−2,0], min=[−2]      (0 > -2, don't push to min)
+push(-3) → main=[−2,0,−3], min=[−2,−3] (−3 < -2, push to min)
+getMin() → return -3                   (min_stack[-1])
+pop()    → main=[−2,0], min=[−2]       (popped -3, also pop from min)
+top()    → return 0                    (main_stack[-1])
+getMin() → return -2                   (min_stack[-1])
+```
+
+### 🔑 Why `<=` is Critical
+
+Consider this sequence: `push(1), push(1), pop()`
+
+- **With `<=`**: `min_stack = [1, 1]` → After pop: `min_stack = [1]` ✅
+- **With `<`**: `min_stack = [1]` → After pop: `min_stack = []` ❌ (Lost minimum!)
+
 ---
-
-## 📊 Comparison: List vs Deque
-
-| Operation | list | deque |
-|-----------|------|-------|
-| append (right) | O(1)* | O(1) |
-| append (left) | O(n) | O(1) |
-| pop (right) | O(1) | O(1) |
-| pop (left) | O(n) | O(1) |
-| Access by index | O(1) | O(n) |
-| Memory | Contiguous | Non-contiguous |
-
-*Amortized O(1)
 
 ---
 
 ## 🎓 Interview Tips
 
-1. **Always use `collections.deque`** in production code — it's optimized and battle-tested
-2. **Store indices in monotonic deque problems** — enables efficient expiration checks
-3. **Handle edge cases first** in custom implementations:
-   - Empty deque operations
-   - Single-element transitions
-   - Proper pointer updates
-4. **Clarify return behavior** — should operations on empty deque return `None` or raise?
+1. **Monotonic Stack**: For "Next Greater/Smaller" problems
+   - Stack holds "waiters"
+   - Map/dict stores answers
+   - Process from top to bottom
+
+2. **Two-Stack Design**: For "Get-Min/Max in O(1)" problems
+   - Key is the push logic: `val <= min_stack[-1]`
+   - The `<=` (not `<`) is critical for duplicate minimums
+   - Keep stacks synchronized on pop
+
+3. **Safety First**: Always check empty before operations
+   - `if stack:` before `pop()` or `stack[-1]`
+   - Prevents `IndexError` crashes
+
+4. **Common Mistakes**:
+   - Forgetting to handle duplicate minimums (`<=` vs `<`)
+   - Not syncing both stacks in pop operation
+   - Not checking for empty stack before peek/pop
 
 ---
 
 ## 📝 Practice Problems
 
-| Problem | Difficulty | Pattern |
-|---------|-----------|---------|
-| [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) | Hard | Monotonic Deque |
-| [Implement Deque](https://practice.geeksforgeeks.org/problems/deque-implementations/) | Medium | DLL Implementation |
-| [Max of Min for Every Window Size](https://practice.geeksforgeeks.org/problems/maximum-of-minimum-for-every-window-size/) | Hard | Monotonic Deque |
+| Problem | Difficulty | Pattern | Link |
+|---------|-----------|---------|------|
+| Next Greater Element I | Easy | Monotonic Stack | [LeetCode 496](https://leetcode.com/problems/next-greater-element-i/) |
+| Next Greater Element II | Medium | Monotonic Stack | [LeetCode 503](https://leetcode.com/problems/next-greater-element-ii/) |
+| Min Stack | Medium | Two-Stack Design | [LeetCode 155](https://leetcode.com/problems/min-stack/) |
+| Daily Temperatures | Medium | Monotonic Stack | [LeetCode 739](https://leetcode.com/problems/daily-temperatures/) |
+| Largest Rectangle in Histogram | Hard | Monotonic Stack | [LeetCode 84](https://leetcode.com/problems/largest-rectangle-in-histogram/) |
 
+---
+
+## 🚀 Run the Code
+
+Save either implementation and test:
+
+```bash
+# For Next Greater Element
+python day-39-monotonic-stack.py
+
+# For Min Stack
+python day-39-min-stack.py
+```
+
+Or test interactively:
+
+```python
+python -i day-39-min-stack.py
+>>> stack = MinStack()
+>>> stack.push(5)
+>>> stack.push(3)
+>>> stack.getMin()
+3
+```
 
 ---
 
