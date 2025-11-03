@@ -1,6 +1,5 @@
-# Day 39 — Stack Applications
+# Day 39 - Stack Applications
 
-**Date**: November 1, 2025  
 **Topic**: Stacks & Queues (Stack Applications)
 
 ## 📚 Purpose
@@ -335,7 +334,4 @@ python -i day-39-min-stack.py
 >>> stack.getMin()
 3
 ```
-
 ---
-
-**Made with ❤️ for interview prep**
