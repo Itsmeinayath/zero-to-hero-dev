@@ -32,6 +32,262 @@ A recursive function "pauses" by pushing its state onto the **Call Stack (LIFO)*
 
 ---
 
+## 🧠 Memory Management Deep Dive
+
+### How Memory Works During Function Calls
+
+When a program runs, memory is divided into different sections:
+
+```
+┌──────────────────────────────────────┐
+│         PROGRAM MEMORY               │
+├──────────────────────────────────────┤
+│  Code Segment (Instructions)         │  ← Your actual code
+├──────────────────────────────────────┤
+│  Data Segment (Global Variables)     │  ← Static/global data
+├──────────────────────────────────────┤
+│  Heap (Dynamic Memory)               │  ← malloc, new, objects
+│         ↓ grows down                 │
+│                                       │
+│         ↑ grows up                   │
+│  Stack (Function Calls)              │  ← **THIS IS WHERE RECURSION LIVES!**
+└──────────────────────────────────────┘
+```
+
+**The Call Stack (Stack Segment)** is where:
+- Function calls are stored
+- Local variables live
+- Return addresses are saved
+- Parameters are passed
+
+---
+
+## 🎨 Visual: Real Memory Management
+
+### Example: Chain of Function Calls
+
+```python
+def print1(n):
+    print(n)
+    print2(n=2)
+
+def print2(n):
+    print(n)
+    print3(n=3)
+
+def print3(n):
+    print(n)
+    print4(n=4)
+
+def print4(n):
+    print(n)
+
+print1(n=1)  # Start here!
+```
+
+### Memory Stack Evolution (Step-by-Step)
+
+#### **Step 1: `print1(1)` is called**
+
+```
+STACK MEMORY (grows upward ↑)
+┌────────────────────────────────┐
+│  Frame: print1()               │ ← Stack Pointer (SP)
+│  ├─ Parameter: n = 1           │
+│  ├─ Local vars: None           │
+│  ├─ Return address: main()     │
+│  └─ Instruction: call print2() │
+└────────────────────────────────┘
+│ (empty space)                  │
+└────────────────────────────────┘
+
+Output so far: 1
+```
+
+#### **Step 2: `print2(2)` is called (push new frame)**
+
+```
+STACK MEMORY
+┌────────────────────────────────┐
+│  Frame: print2()               │ ← Stack Pointer (SP) moved up
+│  ├─ Parameter: n = 2           │
+│  ├─ Local vars: None           │
+│  ├─ Return address: print1()   │
+│  └─ Instruction: call print3() │
+├────────────────────────────────┤
+│  Frame: print1()               │ ← Still in memory, waiting
+│  ├─ Parameter: n = 1           │
+│  ├─ Return address: main()     │
+│  └─ Status: PAUSED             │
+└────────────────────────────────┘
+
+Output so far: 1, 2
+```
+
+#### **Step 3: `print3(3)` is called (push another frame)**
+
+```
+STACK MEMORY
+┌────────────────────────────────┐
+│  Frame: print3()               │ ← Stack Pointer (SP)
+│  ├─ Parameter: n = 3           │
+│  ├─ Local vars: None           │
+│  ├─ Return address: print2()   │
+│  └─ Instruction: call print4() │
+├────────────────────────────────┤
+│  Frame: print2()               │ ← Waiting
+│  ├─ Parameter: n = 2           │
+│  ├─ Status: PAUSED             │
+├────────────────────────────────┤
+│  Frame: print1()               │ ← Waiting
+│  ├─ Parameter: n = 1           │
+│  ├─ Status: PAUSED             │
+└────────────────────────────────┘
+
+Output so far: 1, 2, 3
+Stack size: 3 frames (24-48 bytes each)
+```
+
+#### **Step 4: `print4(4)` is called (maximum depth!)**
+
+```
+STACK MEMORY (MAXIMUM DEPTH)
+┌────────────────────────────────┐
+│  Frame: print4()               │ ← Stack Pointer (SP) at peak
+│  ├─ Parameter: n = 4           │
+│  ├─ Local vars: None           │
+│  ├─ Return address: print3()   │
+│  └─ Instruction: return        │ ← NO MORE CALLS!
+├────────────────────────────────┤
+│  Frame: print3()               │ ← Waiting
+│  ├─ Parameter: n = 3           │
+│  ├─ Status: PAUSED             │
+├────────────────────────────────┤
+│  Frame: print2()               │ ← Waiting
+│  ├─ Parameter: n = 2           │
+│  ├─ Status: PAUSED             │
+├────────────────────────────────┤
+│  Frame: print1()               │ ← Waiting
+│  ├─ Parameter: n = 1           │
+│  ├─ Status: PAUSED             │
+└────────────────────────────────┘
+
+Output so far: 1, 2, 3, 4
+Stack size: 4 frames (~96-192 bytes)
+```
+
+### The Unwinding Phase (LIFO Pop)
+
+#### **Step 5: `print4()` finishes and returns (pop frame)**
+
+```
+STACK MEMORY
+┌────────────────────────────────┐
+│  Frame: print3()               │ ← SP moved down (popped print4)
+│  ├─ Parameter: n = 3           │
+│  ├─ Status: RESUMED            │
+│  └─ Next: return               │
+├────────────────────────────────┤
+│  Frame: print2()               │ ← Waiting
+│  ├─ Parameter: n = 2           │
+├────────────────────────────────┤
+│  Frame: print1()               │ ← Waiting
+│  ├─ Parameter: n = 1           │
+└────────────────────────────────┘
+
+print4 frame is DESTROYED (memory freed)
+```
+
+#### **Step 6: `print3()` returns (pop frame)**
+
+```
+STACK MEMORY
+┌────────────────────────────────┐
+│  Frame: print2()               │ ← SP moved down
+│  ├─ Parameter: n = 2           │
+│  ├─ Status: RESUMED            │
+│  └─ Next: return               │
+├────────────────────────────────┤
+│  Frame: print1()               │ ← Waiting
+│  ├─ Parameter: n = 1           │
+└────────────────────────────────┘
+
+print3 frame DESTROYED
+```
+
+#### **Step 7: `print2()` returns (pop frame)**
+
+```
+STACK MEMORY
+┌────────────────────────────────┐
+│  Frame: print1()               │ ← SP moved down
+│  ├─ Parameter: n = 1           │
+│  ├─ Status: RESUMED            │
+│  └─ Next: return               │
+└────────────────────────────────┘
+
+print2 frame DESTROYED
+```
+
+#### **Step 8: `print1()` returns (pop frame)**
+
+```
+STACK MEMORY
+┌────────────────────────────────┐
+│  (empty - back to main)        │ ← SP at bottom
+└────────────────────────────────┘
+
+print1 frame DESTROYED
+All functions completed!
+```
+
+---
+
+## 📊 Memory Analysis
+
+### Stack Frame Contents (What's stored for each function call)
+
+```
+┌───────────────────────────────────┐
+│  STACK FRAME (typical 32-64 bytes)│
+├───────────────────────────────────┤
+│  Return Address (8 bytes)         │ ← Where to jump back
+│  Previous Frame Pointer (8 bytes) │ ← Link to caller's frame
+│  Parameters (varies)              │ ← Function arguments
+│  Local Variables (varies)         │ ← Function's local data
+│  Saved Registers (varies)         │ ← CPU state preservation
+└───────────────────────────────────┘
+```
+
+### Space Complexity in Action
+
+For `factorial(5)`:
+- **5 stack frames** created
+- Each frame ≈ 32-64 bytes
+- **Total stack space**: ~160-320 bytes
+- This is why we say **O(N) space complexity**!
+
+### Stack Overflow Example
+
+```python
+def infinite_recursion(n):
+    print(n)
+    infinite_recursion(n + 1)  # ⚠️ NO BASE CASE!
+
+infinite_recursion(0)
+```
+
+**What happens**:
+```
+Stack grows: frame₁ → frame₂ → frame₃ → ... → frame₁₀₀₀₀
+Eventually: 💥 STACK OVERFLOW ERROR
+"RecursionError: maximum recursion depth exceeded"
+```
+
+Python's default stack limit: ~1000 frames (can check with `sys.getrecursionlimit()`)
+
+---
+
 ## 🎭 The "CEO & Intern" Analogy
 
 Think of recursion as a company hierarchy:
@@ -282,6 +538,17 @@ Stack empty → sum(3) = 6
 3. **Space Complexity Matters** — O(N) stack space is the hidden cost
 4. **Visualize the Stack** — Draw it out to understand the flow
 5. **Recursion shines for Trees/Graphs** — Not just toy problems!
+
+---
+
+## 🎨 Want Even More Visual Details?
+
+Check out **[MEMORY_VISUALIZATION.md](./MEMORY_VISUALIZATION.md)** for:
+- 📍 **Step-by-step execution** with console output
+- 🔄 **Complete push/pop phases** shown one function at a time
+- 📊 **Memory graphs** showing stack growth and shrinkage
+- 🎯 **Practice exercises** to test your understanding
+- ⚠️ **Stack overflow examples** and prevention
 
 ---
 
