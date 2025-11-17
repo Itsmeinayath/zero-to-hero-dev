@@ -281,6 +281,8 @@ console.log(`${product.name} - $${product.price} - ${product.inStock ? 'Availabl
 
 ## Practical Examples
 
+Real-world use cases for template literals.
+
 ### Example 1: User Greeting
 
 ```javascript
@@ -453,29 +455,7 @@ let message = `Hello`;
 let message = "Hello";
 ```
 
-2. **Don't Nest Too Deeply**
-
-```javascript
-// ❌ Hard to read
-let complex = `${a ? `${b ? `${c}` : `${d}`}` : `${e}`}`;
-
-// ✅ Better - use variables
-let inner = b ? c : d;
-let result = a ? inner : e;
-let simple = `${result}`;
-```
-
-3. **Don't Forget to Escape Backticks**
-
-```javascript
-// ❌ Error
-let code = `let message = `Hello`;`;
-
-// ✅ Correct
-let code = `let message = \`Hello\`;`;
-```
-
-4. **Don't Put Complex Logic Inside Templates**
+2. **Don't Put Complex Logic Inside Templates**
 
 ```javascript
 // ❌ Bad
