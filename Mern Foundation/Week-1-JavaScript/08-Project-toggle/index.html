@@ -2,16 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Day 1 - Text Toggle</title>
+    <title>Day 3 - DOM Form</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         
         <button id="toggleButton">Toggle Text</button>
-        
         <p id="toggledText" class="is-hidden">This is the secret message!</p>
-    
+        
+        <hr> <h2>What's your name?</h2>
+        
+        <form id="nameForm">
+            <input type="text" id="nameInput" placeholder="Enter your name">
+            
+            <button type="submit">Submit</button>
+        </form>
+        
+        <p id="displayName"></p>
+
     </div>
     
     <script src="script.js"></script>

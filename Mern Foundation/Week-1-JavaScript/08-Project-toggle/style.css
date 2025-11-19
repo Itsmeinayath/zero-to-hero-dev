@@ -29,3 +29,22 @@ p {
 .is-hidden {
     display: none;
 }
+
+
+/* --- Day 3 Styles --- */
+hr {
+    border: none;
+    border-top: 1px solid #7f8c8d;
+    margin: 30px 0;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
