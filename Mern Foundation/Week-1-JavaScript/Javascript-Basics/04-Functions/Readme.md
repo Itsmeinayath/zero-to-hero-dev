@@ -124,6 +124,7 @@ console.log(factorial(5)); // Output: 120
 ### 📌 Difference from Declaration
 
 ```javascript
+expalin hoisiting means here
 // This works (hoisting)
 sayHi(); 
 function sayHi() {
