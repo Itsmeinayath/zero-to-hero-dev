@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM - select element by id</title>
+    <style>
+        .red-color{
+        color: red;
+        }
+        .underline{
+        text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="block">
+        <p class="paragraph"> Welcome to the website</p>
+    </nav>
+    <div class="block">
+        <h4> Hey There, My name is 
+            <span id = "username"> John Doe</span>
+            <p class="paragraph">Here is a code for you</p>
+        </h4>
+    </div>
+    <script>
+      //here we learn about elements by class name in 
+        const paragraphs = document.getElementsByClassName("paragraph");
+        console.log(paragraphs); // logging all the elements with class name paragraph
+        for(let i=0; i<paragraphs.length; i++){
+            paragraphs[i].style.color = "green"; // changing the color of all paragraph elements to green
+            paragraphs[i].style.fontSize = "20px"; // changing the font size of all paragraph elements to 20px
+        }
+        
+        
+    </script>
+</body>
+</html>
