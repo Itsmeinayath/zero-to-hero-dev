@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM - select element by id</title>
+    <style>
+        .red-color{
+        color: red;
+        }
+        .underline{
+        text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="block">
+        <p class="paragraph"> Welcome to the website</p>
+    </nav>
+    <div class="block">
+        <h4> Hey There, My name is 
+            <span id = "username"> John Doe</span>
+            <p class="paragraph">Here is a code for you</p>
+        </h4>
+    </div>
+    <script>
+        const username = document.getElementById("username");
+        username.textContent = "Inyath"; // changing the username to Inyath
+        username.innerText = "Alice"; // changing the username to Alice 
+        console.log(username);
+
+        username.classList.add("red-color","underline"); // adding red-color class to the username span
+
+        // username.classList.remove("red-color"); // removing red-color class from the username span
+        //we can also add or remove multiple classes at once by separating them with commas
+        //we can add styles directly using the style property
+        // username.style.color = "blue"; // changing the color of the username to blue
+        // username.style.textDecoration = "line-through"; // adding line-through to the username
+
+        //we can also use parentElement to access the parent element of the selected element
+        const parentElement = username.parentElement;
+        console.log(parentElement); // logging the parent element of the username span
+
+        // we can also use children to access the child elements of the selected element
+        const childElements = parentElement.children;
+        console.log(childElements); // logging the child elements of the parent element
+
+        // we can also use firstElementChild and lastElementChild to access the first and last child elements of the selected element
+        const firstChild = parentElement.firstElementChild;
+        const lastChild = parentElement.lastElementChild;
+        console.log(firstChild); // logging the first child element of the parent element
+        console.log(lastChild); // logging the last child element of the parent element
+
+        // we can also change styles of the parent element and child elements
+        parentElement.style.backgroundColor = "lightgrey"; // changing the background color of the parent
+        for(let i=0; i<childElements.length; i++){
+            childElements[i].style.fontWeight = "bold"; // changing the font weight of the child elements to bold
+        }
+
+        // .remove() method to remove the element from the DOM
+        // username.remove(); // removing the username span from the DOM
+        
+    </script>
+</body>
+</html>
