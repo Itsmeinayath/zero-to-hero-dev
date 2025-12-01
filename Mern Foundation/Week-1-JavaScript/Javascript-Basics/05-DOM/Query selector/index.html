@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM - Query Selector</title>
+</head>
+<body>
+    <nav class="block">
+        <p class="paragraph"> Welcome to the website</p>
+    </nav>
+    <div class="block">
+        <h4> Hey There, My name is 
+            <span id = "username"> John Doe</span>
+            <p class="paragraph">Here is a code for you</p>
+        </h4>
+    </div>
+    <script>
+        // Query selctor - allows us to select the first element that matches a specified CSS selector(s) in the document.
+        /*
+        selectors 
+        tag name - 'tagname'
+        id # 
+        class .
+
+        */
+    //important querySelector choose the first matching element only if we have multiple elements with same class name or tag name
+
+      const body = document.querySelector("body")
+    //   body.innerHTML = "<h1> This is added using query selector </h1>" // innerHTML : allows us to set or get the HTML content of an element
+      console.log(body);
+
+    const div = document.querySelector("div")
+      div.style.backgroundColor = "lightblue" // changing the background color of div
+
+      // example 2 for id selector
+      const username = document.querySelector("#username")
+      username.textContent = "Inyath"; // changing the username to Inyath
+      username.style.fontSize = "30px" // changing the font size of the username
+      console.log(username);
+
+    //   example 3 for class selector
+      const paragraph = document.querySelector(".paragraph")
+      paragraph.style.color = "red" // changing the color of the paragraph text to red
+      console.log(paragraph);
+    </script>
+</body>
+</html>
