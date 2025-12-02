@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM - Query Selector</title>
+</head>
+<body>
+    <nav class="block">
+        <p class="paragraph"> Welcome to the website</p>
+    </nav>
+    <div class="block">
+        <h4> Hey There, My name is 
+            <span id = "username"> John Doe</span>
+            <p class="paragraph">Here is a code for you</p>
+        </h4>
+    </div>
+    <!-- <button onclick="handleClick()"> click me</button> -->
+    <button id  ="clickbutton"> click me</button>
+
+    <script>
+        // function handleClick(){
+        //     console.log("The button is clicked");
+        //     alert("Button Clicked");
+        // }
+        // const button = document.querySelector("#clickbutton");
+        // button.addEventListener("click", function(){
+        //     console.log("The button is clicked");
+        //     alert("Button Clicked");
+        // });
+        // what is event listener?
+        // Event listener is a procedure in JavaScript that waits for an event to occur.
+
+        //prefered way using  event listener
+
+        const el = document.querySelector("#clickbutton");
+        
+            el.addEventListener("click", function(){
+                console.log("The button is clicked");
+                alert("Button Clicked");
+            });
+        
+    </script>
+</body>
+</html>
