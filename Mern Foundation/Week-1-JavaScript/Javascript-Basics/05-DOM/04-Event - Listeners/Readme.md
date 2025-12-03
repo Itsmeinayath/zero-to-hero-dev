@@ -16,6 +16,7 @@
 8. [Keyboard Events](#8-keyboard-events)
 9. [Form Events](#9-form-events)
 10. [Best Practices](#10-best-practices)
+11. [Dynamic DOM Manipulation](#11-dynamic-dom-manipulation)
 
 ---
 
@@ -602,6 +603,266 @@ items.forEach(item => {
 
 // ❌ Don't forget to remove listeners (memory leaks!)
 // ❌ Don't use anonymous functions if you need to remove later
+```
+
+---
+
+## 11. Dynamic DOM Manipulation
+
+### Creating Elements
+
+```javascript
+// Step 1: Create the element
+const newDiv = document.createElement("div");
+
+// Step 2: Add content & attributes
+newDiv.textContent = "I'm a new element!";
+newDiv.className = "card";
+newDiv.id = "card-1";
+newDiv.setAttribute("data-id", "123");
+
+// Step 3: Add to the DOM
+document.body.appendChild(newDiv);
+```
+
+**Visual:**
+```
+BEFORE:                          AFTER appendChild():
+┌──────────────────┐             ┌──────────────────┐
+│      <body>      │             │      <body>      │
+│                  │   ──────►   │  ┌────────────┐  │
+│                  │             │  │  new div   │  │
+│                  │             │  └────────────┘  │
+└──────────────────┘             └──────────────────┘
+```
+
+### Insert Positions
+
+```javascript
+const container = document.querySelector("#container");
+const newElement = document.createElement("div");
+
+// Different ways to insert
+container.appendChild(newElement);        // Add as LAST child
+container.prepend(newElement);            // Add as FIRST child
+container.before(newElement);             // Add BEFORE container
+container.after(newElement);              // Add AFTER container
+
+// Insert at specific position
+container.insertBefore(newElement, referenceElement);
+```
+
+**Visual Map:**
+```
+                    .before(new)
+                         │
+                         ▼
+              ┌──────────────────────┐
+              │     #container       │
+              │ ┌──────────────────┐ │ ◄── .prepend(new) [FIRST]
+              │ │  existing child  │ │
+              │ └──────────────────┘ │
+              │ ┌──────────────────┐ │ ◄── .appendChild(new) [LAST]
+              │ └──────────────────┘ │
+              └──────────────────────┘
+                         │
+                         ▼
+                    .after(new)
+```
+
+### insertAdjacentHTML (Quick Way)
+
+```javascript
+const container = document.querySelector("#container");
+
+// Insert HTML string at different positions
+container.insertAdjacentHTML("beforebegin", "<p>Before</p>");
+container.insertAdjacentHTML("afterbegin", "<p>First child</p>");
+container.insertAdjacentHTML("beforeend", "<p>Last child</p>");
+container.insertAdjacentHTML("afterend", "<p>After</p>");
+```
+
+```
+Position keywords:
+                "beforebegin"
+                      │
+         ┌────────────▼────────────┐
+         │      "afterbegin"       │
+         │            │            │
+         │     [existing content]  │
+         │            │            │
+         │      "beforeend"        │
+         └────────────┬────────────┘
+                      │
+                "afterend"
+```
+
+### Real Example: Add Todo Item
+
+```html
+<ul id="todo-list">
+    <li>Existing task</li>
+</ul>
+<input id="todo-input" type="text">
+<button id="add-btn">Add</button>
+```
+
+```javascript
+const list = document.querySelector("#todo-list");
+const input = document.querySelector("#todo-input");
+const addBtn = document.querySelector("#add-btn");
+
+addBtn.addEventListener("click", () => {
+    // Get input value
+    const text = input.value.trim();
+    if (!text) return;
+    
+    // Create new list item
+    const li = document.createElement("li");
+    li.textContent = text;
+    
+    // Add delete button
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "❌";
+    deleteBtn.className = "delete-btn";
+    li.appendChild(deleteBtn);
+    
+    // Add to list
+    list.appendChild(li);
+    
+    // Clear input
+    input.value = "";
+});
+
+// Event delegation for delete (works for NEW items too!)
+list.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-btn")) {
+        e.target.parentElement.remove();
+    }
+});
+```
+
+**Visual Flow:**
+```
+User types "Buy milk" and clicks Add:
+
+BEFORE:                              AFTER:
+┌────────────────────────┐           ┌────────────────────────┐
+│  • Existing task       │           │  • Existing task       │
+│                        │  ──────►  │  • Buy milk  ❌        │ ← NEW!
+└────────────────────────┘           └────────────────────────┘
+```
+
+### Removing Elements
+
+```javascript
+// Modern way (recommended)
+element.remove();
+
+// Old way (still works)
+element.parentElement.removeChild(element);
+
+// Remove all children
+container.innerHTML = "";  // Quick but heavy
+// OR
+while (container.firstChild) {
+    container.firstChild.remove();
+}
+```
+
+### Cloning Elements
+
+```javascript
+const original = document.querySelector(".card");
+
+// Shallow clone (element only, no children)
+const shallowClone = original.cloneNode(false);
+
+// Deep clone (element + all children)
+const deepClone = original.cloneNode(true);
+
+document.body.appendChild(deepClone);
+```
+
+### Moving Elements
+
+```javascript
+// Moving is automatic! Just append to new location
+const element = document.querySelector("#movable");
+const newParent = document.querySelector("#new-container");
+
+newParent.appendChild(element);  // Moves, doesn't copy!
+```
+
+### DocumentFragment (Performance)
+
+When adding MANY elements, use a fragment to avoid multiple repaints:
+
+```javascript
+// ❌ Slow - 100 DOM updates
+for (let i = 0; i < 100; i++) {
+    const li = document.createElement("li");
+    li.textContent = `Item ${i}`;
+    list.appendChild(li);  // DOM updates 100 times!
+}
+
+// ✅ Fast - 1 DOM update
+const fragment = document.createDocumentFragment();
+
+for (let i = 0; i < 100; i++) {
+    const li = document.createElement("li");
+    li.textContent = `Item ${i}`;
+    fragment.appendChild(li);  // No DOM update yet
+}
+
+list.appendChild(fragment);  // ONE DOM update!
+```
+
+**Visual:**
+```
+WITHOUT Fragment:              WITH Fragment:
+┌─────────────────┐            ┌─────────────────┐
+│  Add item 1     │ → Repaint  │  Build in       │
+│  Add item 2     │ → Repaint  │  memory...      │
+│  Add item 3     │ → Repaint  │  ...            │
+│  ...            │            │  ...            │
+│  Add item 100   │ → Repaint  │  Add ALL        │ → 1 Repaint
+└─────────────────┘            └─────────────────┘
+    100 repaints                   1 repaint
+        ❌                            ✅
+```
+
+### Modify Existing Elements
+
+```javascript
+const element = document.querySelector("#myElement");
+
+// Text
+element.textContent = "New text";
+
+// HTML
+element.innerHTML = "<strong>Bold text</strong>";
+
+// Attributes
+element.setAttribute("data-id", "123");
+element.getAttribute("data-id");        // "123"
+element.removeAttribute("data-id");
+element.hasAttribute("data-id");        // false
+
+// Classes
+element.classList.add("active", "visible");
+element.classList.remove("hidden");
+element.classList.toggle("dark-mode");
+element.classList.replace("old", "new");
+
+// Styles
+element.style.backgroundColor = "blue";
+element.style.display = "none";
+element.style.cssText = "color: red; font-size: 20px;";
+
+// Data attributes
+element.dataset.userId = "42";          // sets data-user-id="42"
+console.log(element.dataset.userId);    // "42"
 ```
 
 ---
