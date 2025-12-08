@@ -192,6 +192,59 @@ Found! Path: Include 3 → Exclude 4 → Include 2 = 3+2 = 5 ✅
 
 ---
 
+### 🎯 Complete Recursion Tree Example
+
+**Problem**: `arr = [5, 10, 12, 13, 15, 18]`, `target = 30`
+
+```
+Complete exploration showing all branches:
+
+                            (0, 13)
+                           x₁ = 1
+                          /        \
+                    (5, 68)        (0, 73)
+                    x₂ = 1          x₂ = 1
+                   /      \
+            (16, 58)    (5, 68)
+            x₃ = 1       x₃ = 0
+           /      \
+      (21, 46)  (15, 48)
+      x₄ = 1     x₄ = 0
+     /      \
+(19, 33) (27, 33)
+   B      x₅ = 1
+         /      \
+    (43, 18) (27, 33)
+       B      x₅ = 0
+             /      \
+        (28, 33) (15, 33)
+        x₆ = 1    x₆ = 0
+       /      \
+   (43, 18) (30, 18) ✅
+      B        B
+
+Legend:
+• (sum, remaining) at each node
+• xᵢ = 1 means include element i
+• xᵢ = 0 means exclude element i
+• B means dead branch (backtrack)
+• ✅ means target reached
+
+Solution found: x = [1, 1, 0, 0, 1, 0]
+Selected elements: arr[0]=5, arr[1]=10, arr[4]=15
+Sum: 5 + 10 + 15 = 30 ✅
+
+Constraint: Σ(wᵢ × xᵢ) ≤ m (where m = 30)
+```
+
+**Key Observations**:
+- Each level explores Include (left) or Exclude (right)
+- Dead branches (B) occur when sum exceeds target
+- Multiple paths may lead to solution
+- Backtracking prunes invalid branches early
+
+---
+
 ### 🔍 DP Table Visualization: arr=[3,4,2], target=5
 
 ```
