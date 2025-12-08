@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Weather App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="weather-card">
+        <h2>🌤️ Live Weather</h2>
+        
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name (e.g. Dubai)" autocomplete="off">
+            <button id="searchBtn">🔍</button>
+        </div>
+
+        <div id="errorMsg" class="hidden error-text"></div>
+
+        <div id="weatherResult" class="hidden">
+            <h3 id="cityName">City Name</h3>
+            <div class="temperature">
+                <span id="tempValue">--</span>°C
+            </div>
+            <p id="weatherDesc">Condition: <span id="descValue">--</span></p>
+            <p id="humidity">Humidity: <span id="humidityValue">--</span>%</p>
+        </div>
+    </div>
+
+    <script src="apikey.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
