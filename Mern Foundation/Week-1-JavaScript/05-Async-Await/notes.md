@@ -1,4 +1,6 @@
-Topic 5 — Async/Await & Fetch API
+# Async/Await & Fetch API
+
+<!-- Topic 5 — Async/Await & Fetch API -->
 
 ## 1 — What is asynchronous JavaScript?
 
@@ -104,6 +106,7 @@ createPost({ title: 'My Post', body: 'Hello world', userId: 1 });
 ## Day 4 Task (from 90-Day Plan)
 
 Build a webpage that:
+
 1. Fetches posts from JSONPlaceholder API
 2. Displays them dynamically on the page
 3. Handles errors with try/catch
