@@ -1,0 +1,1 @@
+<!-- This file is all about Arrays in JavaScript -->
