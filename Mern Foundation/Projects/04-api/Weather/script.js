@@ -49,7 +49,9 @@ const checkWeather = async () => {
         humidityValue.textContent = data.main.humidity;
         weatherResult.classList.remove('hidden');
         errorMessage.classList.add('hidden');
-
+        
+        // Add to history after successful fetch
+        addToHistory(data.name);
         
     } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -71,3 +73,38 @@ cityInput.addEventListener('keypress', (event) => {
         checkWeather();
     }
 });
+
+// State :
+let searchHistory = []
+
+const historyContainer = document.querySelector('#historyContainer')
+
+const addToHistory = (city) =>{
+    if (!searchHistory.includes(city)){
+        searchHistory.push(city)
+
+        if(searchHistory.length > 5){
+            searchHistory.shift()
+        }
+        renderHistory()
+    }
+}
+
+const renderHistory = () => {
+    historyContainer.innerHTML = ''; // Clear existing history
+
+    searchHistory.forEach((savedCity) =>{
+        const btn = document.createElement('button')
+        btn.textContent = savedCity
+        btn.classList.add('history-btn')
+
+        // allow clicking on history items to re-fetch weather
+        btn.addEventListener('click', () =>{
+            cityInput.value = savedCity
+            checkWeather()
+        })
+
+        historyContainer.appendChild(btn)
+    })
+
+}
