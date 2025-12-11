@@ -24,12 +24,14 @@
 ### Visual Comparison
 
 **BEFORE Node.js:**
+
 - ❌ JavaScript ONLY runs in browsers (Chrome, Firefox, Safari)
 - ❌ Can't access files on computer
 - ❌ Can't create servers
 - ❌ Can't run scripts on your machine
 
 **AFTER Node.js:**
+
 - ✅ JavaScript runs ANYWHERE
 - ✅ Access files and folders
 - ✅ Create web servers
