@@ -1,11 +1,5 @@
 # Day 48 - Recursion Recap & DP Bridge - Detailed Notion Notes
 
-## 📋 Quick Summary
-
-**Date**: November 21, 2025  
-**Focus**: Bridging Backtracking and Dynamic Programming  
-**Key Problems**: Letter Combinations (LeetCode 17), Subset Sum (GFG)  
-**Time Required**: 2-3 hours to master both patterns
 
 ---
 
