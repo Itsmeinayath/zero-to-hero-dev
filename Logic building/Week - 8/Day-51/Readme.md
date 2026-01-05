@@ -207,55 +207,6 @@ def minCostClimbingStairs_optimized(cost):
 * **Time:** $O(n)$ - Single pass through cost array
 * **Space:** $O(1)$ - Only 2 variables
 
----
-
-## 🛑 Common Pitfalls (Don't Do These!)
-
-### 1. Loop Range Errors
-❌ **Wrong:**
-```python
-for i in range(2, n):  # Misses dp[n]!
-```
-
-✅ **Correct:**
-```python
-for i in range(2, n + 1):  # Remember: range stops BEFORE n+1
-```
-
-### 2. Missing Base Cases
-❌ **Wrong:**
-```python
-def rob(nums):
-    dp[0] = nums[0]
-    # What if nums is empty or has 1 element?
-```
-
-✅ **Correct:**
-```python
-def rob(nums):
-    if not nums: return 0
-    if len(nums) == 1: return nums[0]
-    # Now safe to access dp[0] and dp[1]
-```
-
-### 3. Off-by-One in Array Access
-❌ **Wrong:**
-```python
-dp[i] = min(dp[i-1] + cost[i], dp[i-2] + cost[i-1])  # Wrong indices!
-```
-
-✅ **Correct:**
-```python
-dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])
-```
-
-### 4. Typos Matter
-* `climing` vs `climbing`
-* `climbingStairs` vs `climbStairs`
-
-Accuracy in naming is crucial for coding interviews!
-
----
 
 ## 📊 Day 51 Summary: The Constraint Pattern
 
@@ -294,29 +245,8 @@ def dp_problem(input_array):
     # Step 5: Return final answer
     return dp[n]
 ```
-
 ---
-
-## 🔜 Next Steps: Day 52
-
-**Topic:** Unbounded Knapsack Pattern
-
-**Problem:** Coin Change (LeetCode 322)
-
-**New Challenge:** Moving from **2 choices** (include/exclude) to **N choices** (choose any coin multiple times)
-
 **Recurrence Evolution:**
 ```
 Day 51: dp[i] depends on dp[i-1] and dp[i-2] (2 previous states)
 Day 52: dp[i] depends on dp[i-coin1], dp[i-coin2], ... (N previous states)
-```
-
-**Get Ready!** The difficulty is ramping up. 🚀
-
----
-
-**Date:** Day 51 | Week 8  
-**Topic:** 1D Dynamic Programming with Constraints  
-**Pattern:** Include/Exclude Decision Making  
-**Problems Solved:** 2/2 ✅  
-**Status:** Constraint Patterns Mastered!
